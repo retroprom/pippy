@@ -42,6 +42,7 @@
 #include <stdio.h>
 #include "compile.h"
 #include "dbmem.h"
+#include "stdlib.h"
 
 #define	bcopy(b1,b2,len)MemMove(b2,b1,len)
 
