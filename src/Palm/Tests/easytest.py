@@ -2,10 +2,10 @@
 #  Author: M. Gorlick
 #
 
-VERSION = '$Id: easytest.py,v 1.5 2001/06/08 15:40:48 jcollins Exp $'
+VERSION = '$Id: easytest.py,v 1.6 2001/06/11 03:01:51 jcollins Exp $'
 
 import sys
-from utility.traceback import format_exception
+from traceback import format_exception
 
 STANDARD_ERROR = sys.stderr
 
