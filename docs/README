@@ -7,6 +7,10 @@ Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
 
 
+WHAT'S NEW
+See the file "NEWS".
+
+
 NOTE
 
 This distribution contains the source code for Pippy, the port of
@@ -18,8 +22,6 @@ you may download the pre-built PRC files (Pippy-0.7.tar.gz) from:
 
     WARNING: Backup your Palm device before installing Pippy!
 
-NEWS
-See the file "NEWS".
 
 INTRODUCTION
 
@@ -84,41 +86,6 @@ for installing the .prc files are also included in this file.
 
 
     WARNING: Backup your Palm device before installing Pippy!
-
-
-WHAT'S NEW
-
-The following modules have been ported to the PalmOS as part of our
-Pippy development:
-
-    palm_socketmodule.c
-    palm_errnomodule.c
-    palm_timemodule.c 
-    palm_selectmodule.c: 
-
-We have eliminated floating point objects in the current release of
-Pippy in the interest of reducing the code footprint.  The time
-specifier for time.sleep() and select.select() has been changed to the
-following:
-
-time.sleep(seconds, micro_seconds)
-select.select(rlist, wlist, xlist[, (seconds, micro_seconds)])
-
-
-The following modules are PalmOS specific:
-
-    palmnetmodule.c     - Controls the palm network connection
-    palmeventmodule.c   - Exports events to the Palm
-    palmsysmodule.c     - Provides access to Palm system functions
-    palmdmmodule.c      - Database interface
-    palmappsmodule.c    - Standard Palm applications
-    palmformmodule.c    - Palm forms
-
-User Interface
-
-A "BREAK" button has been added, which when pressed raises a
-KeyboardInterrupt exception.  Additional development on the user
-interface is required.
 
 
 TODO
