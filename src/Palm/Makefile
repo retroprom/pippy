@@ -47,7 +47,7 @@ clean_python: clean_glue
 PIPPY_NAME=pippy-$(PIPPY_VERSION)
 PIPPY_SRC=$(PIPPY_NAME)-src
 PIPPY_SRC_DIR=/tmp/$(PIPPY_SRC)
-PIPPY_BIN=pippy$(PIPPY_WIN_VERSION)
+PIPPY_BIN=pippy_$(PIPPY_WIN_VERSION)
 PIPPY_BIN_DIR=/tmp/$(PIPPY_BIN)
 
 dist: all dist_src dist_bin
