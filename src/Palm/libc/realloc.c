@@ -1,8 +1,10 @@
+#include "config.h"
 #include <stdlib.h>
 #include <PalmOS.h>
 #include <PalmCompatibility.h>
 void *  MemRealloc(void * p, UInt32 size);
 
+#ifndef USE_DLMALLOC
 extern long malloc_ref_count;
 extern long bytes_allocated;
 
@@ -23,3 +25,4 @@ void *realloc( void *ptr, size_t size ) {
 
 	return p;
 }
+#endif

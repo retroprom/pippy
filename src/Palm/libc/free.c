@@ -1,8 +1,10 @@
+#include "config.h"
 #include <stdlib.h>
 #include <PalmOS.h>
 #include <PalmCompatibility.h>
 #include <stdio.h>
 
+#ifndef USE_DLMALLOC
 extern long malloc_ref_count;
 extern long bytes_deallocated;
 
@@ -19,3 +21,4 @@ void free( void *ptr ){
      DUMP_TO_HOST("d", ptr, size);
 	
 }
+#endif

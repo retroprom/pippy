@@ -5,7 +5,8 @@ OBJS = \
      memset.o strcpy.o strncpy.o strtok.o \
      memcmp.o strnlen.o strtol.o \
      memcpy.o strcat.o strlen.o strpbrk.o strtoul.o sscanf.o fopen.o\
-     malloc.o calloc.o realloc.o free.o fclose.o fwrite.o io.o mystdio.o
+     malloc.o calloc.o realloc.o free.o fclose.o fwrite.o io.o mystdio.o \
+     dlmalloc.o sbrk.o
 
 CC = m68k-palmos-coff-gcc
 AS = m68k-palmos-coff-as -mno-68881 -m68000 -l

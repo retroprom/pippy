@@ -1,3 +1,4 @@
+#include "config.h"
 #include <stdlib.h>
 #include <PalmOS.h>
 #include <PalmCompatibility.h>
@@ -26,6 +27,7 @@ void dump_to_host(char *which, void *address, long value)
 }
 
 
+#ifndef USE_DLMALLOC
 void *malloc( size_t size ) {
 	void *mem = MemPtrNew(size);
 
@@ -38,6 +40,7 @@ void *malloc( size_t size ) {
 	
 	return mem;
 }
+#endif
 
 long get_malloc_ref_count() SEG_LIBC;
 long get_malloc_ref_count() {
@@ -45,6 +48,7 @@ long get_malloc_ref_count() {
 	return malloc_ref_count;
 }
 
+#ifndef USE_DLMALLOC
 void get_allocations(long *allocated, long *deallocated)
 {
 
@@ -53,3 +57,5 @@ void get_allocations(long *allocated, long *deallocated)
 	if (deallocated != NULL)
 		*deallocated = bytes_deallocated;
 }
+
+#endif
