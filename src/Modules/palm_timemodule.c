@@ -10,6 +10,11 @@ static long timezone = 0;
 static long daylight = 0;
 
 
+#define TIME_IN_USEC 0
+#define TIME_IN_MSEC 1
+#define TIME_IN_SEC 2
+
+
 /* Forward declarations */
 static UInt32 inttime(void) SEG_TIMEMODULE_C;
 static PyObject *time_settimezone(PyObject *self, PyObject *args) SEG_TIMEMODULE_C;
@@ -26,6 +31,9 @@ static PyObject *time_mktime(PyObject *self, PyObject *args) SEG_TIMEMODULE_C;
 static void ins(PyObject *d, char *name, PyObject *v) SEG_TIMEMODULE_C;
 DL_EXPORT(void) inittime() SEG_TIMEMODULE_C;
 static int intsleep(UInt32 secs, UInt32 usecs) SEG_TIMEMODULE_C;
+
+static PyObject *time_ticks(PyObject *self, PyObject *args) SEG_TIMEMODULE_C;
+static PyObject *time_tickstotime(PyObject *self, PyObject *args) SEG_TIMEMODULE_C;
 
 
 static PyObject *
@@ -61,6 +69,57 @@ time_time(self, args)
 	secs = inttime();
 	return PyInt_FromLong(secs);
 }
+
+/* 
+   Return the tick count since the last reset. The tick count does not advance
+   while the device is in sleep mode. 
+*/
+
+static PyObject *
+time_ticks(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	UInt32 ticks;
+	if (!PyArg_NoArgs(args))
+		return NULL;
+
+	ticks = TimGetTicks();
+
+	return PyInt_FromLong(ticks);
+}
+
+static PyObject *
+time_tickstotime(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	UInt32 ticks;
+        Int16 unit = TIME_IN_MSEC;
+	UInt32 factor;
+
+	if (!PyArg_ParseTuple(args, "l|i", &ticks, &unit))
+		return NULL;
+	
+	switch (unit) 
+	{
+	case TIME_IN_USEC: /* time in microseconds */
+		factor = 1000000;
+		break;
+	case TIME_IN_MSEC:
+		factor = 1000;
+		break;
+	case TIME_IN_SEC:
+		factor = 1;
+		break;
+	default:
+		PyErr_SetString(PyExc_ValueError, "Invalid time unit specifier");
+		return NULL;
+	}
+		
+	return PyInt_FromLong(ticks * factor / SysTicksPerSecond());
+}
+
 
 
 static PyObject *
@@ -268,6 +327,8 @@ static PyMethodDef time_methods[] = {
 	{"ctime",	time_ctime, 0, NULL},
 	{"mktime",	time_mktime, 1, NULL},
 	{"settimezone",	time_settimezone, 0, NULL},
+	{"ticks",	time_ticks, 0, NULL},
+	{"tickstotime",	time_tickstotime, 1, NULL},
 	{NULL,		NULL}		/* sentinel */
 };
 
@@ -296,6 +357,9 @@ inittime()
 
 	ins(d, "timezone", PyInt_FromLong((long)timezone));
 	ins(d, "daylight", PyInt_FromLong((long)daylight));
+	ins(d, "TIME_IN_USEC", PyInt_FromLong((long) TIME_IN_USEC));
+	ins(d, "TIME_IN_MSEC", PyInt_FromLong((long) TIME_IN_MSEC));
+	ins(d, "TIME_IN_SEC", PyInt_FromLong((long) TIME_IN_SEC));
 
 	if (PyErr_Occurred())
 		Py_FatalError("Can't initialize time module");
