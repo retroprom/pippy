@@ -57,7 +57,7 @@
 
 ./src/Palm
 ./src/Palm/Makefile
-./src/Palm/Makefile.all
+./src/Palm/Makefile.python
 ./src/Palm/Makefile.glib
 ./src/Palm/buildno
 ./src/Palm/config.h
@@ -72,14 +72,12 @@
 ./src/Palm/Python/Makefile
 ./src/Palm/Python/Makefile.in
 ./src/Palm/Modules
-./src/Palm/Modules/Makefile
 ./src/Palm/Modules/Makefile.pre
 ./src/Palm/Modules/Makefile.pre.in
 ./src/Palm/Modules/Setup
 ./src/Palm/Modules/Setup.local
 ./src/Palm/Modules/Setup.thread
 ./src/Palm/Modules/Setup.thread.in
-./src/Palm/Modules/config.c
 ./src/Palm/Modules/config.c.in
 ./src/Palm/Modules/makesetup
 ./src/Palm/Objects

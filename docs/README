@@ -37,19 +37,17 @@ installation:
 1.  Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
 prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install
 
-2.  Be sure that there is a copy of Python1.5.2 on the system
+2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
+Python-2.0 bytecodes are incompatible with this revision.
 
 3.  Unpack the XXX.tar.gz distribution
 
-4.  Copy the files in Core/System/Unix in the PalmOS sdk-3.5 to 
-the directory XXX/src/Palm/libc/palmos_unix_includes.
-
-5.  cd XXX/src/Palm
-    make -f Makefile.all
+4.  cd XXX/src/Palm
+    make
     cd Interactive
     make
 
-6.  The .prc files (pylib.prc and python.prc) are ready for installing
+5.  The .prc files (pylib.prc and python.prc) are ready for installing
 on the system.
 
 
@@ -106,6 +104,8 @@ Port Python library modules (usually require minor mods)
 Improve startup/shutdown speed
 Improve/abstract IO Stream interface
 Python Resource Manager (track stack, heap, free freelists, etc.)
+
+Upgrade to Python-2.0
 
 
 REMOVED PYTHON FEATURES
