@@ -230,7 +230,8 @@ class ModuleFinder:
             self.msgout(2, "load_module ->", m)
             return m
         if type == imp.PY_SOURCE:
-            co = compile(fp.read()+'\n', pathname, 'exec')
+            short_pathname = os.path.basename(pathname)
+            co = compile(fp.read()+'\n', short_pathname, 'exec')
         elif type == imp.PY_COMPILED:
             if fp.read(4) != imp.get_magic():
                 self.msgout(2, "raise ImportError: Bad magic number", pathname)
