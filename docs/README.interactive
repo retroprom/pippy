@@ -7,7 +7,7 @@ Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
 
 
-	Warning:  Backup your Palm device before installing Pippy!
+    Warning:  Backup your Palm device before installing Pippy!
 
 NOTE:
 
@@ -30,11 +30,11 @@ INSTALLING THE .prc FILES
 
 2. Unpack the distribution.  You should now have the following files:
 
-		pippy_0_6beta/
-		pippy_0_6beta/pylib.prc
-		pippy_0_6beta/pippy.prc
-		pippy_0_6beta/README.interactive
-		pippy_0_6beta/LICENSE
+        pippy_0_6beta/
+        pippy_0_6beta/pylib.prc
+        pippy_0_6beta/pippy.prc
+        pippy_0_6beta/README.interactive
+        pippy_0_6beta/LICENSE
 
 3. Depending on your platform there are several tools that allow you to
    install the *.prc files onto your Palm hand held device.
