@@ -2,6 +2,7 @@
 /* Time module replacement for PalmOS */
 
 #include "kludge.h"
+#include "palmnetmodule.h"
 
 /* PalmOS doesn't have account for timezones - we allow the user to set
    these values. */
@@ -67,11 +68,21 @@ time_sleep(self, args)
 	PyObject *self;
 	PyObject *args;
 {
-	long secs, usecs;
-	if (!PyArg_ParseTuple(args, "ll", &secs, &usecs))
+	long secs, usecs, milliseconds;
+	
+	if (!PyArg_ParseTuple(args, "l:sleep", &milliseconds))
 		return NULL;
+
+	if (milliseconds < 0) {
+		PyErr_SetString(PyExc_ValueError, "timeout in milliseconds must be a positive number");
+		return NULL;
+	}
+	secs = milliseconds / 1000;
+	usecs = (milliseconds - secs * 1000) * 1000;
+	    
 	if (intsleep(secs,usecs) != 0)
 		return NULL;
+
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -300,8 +311,6 @@ inttime()
 
 	return TimGetSeconds() + timezone;
 }
-
-int PalmNet_IsOpen(void);
 
 static int
 intsleep(secs, usecs)
