@@ -712,13 +712,14 @@ mywrite(name, fp, format, va)
 	if (file == NULL || PyFile_AsFile(file) == fp)
 		vfprintf(fp, format, va);
 	else {
-		char buffer[1001];
+		char *buffer = (char *)malloc(1001);
 		if (vsprintf(buffer, format, va) >= sizeof(buffer))
 		    Py_FatalError("PySys_WriteStdout/err: buffer overrun");
 		if (PyFile_WriteString(buffer, file) != 0) {
 			PyErr_Clear();
 			fputs(buffer, fp);
 		}
+		free(buffer);
 	}
 	PyErr_Restore(error_type, error_value, error_traceback);
 }
