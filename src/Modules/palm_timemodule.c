@@ -203,7 +203,7 @@ time_asctime(self, args)
 	char d[11], buf[25];
 	DateTimeType dt;
 
-	if (!PyArg_ParseTuple(args, "O:mktime", &tup))
+	if (!PyArg_ParseTuple(args, "O:asctime", &tup))
 		return NULL;
 
 	if (!get_datetime_arg(tup, &dt))
