@@ -184,10 +184,11 @@ static Boolean StartApp()
 	
 
 	/* open the VM library */
+#ifndef NO_GLIB
 	GLib_PyLb_libref = GLibOpenSoft('PyLb',"Python VM", errmsg);
 	if (!GLib_PyLb_libref)
 		ErrFatalDisplayIf(GLib_PyLb_libref == NULL, "Cannot open Python VM GLib");
-
+#endif
 	startPanel = MAINFRAME;
 
 	/* initialize stdout */
@@ -202,8 +203,10 @@ static void StopApp(void)
 
 	FrmCloseAllForms();
 
+#ifndef NO_GLIB
 	GLibClose(GLib_PyLb_libref);
 	GLib_PyLb_libref = NULL;
+#endif
 }
 
 static Boolean MainFrameHandleEvent(EventType *e)
