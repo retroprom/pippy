@@ -62,6 +62,38 @@ run_SimpleString(command)
 		PyErr_Clear();
 	return 0;
 }
+
+int
+mkmodule(name, code)
+	char *name, *code;
+{
+	PyObject *m, *d, *v, *__main__;
+	PyImport_AddModule(name);
+	v = Py_CompileString(code, "<compiled>", Py_file_input);
+	//v = PyRun_String(code, Py_single_input, d, d);
+	if (v == NULL) {
+		PyErr_Print();
+		return -1;
+	}
+	m = PyImport_ExecCodeModule(name, v);
+	Py_DECREF(v);
+	if (m == NULL) {
+		PyErr_Print();
+		return -1;
+	}
+	__main__ = PyImport_AddModule("__main__");
+	if (__main__ == NULL){
+		Py_DECREF(m);
+		return -1;
+	}
+	d = PyModule_GetDict(__main__);
+	PyDict_SetItemString(d, name, m);
+	Py_DECREF(m);
+	if (Py_FlushLine())
+		PyErr_Clear();
+	return 0;
+}
+
 #endif /* WITHOUT_COMPILER */
 
 #endif

@@ -25,20 +25,27 @@
 #define OUTPUT_FIELD          1030
 #define INPUT_FIELD           1040
 
-#define EVAL_BUTTON           1050
-#define BREAK_BUTTON          1060
+#define LOAD_BUTTON           1050
+#define EVAL_BUTTON           1060
+#define BREAK_BUTTON          1070
 
-#define BUILTIN_LIST_TRIGGER  1070
-#define BUILTIN_LIST          1080
-#define BUILTIN_LIST_ITEMS    1090
+#define BUILTIN_LIST_TRIGGER  1080
+#define BUILTIN_LIST          1090
+#define BUILTIN_LIST_ITEMS    1100
 
-#define MODULE_LIST           1100
-#define MODULE_LIST_ITEMS     1110
-#define MODULE_LIST_TRIGGER   1120
+#define MODULE_LIST           1110
+#define MODULE_LIST_ITEMS     1120
+#define MODULE_LIST_TRIGGER   1130
 
-#define OS_VERSION_ERROR      1130
+#define OS_VERSION_ERROR      1140
 
-#define ABOUT                 1140
+#define ABOUT                 1150
+
+#define LOADFRAME             1160
+#define MEMOLIST              1170
+#define LOAD_OK_BUTTON        1180
+#define LOAD_CANCEL_BUTTON    1190
+
 
 #define OUTPUT_SIZE           1024
 #define INPUT_SIZE            4096

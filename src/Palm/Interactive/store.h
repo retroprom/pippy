@@ -6,6 +6,11 @@ extern FieldPtr     outField;
 extern FormPtr      mainForm;
 extern ScrollBarPtr scrollBar;
 
+typedef struct {
+	LocalID dbId;
+	UInt16  recNr;  
+} SourceRef;
+
 
 #endif /* INC_STORE_H */
 

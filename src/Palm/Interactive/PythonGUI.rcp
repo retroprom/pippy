@@ -65,12 +65,13 @@ BEGIN
                                            UNDERLINED MAXCHARS INPUT_SIZE
     BUTTON "Eval"   ID EVAL_BUTTON     AT (119 147   22 AUTO) 
     BUTTON "Break"  ID BREAK_BUTTON    AT ( 60 147 AUTO AUTO) NONUSABLE
+    BUTTON "Load"   ID LOAD_BUTTON     AT (20 147   22 AUTO) 
     GRAFFITISTATEINDICATOR AT (146 147)
 END
 
 
 STRINGTABLE ID BUILTIN_LIST_ITEMS
-"" "and" "assert" "break" "class" "continue" "def" "del" "elif" "else" "except" "exec" "finally" "for" "from" "global" "if" "import" "in" "is" "lambda" "not" "or" "pass" "print" "raise" "return" "try" "while"       "__import__" "abs" "apply" "buffer" "callable" "chr" "cmp" "coerce" "compile" "complex" "delattr" "dir" "divmod" "eval" "execfile" "filter" "float" "getattr" "globals" "hasattr" "hash" "hex" "id" "input" "intern" "int" "isinstance" "issubclass" "len" "list" "locals" "long" "map" "max" "min" "oct" "open" "ord" "pow" "range" "raw_input" "reduce" "reload" "repr" "round" "setattr" "slice" "str" "tuple" "type" "vars"
+"" "and" "assert" "break" "class" "continue" "def" "del" "elif" "else" "except" "exec" "finally" "for" "from" "global" "if" "import" "in" "is" "lambda" "not" "or" "pass" "print" "raise" "return" "try" "while"       "__import__" "abs" "apply" "buffer" "callable" "chr" "cmp" "coerce" "compile" "complex" "delattr" "dir" "divmod" "eval" "execfile" "filter" "float" "getattr" "globals" "hasattr" "hash" "hex" "id" "input" "intern" "int" "isinstance" "issubclass" "len" "list" "locals" "long" "map" "max" "min" "oct" "open" "ord" "pow" "range" "raw_input" "reduce" "reload" "repr" "round" "setattr" "slice" "str" "tuple" "type" "vars" "__doc__" "__dict__"
 
 // Set the following to the index which seperates keywords from builtin
 // function names:
@@ -80,7 +81,7 @@ STRINGTABLE ID BUILTIN_LIST_ITEMS
  
 
 STRINGTABLE ID MODULE_LIST_ITEMS
-"" "copy" "copy_reg" "cPickle" "cStringIO" "exceptions" "imp" "marshal" "palmapps" "palmdm" "palmform" "palmevent" "palmnet" "palmsys" "repr" "rfc822" "select" "socket" "string" "sys" "types" "time" "__builtin__" "__main__" "all_palm_tests"
+"" "copy" "copy_reg" "cPickle" "cStringIO" "exceptions" "imp" "marshal" "palmapps" "palmdm" "palmform" "palmevent" "palmnet" "palmsys" "palmwin" "repr" "rfc822" "select" "socket" "string" "sys" "types" "time" "__builtin__" "__main__" "all_palm_tests"
 
 ALERT ID OS_VERSION_ERROR
 CONFIRMATION
@@ -104,3 +105,24 @@ BEGIN
   BUTTONS "OK"
 END
 
+
+FORM ID LOADFRAME AT (0 0 160 160)
+BEGIN
+    TITLE "Pippy Load"
+    LABEL "Select a source memo" AUTOID 28 17 FONT 1
+    LIST " " MEMOLIST AT (1 30 158 AUTO) USABLE
+                             VISIBLEITEMS 9 FONT 0
+/*
+    LABEL "Format:" AUTOID 1 132 FONT 1
+    PUSHBUTTON "Memo"   ID IDC_RB_MEMO   AT (PREVRIGHT+2 PREVTOP AUTO AUTO)     GROUP 9999
+    PUSHBUTTON "Memo32" ID IDC_RB_MEMO32 AT (PREVRIGHT+1   PREVTOP AUTO AUTO)   GROUP 9999
+    PUSHBUTTON "DOC"    ID IDC_RB_DOC    AT (PREVRIGHT+1   PREVTOP AUTO AUTO)   GROUP 9999
+*/
+    BUTTON "OK"        ID LOAD_OK_BUTTON      AT (  1 147 AUTO AUTO)
+    BUTTON "Cancel"    ID LOAD_CANCEL_BUTTON  AT ( 30 147 AUTO AUTO)
+/*
+    BUTTON "Memo"      ID IDC_PB_LOAD_MEMO    AT ( 72 147 30 AUTO)
+    BUTTON "Edit"      ID IDC_PB_LOAD_EDIT    AT (105 147 24 AUTO)
+    BUTTON "pedit" ID IDC_PB_LOAD_PEDIT       AT (132 147 26 AUTO)
+*/
+END
