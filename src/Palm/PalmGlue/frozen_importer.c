@@ -38,63 +38,106 @@ static frozen_record unpack_record( char *s ) {
 	return rec;
 }
 	
+typedef struct _frozen_res_entry {
+  frozen_record rec;
+  int used;
+  int is_resource;
+  struct _frozen_res_entry *next;
+} *frozen_res_entry_t;
+static frozen_res_entry_t all=NULL;
+
+static frozen_record fromCache(char *name) 
+{
+    frozen_record null_rec = {0, NULL, NULL, 0};
+    frozen_res_entry_t current;
+
+    current = all;
+    while (current) {
+      if (StrCompare(current->rec.name, name)==0) {
+	current->used = 1;
+	return current->rec;
+      }
+      current = current->next;
+    }
+    return null_rec;
+}
+
+
+static void cleanupCache() 
+{
+  frozen_res_entry_t current, tmp;
+  current = all;
+  while (current) {
+    tmp = current;
+    if (!current->used) {
+      MemHandleUnlock(current->rec.handle);
+      if (current->is_resource) {
+	DmReleaseResource(current->rec.handle);
+      }
+    }
+    current = current->next;
+    free(tmp);
+  }
+}
 
 static frozen_record search_datamanager(DmOpenRef dbref, char *name) {
 	
 	/* search sequentially through the database for the requested
 	   module name */
 
-	UInt i;
-	frozen_record null_rec = {0, NULL, NULL, 0};
-	frozen_record rec = null_rec;
-	char *s = NULL;
-	VoidHand rec_hand;
+    static cached = 0;
 
-	for (i=0; i<DmNumRecords(dbref); i++){
+    if (!cached) {
+      UInt i;
+      frozen_record null_rec = {0, NULL, NULL, 0};
+      frozen_record rec = null_rec;
+      char *s = NULL;
+      VoidHand rec_hand;
+      frozen_res_entry_t current;
 
-		rec_hand = DmQueryRecord(dbref, i);
-		s = (char *) MemHandleLock(rec_hand);
-		rec = unpack_record(s);
-		rec.handle = rec_hand;
-
-		if ( StrCompare(rec.name, name) == 0 ) { /* found it */
-			return rec;
-		}
-		else {
-			MemHandleUnlock(rec_hand);
-			rec = null_rec;
-		}
-	}
-	/* did not find it */
-	return rec;
+      cached = 1;
+      for (i=0; i<DmNumRecords(dbref); i++){
+	rec_hand = DmQueryRecord(dbref, i);
+	s = (char *) MemHandleLock(rec_hand);
+	rec = unpack_record(s);
+	rec.handle = rec_hand;
+	current = (frozen_res_entry_t)malloc(sizeof(struct _frozen_res_entry));
+	current->rec = rec;
+	current->used = 0;
+	current->is_resource = 0;
+	current->next = all;
+	all = current;
+      }
+    }
+    return fromCache(name);
 }
 
 static frozen_record search_resources(char *name) {
 
-	UInt i;
-	frozen_record null_rec = {0, NULL, NULL, 0};
-	frozen_record rec = null_rec;
-	char *s = NULL;
-	VoidHand rec_hand;
+    UInt i;
+    frozen_record null_rec = {0, NULL, NULL, 0};
+    frozen_record rec = null_rec;
+    char *s = NULL;
+    VoidHand rec_hand;
+    static cached = 0;
+    frozen_res_entry_t current;
 
-	for (i=resource_base; (rec_hand=DmGetResource('PyMd',i)) != 0; i+=resource_incr) {
-		
-		s = (char *) MemHandleLock(rec_hand);
-		rec = unpack_record(s);
-		rec.handle = rec_hand;
+    if (!cached) {
+      cached = 1;
+      for (i=resource_base; (rec_hand=DmGetResource('PyMd',i)) != 0; i+=resource_incr) {
+	s = (char *) MemHandleLock(rec_hand);
+	rec = unpack_record(s);
+	rec.handle = rec_hand;
+	current = (frozen_res_entry_t)malloc(sizeof(struct _frozen_res_entry));
+	current->rec = rec;
+	current->used = 0;
+	current->is_resource = 1;
+	current->next = all;
+	all = current;
 
-		if ( StrCompare(rec.name, name) == 0 ) { /* found it */
-			return rec;
-		}
-		else {
-			MemHandleUnlock(rec_hand);
-			DmReleaseResource(rec_hand);
-			rec = null_rec;
-		}
-	}
-	/* did not find it */
-	return rec;
-
+      }
+    }
+    return fromCache(name);
 }
 
 
@@ -141,6 +184,7 @@ int initialize_FrozenModules()
 		}
 	}
 	sts = 1;
+	cleanupCache();
 	return sts;
 }
 
