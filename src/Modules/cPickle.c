@@ -45,6 +45,9 @@
  #
  #   (540) 371-6909
  */
+#ifdef CODEWARRIOR
+#pragma far_code 
+#endif
 
 #include "Python.h"
 
