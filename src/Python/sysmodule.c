@@ -102,6 +102,21 @@ PySys_SetObject(name, v)
 }
 
 static PyObject *
+sys_getallocations(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	long allocated, deallocated;
+
+	if (!PyArg_Parse(args, ""))
+		return NULL;
+	
+	get_allocations(&allocated, &deallocated);
+	return Py_BuildValue("(lll)", allocated, deallocated, allocated-deallocated);
+
+}
+
+static PyObject *
 sys_exc_info(self, args)
 	PyObject *self;
 	PyObject *args;
@@ -279,7 +294,10 @@ extern PyObject *_Py_GetDXProfile Py_PROTO((PyObject *,  PyObject *));
 static PyMethodDef sys_methods[] = {
 	/* Might as well keep this in alphabetic order */
 	{"exc_info",	sys_exc_info, 0, USE_DOC(exc_info_doc)},
+#ifdef CUT_EXCESS_METHODS
 	{"exit",	sys_exit, 0, USE_DOC(exit_doc)},
+#endif
+
 #ifdef COUNT_ALLOCS
 	{"getcounts",	sys_getcounts, 0},
 #endif
@@ -300,6 +318,8 @@ static PyMethodDef sys_methods[] = {
 	{"getinterned", PyString_InternedDict, 1},
 	{"flushinterned", sys_flushinterned, 0},
 #endif
+	{"getallocations", sys_getallocations, 0},
+
 	{NULL,		NULL}		/* sentinel */
 };
 
