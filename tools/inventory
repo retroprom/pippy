@@ -15,6 +15,7 @@
 /usr/local/palm/bin/m68k-palmos-coff-unprotoize
 /usr/local/palm/bin/m68k-palmos-coff-cpp
 /usr/local/palm/bin/m68k-palmos-coff-gcc
+/usr/local/palm/bin/pilrc
 /usr/local/palm/bin/txt2bitm
 /usr/local/palm/bin/m68k-palmos-coff-obj-res
 /usr/local/palm/bin/m68k-palmos-coff-exportlist
@@ -121,7 +122,6 @@
 /usr/local/palm/m68k-palmos-coff/bin/ranlib
 /usr/local/palm/m68k-palmos-coff/bin/as
 /usr/local/palm/m68k-palmos-coff/bin/ld
-/usr/local/palm/m68k-palmos-coff/bin/pilrc
 /usr/local/palm/m68k-palmos-coff/bin/gcc
 /usr/local/palm/m68k-palmos-coff/bin/txt2bitm
 /usr/local/palm/m68k-palmos-coff/bin/obj-res
