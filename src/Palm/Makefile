@@ -1,4 +1,4 @@
-SUBDIRS= the_libc the_python the_glue the_glib the_server
+SUBDIRS= the_libc the_python the_glue the_glib # the_server
 
 all: $(SUBDIRS)
 
@@ -36,7 +36,7 @@ the_resources: the_glue
 	(cd resources; make; cd ..)
 	touch the_resources
 
-the_glib: the_resources the_server
+the_glib: the_resources  # the_server
 	make -f Makefile.glib
 	touch the_glib
 
@@ -86,6 +86,6 @@ clean:
 	(cd PalmGlue; make clean)
 	(cd libc; make clean)
 	(cd resources; make clean)
-	(cd Server; make clean)
+#	(cd Server; make clean)
 	rm -f the_*
 	rm -f *.bin
