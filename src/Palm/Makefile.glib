@@ -3,14 +3,14 @@ FULLNAME = "Python VM"
 CREATOR = PyLb
 
 PYTHONLIB = libpython1.5.a
-SEGMENT_LIST = pseg0 pseg1 pseg2 pseg2A pseg2B pseg3 pseg4 pseg6 pseg8 pseg9 pseglibc
+SEGMENT_LIST = pseg0 pseg1 pseg2 pseg2A pseg2B pseg3 pseg4 pseg6 pseg8 pseg9 pseg10 pseglibc
 
 # Note - need to include the GLibc stub to avoid using
 # the installed libc.a library
 
 ###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libsocket.a
-SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libNetSocket.a
-###SOCKETLIB= ../NetSocket.o
+###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libNetSocket.a
+SOCKETLIB= ../NetSocket.o
 ###SOCKETLIB= -lNetSocket
 
 OBJS = $(PYTHONLIB)
@@ -24,7 +24,7 @@ AS = m68k-palmos-coff-as -mno-68881 -m68000 -l
 #DEFINES = -DDEBUG
 
 INCLUDES = -I./include 
-CFLAGS = -fno-builtin -O2 -g -Wall $(DEFINES) $(INCLUDES)
+CFLAGS = -H -fno-builtin -O2 -g -Wall $(DEFINES) $(INCLUDES)
 
 OBJRES = m68k-palmos-coff-obj-res
 AR = m68k-palmos-coff-ar
