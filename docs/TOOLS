@@ -1,6 +1,5 @@
-This document describes how to install the tools necessary for 
-compiling Python for the Palm.  
-
+This document describes how to install the tools necessary for compiling Python
+for the Palm.
 
 INSTALLATION
 
@@ -32,3 +31,13 @@ KNOWN PROBLEMS
 The supplied libNetSocket.a supplied with the SDK has given me problems in the
 past.  Download NetSocket.c from the Palm (found in the SDK for Windows
 Platforms), recompile and create a new libNetSocket.a.
+
+WHY THIS TOOLSET?
+
+There are several toolsets available for developing applications for the Palm.
+Palm supports prc-tools-2.0 (derived from prc-tools-0.5) and Code Warrior
+(Windows only).  We chose prc-tools.0.6.0beta, a revision of prc-tools based on
+prc-tools-0.5, for a variety of reasons.  It provides GLib shared libraries with
+multiple-segment support, seamless access to globals within each segment and
+function pointer support.  None of the other development toolsets currently
+provide all of these features.
