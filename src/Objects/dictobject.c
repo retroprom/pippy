@@ -33,6 +33,17 @@ PERFORMANCE OF THIS SOFTWARE.
 
 #include "Python.h"
 
+#ifdef PALMDM_DICT_OBJECTS
+#include "dbmempub.h"
+#define DMMEM_WRITE_MEMBER(member, value, table)\
+                           dbmem_write(table, \
+                              (unsigned long)(&(member))- (unsigned long)(table), \
+                               &(value), \
+                               sizeof(value))
+
+#endif
+
+
 
 /*
  * MINSIZE is the minimum size of a dictionary.
@@ -95,6 +106,9 @@ typedef struct {
 #endif
 } dictentry;
 
+
+
+
 /*
 To ensure the lookup algorithm terminates, the table size must be a
 prime number and there must be at least one NULL key in the table.
@@ -109,7 +123,10 @@ typedef struct {
 	int ma_used;
 	int ma_size;
 	int ma_poly;
-	dictentry *ma_table;
+  	dictentry *ma_table;
+#ifdef PALMDM_DICT_OBJECTS
+	long db_index;
+#endif
 } dictobject;
 
 #include "other/dictobject_c.h"
@@ -232,10 +249,23 @@ insertdict(mp, key, hash, value)
 {
 	PyObject *old_value;
 	register dictentry *ep;
+
+	DMESSAGE("insertdict:");
+
 	ep = lookdict(mp, key, hash);
+	DMESSAGE("insertdict: afterlookdict");
+
 	if (ep->me_value != NULL) {
 		old_value = ep->me_value;
+#ifdef PALMDM_DICT_OBJECTS
+		DMESSAGE("dict: dbmem_write");
+
+		DMMEM_WRITE_MEMBER(ep->me_value, value, mp->ma_table);
+
+		DMESSAGE("dict: dbmem_write/done");
+#else
 		ep->me_value = value;
+#endif
 		Py_DECREF(old_value); /* which **CAN** re-enter */
 		Py_DECREF(key);
 	}
@@ -244,9 +274,37 @@ insertdict(mp, key, hash, value)
 			mp->ma_fill++;
 		else
 			Py_DECREF(ep->me_key);
+#ifdef PALMDM_DICT_OBJECTS
+		{ 
+
+		  dictentry tmpEntry;
+		  tmpEntry.me_key = key;
+		  tmpEntry.me_hash = hash;
+		  tmpEntry.me_value = value;
+		  DMESSAGE("dict: dbmem_write entry");
+		  {
+		       char buf[100];
+		       sprintf(buf, "dict:recP, offset, srcP, count = %p %ld %p %ld", 
+			       mp->ma_table, 
+			      (unsigned long)ep - (unsigned long)mp->ma_table, 
+			       &tmpEntry, 
+			       sizeof(dictentry));
+		       DMESSAGE(buf);
+		  }
+
+		  dbmem_write(mp->ma_table, 
+			      (unsigned long)ep - (unsigned long)mp->ma_table, 
+/* 			      ep - mp->ma_table,  */
+			      &tmpEntry, 
+			      sizeof(dictentry));
+
+		  DMESSAGE("dict: dbmem_write entry/done");
+		}
+#else
 		ep->me_key = key;
 		ep->me_hash = hash;
 		ep->me_value = value;
+#endif
 		mp->ma_used++;
 	}
 }
@@ -268,6 +326,9 @@ dictresize(mp, minused)
 	register dictentry *newtable;
 	register dictentry *ep;
 	register int i;
+#ifdef PALMDM_DICT_OBJECTS
+	long oldindex = mp->db_index;
+#endif
 	for (i = 0, newsize = MINSIZE; ; i++, newsize <<= 1) {
 		if (i > sizeof(polys)/sizeof(polys[0])) {
 			/* Ran out of polynomials */
@@ -279,12 +340,24 @@ dictresize(mp, minused)
 			break;
 		}
 	}
+#ifdef PALMDM_DICT_OBJECTS
+	DMESSAGE("dict: dbmem_create entry");
+	newtable = (dictentry *) dbmem_createentry(&(mp->db_index), sizeof(dictentry) * newsize);
+	DMESSAGE("dict: dbmem_create entry/done");
+#else
 	newtable = (dictentry *) malloc(sizeof(dictentry) * newsize);
+#endif
 	if (newtable == NULL) {
 		PyErr_NoMemory();
 		return -1;
 	}
+#ifdef PALMDM_DICT_OBJECTS
+	DMESSAGE("dict: dbmem_set");
+	dbmem_set(newtable,'\0', sizeof(dictentry) * newsize);
+	DMESSAGE("dict: dbmem_set/done");
+#else
 	memset(newtable, '\0', sizeof(dictentry) * newsize);
+#endif
 	mp->ma_size = newsize;
 	mp->ma_poly = newpoly;
 	mp->ma_table = newtable;
@@ -293,17 +366,28 @@ dictresize(mp, minused)
 
 	/* Make two passes, so we can avoid decrefs
 	   (and possible side effects) till the table is copied */
+	DMESSAGE("dict: pass 1");
 	for (i = 0, ep = oldtable; i < oldsize; i++, ep++) {
 		if (ep->me_value != NULL)
 			insertdict(mp,ep->me_key,ep->me_hash,ep->me_value);
 	}
+	DMESSAGE("dict: pass 2");
 	for (i = 0, ep = oldtable; i < oldsize; i++, ep++) {
 		if (ep->me_value == NULL) {
 			Py_XDECREF(ep->me_key);
 		}
 	}
+	DMESSAGE("dict: pass 2/done");
 
-	PyMem_XDEL(oldtable);
+#ifdef PALMDM_DICT_OBJECTS
+	if (oldtable != NULL) {
+	     DMESSAGE("dict: dbmem_deleteentry");
+	     dbmem_deleteentry(oldindex, oldtable);
+	     DMESSAGE("dict: dbmem_deleteentry/done");
+	}
+#else
+	PyMem_XDEL(oldtable);	  
+#endif
 	return 0;
 }
 
@@ -406,6 +490,8 @@ PyDict_DelItem(op, key)
 	register dictentry *ep;
 	PyObject *old_value, *old_key;
 
+	DMESSAGE("dict: delitem enter");
+
 	if (!PyDict_Check(op)) {
 		PyErr_BadInternalCall();
 		return -1;
@@ -428,14 +514,29 @@ PyDict_DelItem(op, key)
 		PyErr_SetObject(PyExc_KeyError, key);
 		return -1;
 	}
+
 	old_key = ep->me_key;
 	Py_INCREF(dummy);
-	ep->me_key = dummy;
 	old_value = ep->me_value;
-	ep->me_value = NULL;
-	mp->ma_used--;
+
+#ifdef USE_PALM_DB
+
+       	{
+	     PyObject *tmp;
+	     tmp = dummy;
+	     DMMEM_WRITE_MEMBER(ep->me_key, tmp,  mp->ma_table);
+	     tmp = NULL;
+	     DMMEM_WRITE_MEMBER(ep->me_value, tmp, mp->ma_table);
+       	}
+#elseif
+        ep->me_key = dummy;
+       	ep->me_value = NULL;
+#endif
+       	mp->ma_used--;
+
 	Py_DECREF(old_value); 
 	Py_DECREF(old_key); 
+
 	return 0;
 }
 
@@ -459,7 +560,15 @@ PyDict_Clear(op)
 		Py_XDECREF(table[i].me_key);
 		Py_XDECREF(table[i].me_value);
 	}
+#ifdef PALMDM_DICT_OBJECTS
+	if (table != NULL) {
+		DMESSAGE("dict Clear: dbmem_deleteentry");
+		dbmem_deleteentry(mp->db_index, table);
+		DMESSAGE("dict Clear: dbmem_deleteentry");
+	}
+#else
 	PyMem_DEL(table);
+#endif
 }
 
 int
@@ -505,7 +614,15 @@ dict_dealloc(mp)
 			Py_DECREF(ep->me_value);
 		}
 	}
+#ifdef PALMDM_DICT_OBJECTS
+	if (mp->ma_table != NULL) {
+		DMESSAGE("dict dealloc: dbmem_deleteentry");
+		dbmem_deleteentry(mp->db_index, mp->ma_table);
+		DMESSAGE("dict dealloc: dbmem_deleteentry");
+	}
+#else
 	PyMem_XDEL(mp->ma_table);
+#endif
 	PyMem_DEL(mp);
 }
 
