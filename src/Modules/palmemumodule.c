@@ -21,6 +21,27 @@ typedef struct {
 
 PyTypeObject hostfile_Type;
 
+
+static PyObject *err_closed() SEG_PALMEMUMODULE_C;
+HostFILE *hostfile_AsFile(PyObject *f) SEG_PALMEMUMODULE_C;
+PyObject *hostfile_FromFile(HostFILE *fp, char *name,char *mode,
+			    int (*close) Py_FPROTO((HostFILE *))) SEG_PALMEMUMODULE_C;
+static int _close(HostFILE *f) SEG_PALMEMUMODULE_C;
+PyObject *hostfile_FromString(char *name, char *mode) SEG_PALMEMUMODULE_C;
+static void hostfile_dealloc(hostfileObject *f) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_repr(hostfileObject *f) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_close(hostfileObject *f, PyObject *args) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_flush(hostfileObject *f, PyObject *args) SEG_PALMEMUMODULE_C;
+static size_t new_buffersize(hostfileObject *f, size_t currentsize) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_read(hostfileObject *f, PyObject *args) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_write(hostfileObject *f, PyObject *args) SEG_PALMEMUMODULE_C;
+static PyObject *hostfile_getattr(hostfileObject *f, char *name) SEG_PALMEMUMODULE_C;
+static int hostfile_setattr(hostfileObject *f, char *name, PyObject *v) SEG_PALMEMUMODULE_C;
+static PyObject *palmemu_open_hostfile(PyObject *self,PyObject *args) SEG_PALMEMUMODULE_C;
+
+
+
+
 static PyObject *
 err_closed()
 {

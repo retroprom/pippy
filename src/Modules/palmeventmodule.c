@@ -129,9 +129,13 @@ eventobj_getattr(palmeventobject *e, PyObject *name)
 			id = e->event->data.lstSelect.listID;
 			break;
 		default:
-			PyErr_SetString(palmevent_error, "Attribute is not implemented");
+		{
+			char buf[80];
+			sprintf(buf, "Event: %d is not translated.", e->event->eType);
+			PyErr_SetString(palmevent_error, buf);
 			return NULL;
 			break;
+		}
 		}
 		return Py_BuildValue("i", id);
 	}
@@ -332,14 +336,6 @@ palmevent_ioHandleEvent(PyObject *self, PyObject *args)
 	}
 
 	e = (EventType *) ((palmeventobject *)eventWrapper)->event;
-
-/* 	{ */
-/* 		char buf[100]; */
-		
-/* 		MemSet(buf, 100, '\0'); */
-/* 		sprintf(buf, "palmevent: %d", e->eType); */
-/* 		ErrAlertCustom(0,buf,0,0); */
-/* 	} */
 
 	res = ioHandleEvent(e);
   done:
