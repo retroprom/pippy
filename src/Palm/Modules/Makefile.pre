@@ -11,7 +11,7 @@
 
 MODOBJS=	_MODOBJS_
 MODLIBS=	_MODLIBS_
-PALM_CFLAGS=	-fno-builtin -Wall -I../libc/include -I../../Include
+PALM_CFLAGS=	-fno-builtin -Wall -I../libc/include -I../../Include -I../PalmGlue
 
 # === Variables set by configure ===
 

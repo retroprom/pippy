@@ -5,7 +5,7 @@ from test_support import verbose
 try:
     import palmnet
     palmnet.open()
-    palmnet.settimeout(20)
+    palmnet.settimeout(20000)
 except ImportError:
     pass
 

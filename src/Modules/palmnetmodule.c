@@ -8,10 +8,10 @@
 */
 #include "kludge.h"
 #include "_palmutils.h"
+#include "netutil.h"
 
 static PyObject *palmnet_error;
 extern UInt16 AppNetRefnum;
-extern Int32 AppNetTimeout;
 
 /* AppNetOpen is non-zero when the Net library has been opened */
 UInt16 AppNetOpen = 0;
@@ -61,16 +61,27 @@ palmnet_ErrFromErrno()
 static PyObject *palmnet_settimeout(PyObject *self, PyObject *args)
 {
 
-	/*  Set the timeout in seconds.  This value represents the
+	/*  Set the timeout in milliseconds.  This value represents the
 	    maximum number of system ticks to wait before a net library call
 	    expires.
 	*/
 	
-	int timeout;
+	long timeout;
+	PyObject *o;
 
-	if (PyArg_ParseTuple(args, "i:timeout", &timeout)) { 
-		AppNetTimeout = SysTicksPerSecond() * timeout;
+	if (!PyArg_ParseTuple(args, "O:timeout", &o)) { 
+		return NULL;
 	}
+	if ( o == Py_None )
+		timeout = -1;
+	else if (PyInt_Check(o))
+		timeout = PyInt_AS_LONG(o);
+	else {
+		PyErr_SetString(PyExc_ValueError, "Argument must be an integer or None");
+		return NULL;
+	}
+
+	netutil_settimeout(timeout);
 
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -80,11 +91,11 @@ static PyObject *palmnet_settimeout(PyObject *self, PyObject *args)
 static PyObject *palmnet_gettimeout(PyObject *self, PyObject *args) 
 {
 
-	/*  Get the timeout in seconds.  This value represents the
+	/*  Get the timeout in milliseconds.  This value represents the
 	    maximum number of system ticks to wait before a net library call
 	    expires.
 	*/
-	return PyInt_FromLong( (long) (AppNetTimeout / SysTicksPerSecond()) );
+	return PyInt_FromLong( (long) netutil_gettimeout());
 }
 
 static void _close(void){

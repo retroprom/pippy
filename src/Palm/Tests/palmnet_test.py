@@ -8,7 +8,7 @@ print dir(palmnet)
 palmnet.open()
 
 print "setting timeout"
-palmnet.settimeout(3)
+palmnet.settimeout(3000)
 print "refnum:", palmnet.refnum()
 print "getting timeout"
 print palmnet.gettimeout()

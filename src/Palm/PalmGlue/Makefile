@@ -15,7 +15,7 @@ OPT=	-g -O2
 CFLAGS=	$(OPT) -I$(INCLDIR) -I. $(PALM_CFLAGS) $(DEFS)
 
 OTHER =  frozen_importer.o python_utils.o
-OBJS = palmglue.o dbmem.o host_lib.o
+OBJS = palmglue.o dbmem.o host_lib.o netutil.o
 
 all: $(OBJS) $(OTHER)
 	$(AR) cr $(LIBRARY) palmglue.o
