@@ -96,9 +96,9 @@ PYTHONPATH=$(COREPYTHONPATH)
 
 
 # PalmOS related modules:
-#socket palm_socketmodule.c
-#select palm_selectmodule.c
-#time   palm_timemodule.c
+socket palm_socketmodule.c
+select palm_selectmodule.c
+time   palm_timemodule.c
 errno  palm_errnomodule.c
 palmsys palmsysmodule.c
 palmdm palmdmmodule.c
