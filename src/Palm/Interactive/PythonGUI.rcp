@@ -80,7 +80,7 @@ STRINGTABLE ID BUILTIN_LIST_ITEMS
  
 
 STRINGTABLE ID MODULE_LIST_ITEMS
-"" "copy" "copy_reg" "exceptions" "imp" "marshal" "palmapps" "palmdm" "palmevent" "palmnet" "palmsys" "repr" "rfc822" "select" "socket" "string" "sys" "types" "time" "__builtin__" "__main__" "all_palm_tests"
+"" "copy" "copy_reg" "cPickle" "cStringIO" "exceptions" "imp" "marshal" "palmapps" "palmdm" "palmform" "palmevent" "palmnet" "palmsys" "repr" "rfc822" "select" "socket" "string" "sys" "types" "time" "__builtin__" "__main__" "all_palm_tests"
 
 ALERT ID OS_VERSION_ERROR
 CONFIRMATION
