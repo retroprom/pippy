@@ -253,6 +253,19 @@ sys_getcounts(self, args)
 }
 #endif
 
+#if defined(INTERN_STRINGS) || defined(SLOW_INTERN_STRINGS)
+static PyObject *
+sys_flushinterned(self, args)
+	PyObject *self, *args;
+{
+	if (!PyArg_Parse(args, ""))
+		return NULL;
+	
+	return PyInt_FromLong((long)PyString_FlushInterned());
+
+}
+#endif /* INTERN_STRINGS */
+
 #ifdef Py_TRACE_REFS
 /* Defined in objects.c because it uses static globals if that file */
 extern PyObject *_Py_GetObjects Py_PROTO((PyObject *, PyObject *));
@@ -283,6 +296,10 @@ static PyMethodDef sys_methods[] = {
 	{"setcheckinterval",	sys_setcheckinterval, 1, USE_DOC(setcheckinterval_doc)},
 	{"setprofile",	sys_setprofile, 0, USE_DOC(setprofile_doc)},
 	{"settrace",	sys_settrace, 0, USE_DOC(settrace_doc)},
+#if defined(INTERN_STRINGS) || defined(SLOW_INTERN_STRINGS)
+	{"getinterned", PyString_InternedDict, 1},
+	{"flushinterned", sys_flushinterned, 0},
+#endif
 	{NULL,		NULL}		/* sentinel */
 };
 

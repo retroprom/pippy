@@ -340,6 +340,8 @@ PyDict_SetItem(op, key, value)
 {
 	register dictobject *mp;
 	register long hash;
+	register PyObject *tmpkey;
+
 	if (!PyDict_Check(op)) {
 		PyErr_BadInternalCall();
 		return -1;
@@ -367,6 +369,14 @@ PyDict_SetItem(op, key, value)
 		if (hash == -1)
 			return -1;
 	}
+
+#ifdef SLOW_INTERN_STRINGS
+
+	if ( (tmpkey = PyString_GetInterned(key)) != NULL ) /* borrowed reference */
+		key = tmpkey;
+
+#endif /* SLOW_INTERN_STRING */
+
 	/* if fill >= 2/3 size, double in size */
 	if (mp->ma_fill*3 >= mp->ma_size*2) {
 		if (dictresize(mp, mp->ma_used*2) != 0) {
@@ -734,15 +744,12 @@ dict_update(mp, args)
 }
 
 static PyObject *
-dict_copy(mp, args)
-      register dictobject *mp;
-      PyObject *args;
+_dict_copy(mp)
+	register dictobject *mp;
 {
 	register int i;
 	dictobject *copy;
         dictentry *entry;
-	if (!PyArg_Parse(args, ""))
-		return NULL;
 	copy = (dictobject *)PyDict_New();
 	if (copy == NULL)
 		return NULL;
@@ -761,6 +768,25 @@ dict_copy(mp, args)
 	}
 	return (PyObject *)copy;
 }
+
+
+static PyObject *
+dict_copy(mp, args)
+      register dictobject *mp;
+      PyObject *args;
+{
+	if (!PyArg_Parse(args, ""))
+		return NULL;
+	return _dict_copy(mp);
+}
+
+PyObject *
+PyDict_Copy(mp)
+	PyObject *mp;
+{
+	return _dict_copy(mp);
+}
+	
 
 int
 PyDict_Size(mp)
@@ -1047,7 +1073,7 @@ PyTypeObject PyDict_Type = {
 	0,
 	"dictionary",
 	sizeof(dictobject),
-	0,
+	sizeof(dictentry),
 	(destructor)dict_dealloc, /*tp_dealloc*/
 	(printfunc)dict_print, /*tp_print*/
 	(getattrfunc)dict_getattr, /*tp_getattr*/

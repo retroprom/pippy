@@ -2142,6 +2142,87 @@ PyString_Format(format, args)
 	return NULL;
 }
 
+#ifdef SLOW_INTERN_STRINGS
+
+static PyObject *interned;
+
+PyObject *
+PyString_GetInterned(PyObject *op)
+{
+	/* return a borrowed reference from the interned string dictionary,
+	   or NULL if it doesn't exist. */
+
+	/* there are faster ways than this */
+
+	return PyDict_GetItem(interned, op);
+}
+
+
+void
+PyString_InternInPlace(p)
+	PyObject **p;
+{
+	register PyStringObject *s = (PyStringObject *)(*p);
+	PyObject *t;
+	if (s == NULL || !PyString_Check(s))
+		Py_FatalError("PyString_InternInPlace: strings only please!");
+
+	if (interned == NULL) {
+		interned = PyDict_New();
+		if (interned == NULL)
+			return;
+	}
+	if ((t = PyDict_GetItem(interned, (PyObject *)s)) != NULL) {
+		Py_INCREF(t);
+		*p = t;
+		Py_DECREF(s);
+		return;
+	}
+	t = (PyObject *)s;
+	if (PyDict_SetItem(interned, t, t) == 0) {
+		return;
+	}
+	PyErr_Clear();
+}
+
+
+PyObject *
+PyString_InternFromString(cp)
+	const char *cp;
+{
+	PyObject *s = PyString_FromString(cp);
+	if (s == NULL)
+		return NULL;
+	PyString_InternInPlace(&s);
+	return s;
+}
+
+PyObject *
+PyString_InternedDict(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	
+	if (interned != NULL) {
+		PyObject *d;
+		int i;
+
+		d = PyDict_New();
+		if (d == NULL)
+			return NULL;
+		return PyDict_Copy(interned);
+	}
+	else {
+		Py_INCREF(Py_None);
+		return Py_None;
+
+	}
+}
+
+
+#endif /* SLOW_INTERN_STRINGS ---------------------------- */
+
+
 
 #ifdef INTERN_STRINGS
 
@@ -2194,7 +2275,52 @@ PyString_InternFromString(cp)
 	return s;
 }
 
+PyObject *
+PyString_InternedDict(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	
+	if (interned != NULL) {
+		PyObject *d;
+		int i;
+
+		d = PyDict_New();
+		if (d == NULL)
+			return NULL;
+		return PyDict_Copy(interned);
+	}
+	else {
+		Py_INCREF(Py_None);
+		return Py_None;
+
+	}
+}
+
 #endif
+
+int PyString_FlushInterned()
+{
+	int count=0;
+#if defined(INTERN_STRINGS) || defined(SLOW_INTERN_STRINGS)
+	if (interned) {
+		int pos, changed;
+		PyObject *key, *value;
+		do {
+			changed = 0;
+			pos = 0;
+			while (PyDict_Next(interned, &pos, &key, &value)) {
+				if (key->ob_refcnt == 2 && key == value) {
+					PyDict_DelItem(interned, key);
+					changed = 1;
+					count++;
+				}
+			}
+		} while (changed);
+	}
+#endif
+	return count;
+}
 
 void
 PyString_Fini()
@@ -2208,20 +2334,6 @@ PyString_Fini()
 	Py_XDECREF(nullstring);
 	nullstring = NULL;
 #endif
-#ifdef INTERN_STRINGS
-	if (interned) {
-		int pos, changed;
-		PyObject *key, *value;
-		do {
-			changed = 0;
-			pos = 0;
-			while (PyDict_Next(interned, &pos, &key, &value)) {
-				if (key->ob_refcnt == 2 && key == value) {
-					PyDict_DelItem(interned, key);
-					changed = 1;
-				}
-			}
-		} while (changed);
-	}
-#endif
+	PyString_FlushInterned();
+
 }

@@ -26,6 +26,8 @@ BINARYFUNC1_PROTO(dict_get, register dictobject) SEG_DICTOBJECT_C;
 
 static PyObject *dict_subscript Py_PROTO((dictobject *mp, register PyObject *key)) SEG_DICTOBJECT_C;
 
+static PyObject *_dict_copy Py_PROTO((register dictobject *mp)) SEG_DICTOBJECT_C;
+
 
 #endif /* DICTOBJECT_C_H */
 

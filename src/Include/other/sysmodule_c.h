@@ -20,6 +20,7 @@ static PyObject *list_builtin_module_names() SEG_SYSMODULE_C;
 static PyObject *makepathobject Py_PROTO((char *path,int delim)) SEG_SYSMODULE_C;
 static PyObject *makeargvobject Py_PROTO((int argc,char **argv)) SEG_SYSMODULE_C;
 static void mywrite Py_PROTO((char *name,FILE *fp,const char *format,va_list va)) SEG_SYSMODULE_C;
+static PyObject *sys_flushinterned Py_PROTO((PyObject *self, PyObject *args)) SEG_SYSMODULE_C;
 
 
 

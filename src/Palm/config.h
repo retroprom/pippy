@@ -596,7 +596,8 @@
 #define DONT_SHARE_SHORT_STRINGS 1
 /* the following has been extracted from stringobject.h to prevent
    the interning of strings */
-#define CACHE_HASH 1
+/* #define CACHE_HASH 1 */
+/* #define SLOW_INTERN_STRINGS */
 
 /* #define PALM_SERIAL_IO 1 */
 /* #undef PALM_SERIAL_IO */

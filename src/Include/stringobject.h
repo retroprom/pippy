@@ -61,7 +61,7 @@ functions should be applied to nil objects.
    addition, interned strings live until the end of times.  If you are
    concerned about memory footprint, simply comment the #define out
    here (and rebuild everything!). */
-/* #define CACHE_HASH */
+/* #define CACHE_HASH */  /* pippy - now set in config.h */
 #ifdef CACHE_HASH
 #define INTERN_STRINGS
 #endif
@@ -93,10 +93,20 @@ extern DL_IMPORT(PyObject *) PyString_Format Py_PROTO((PyObject *, PyObject *)) 
 #ifdef INTERN_STRINGS
 extern DL_IMPORT(void) PyString_InternInPlace Py_PROTO((PyObject **)) SEG_STRINGOBJECT_H;
 extern DL_IMPORT(PyObject *) PyString_InternFromString Py_PROTO((const char *)) SEG_STRINGOBJECT_H;
+extern DL_IMPORT(PyObject *) PyString_InternedDict Py_PROTO((PyObject *, PyObject *)) SEG_STRINGOBJECT_H;
+extern DL_IMPORT(int) PyString_FlushInterned Py_PROTO((void)) SEG_STRINGOBJECT_H;
+#else
+#ifdef SLOW_INTERN_STRINGS
+extern DL_IMPORT(void) PyString_InternInPlace Py_PROTO((PyObject **)) SEG_STRINGOBJECT_H;
+extern DL_IMPORT(PyObject *) PyString_InternFromString Py_PROTO((const char *)) SEG_STRINGOBJECT_H;
+extern DL_IMPORT(PyObject *) PyString_InternedDict Py_PROTO((PyObject *, PyObject *)) SEG_STRINGOBJECT_H;
+extern DL_IMPORT(int) PyString_FlushInterned Py_PROTO((void))  SEG_STRINGOBJECT_H;
+extern DL_IMPORT(PyObject *) PyString_GetInterned Py_PROTO((PyObject *)) SEG_STRINGOBJECT_H;
 #else
 #define PyString_InternInPlace(p)
 #define PyString_InternFromString(cp) PyString_FromString(cp)
-#endif
+#endif /* SLOW_INTERN_STRINGS */
+#endif /* INTERN_STRINGS */
 
 /* Macro, trading safety for speed */
 #define PyString_AS_STRING(op) (((PyStringObject *)(op))->ob_sval)
