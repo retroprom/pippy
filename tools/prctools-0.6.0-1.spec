@@ -13,8 +13,6 @@ BuildRoot: /usr/tmp/%{name}-build
 This revision of prc-tools was upgraded by Michael Solokov from prc-tools-0.5
 and includes support for multiple segments and GLib shared libraries.
 
-%prefix /usr/local/palm
-
 %prep
 %setup -q
 
