@@ -134,6 +134,7 @@
 ./src/Palm/Interactive/Makefile
 ./src/Palm/Interactive/app.c
 ./src/Palm/Interactive/PythonGUI.rcp
+./src/Palm/Interactive/default_modules.py
 ./src/Palm/Interactive/bitmaps
 ./src/Palm/Interactive/bitmaps/python1.bmp
 ./src/Palm/Interactive/bitmaps/python8.bmp
