@@ -34,7 +34,15 @@ Version History:
 
 LOOPS = 10000
 
-from time import clock
+import sys
+import time
+if sys.platform == "PalmOS3":
+	import palmsys
+	CLOCK = time.ticks
+	SCALE = palmsys.ticksPerSecond()
+else:
+	CLOCK = time.clock
+	SCALE = 1
 
 __version__ = "1.1"
 
@@ -59,9 +67,9 @@ FALSE = 0
 
 def main():
 	benchtime, stones = pystones()
-	print "Pystone(%s) time for %d passes = %g" % \
-	      (__version__, LOOPS, benchtime)
-	print "This machine benchmarks at %g pystones/second" % stones
+	print "Pystone(%s) time for %d passes = %s" % \
+	      (__version__, LOOPS, str(benchtime))
+	print "This machine benchmarks at %s pystones/second" % str(stones)
 
 
 def pystones(loops=LOOPS):
@@ -86,10 +94,10 @@ def Proc0(loops=LOOPS):
 	global PtrGlb
 	global PtrGlbNext
 	
-	starttime = clock()
-	for i in range(loops):
+	starttime = CLOCK()
+	for i in xrange(loops):
 		pass
-	nulltime = clock() - starttime
+	nulltime = CLOCK() - starttime
 	
 	PtrGlbNext = Record()
 	PtrGlb = Record()
@@ -101,9 +109,9 @@ def Proc0(loops=LOOPS):
 	String1Loc = "DHRYSTONE PROGRAM, 1'ST STRING"
 	Array2Glob[8][7] = 10
 	
-	starttime = clock()
+	starttime = CLOCK()
 	
-	for i in range(loops):
+	for i in xrange(loops):
 		Proc5()
 		Proc4()
 		IntLoc1 = 2
@@ -127,7 +135,8 @@ def Proc0(loops=LOOPS):
 		IntLoc2 = 7 * (IntLoc3 - IntLoc2) - IntLoc1
 		IntLoc1 = Proc2(IntLoc1)
 	
-	benchtime = clock() - starttime - nulltime
+	benchtime = CLOCK() - starttime - nulltime
+	benchtime = benchtime / SCALE
 	return benchtime, (loops / benchtime)
 
 def Proc1(PtrParIn):
@@ -212,7 +221,7 @@ def Proc8(Array1Par, Array2Par, IntParI1, IntParI2):
 	Array1Par[IntLoc] = IntParI2
 	Array1Par[IntLoc+1] = Array1Par[IntLoc]
 	Array1Par[IntLoc+30] = IntLoc
-	for IntIndex in range(IntLoc, IntLoc+2):
+	for IntIndex in xrange(IntLoc, IntLoc+2):
 		Array2Par[IntLoc][IntIndex] = IntLoc
 	Array2Par[IntLoc][IntLoc-1] = Array2Par[IntLoc][IntLoc-1] + 1
 	Array2Par[IntLoc+20][IntLoc] = Array1Par[IntLoc]
