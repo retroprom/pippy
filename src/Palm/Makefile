@@ -56,6 +56,7 @@ PIPPY_SRC=$(PIPPY_NAME)-src
 PIPPY_SRC_DIR=/tmp/$(PIPPY_SRC)
 PIPPY_BIN=pippy_$(PIPPY_WIN_VERSION)
 PIPPY_BIN_DIR=/tmp/$(PIPPY_BIN)
+PIPPY_CVSROOT=:pserver:anonymous@endeavors.org:/cvsroot
 
 dist: all dist_src dist_bin
 
@@ -76,7 +77,7 @@ dist_src:
 	mkdir $(PIPPY_SRC_DIR)/prc
 	cp pylib.prc Interactive/pippy.prc $(PIPPY_SRC_DIR)/prc
 	cp ../../docs/README.interactive $(PIPPY_SRC_DIR)/prc
-	(cd /tmp; cvs -q -z3 -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_SRC) pippy)
+	(cd /tmp; cvs -q -z3 -d$(PIPPY_CVSROOT) export -D tomorrow -d $(PIPPY_SRC) pippy)
 	(cd /tmp; tar czf $(PIPPY_SRC).tar.gz $(PIPPY_SRC))
 	mv /tmp/$(PIPPY_SRC).tar.gz .
 
