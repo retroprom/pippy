@@ -115,7 +115,7 @@ def dirname(p):
 
 # Return the longest prefix of all list elements.
 
-def commonprefix(m):
+def commonprefix(m, preserve=0):
     "Given a list of pathnames, returns the longest common leading component"
     if not m: return ''
     prefix = m[0]
@@ -125,6 +125,17 @@ def commonprefix(m):
                 prefix = prefix[:i]
                 if i == 0: return ''
                 break
+
+    if preserve:
+        p = prefix.split(os.sep)
+        index = len(p) - 1
+        prefix_suffix = p[-1]
+        for path in m:
+            path_suffix = path.split(os.sep)[index]
+            if path_suffix != prefix_suffix:
+                prefix = split(prefix)[0]
+                break
+        
     return prefix
 
 
