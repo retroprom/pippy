@@ -91,7 +91,7 @@ typedef struct {
 typedef struct {
 	int		 g_ndfas;
 	dfa		*g_dfa;		/* Array of DFAs */
-	const labellist	 g_ll;
+	labellist	 g_ll;
 	int		 g_start;	/* Start symbol of the grammar */
 	int		 g_accel;	/* Set if accelerators present */
 } grammar;
