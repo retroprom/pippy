@@ -546,10 +546,10 @@
    1) set POBJS=  in Parser/Makefile
    2) remove graminit from Python/Makefile
 */
-#define WITHOUT_COMPILER 1
+/*#define WITHOUT_COMPILER 1*/
 
 /* Python parser */
-#define WITHOUT_PARSER 1
+/*#define WITHOUT_PARSER 1*/
 
 /* Interrupts */
 #define WITHOUT_INTERRUPTS 1
@@ -612,7 +612,7 @@
 
 /* the following has been extracted from stringobject.h to prevent
    the interning of strings */
-/* #define CACHE_HASH 1 */
+#define CACHE_HASH 1
 
 /* #define PALM_SERIAL_IO 1 */
 /* #undef PALM_SERIAL_IO */
@@ -655,4 +655,7 @@
 
 /* defines for palm_socketmodule.c */
 #define NO_DUP 1
+
+/* use dl malloc instead of MemPtrNew directly*/
+#define USE_DLMALLOC 1
 
