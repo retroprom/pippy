@@ -65,9 +65,10 @@ Python 2.0 bytecodes are incompatible with this revision.
      cd Interactive
      make
 
-5.  Install the generated .prc files (pippy-0.6beta-src/src/Palm/pylib.prc and
-pippy-0.6beta-src/src/Palm/Interactive/pippy.prc) on your Palm (using something
-like pilot-xfer) or POSE.
+5.  Warning: Backup your Palm device before installing Pippy!  Install the
+generated .prc files (pippy-0.6beta-src/src/Palm/pylib.prc and
+pippy-0.6beta-src/src/Palm/Interactive/pippy.prc) on your Palm (using
+something like pilot-xfer) or POSE.
 
 6.  For the time being, to include your own special modules or the standard
 python library modules, you must perform the following:
