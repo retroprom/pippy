@@ -1,6 +1,4 @@
 #include <PalmOS.h>
-#include "libc_segments.h"
-void * sbrk(long size)  SEG_LIBC;
 
 void * sbrk(long size)  
 {

@@ -1,9 +1,8 @@
 
 #include "io.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "libc_segments.h"
-
-extern void *malloc(long bytes);
 
 #define BUF_LEN 100
 static char put_buf[BUF_LEN]; /* roughly one line */

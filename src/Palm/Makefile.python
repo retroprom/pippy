@@ -111,7 +111,7 @@ DISTDIRS=	$(SUBDIRS) $(SUBDIRSTOO) Ext-dummy
 DIST=		$(DISTFILES) $(DISTDIRS)
 
 # Compilation flags for getbuildinfo.c only
-CFLAGS=		$(OPT) -I. $(DEFS)
+CFLAGS=		$(OPT) -I. -I../Include -Ilibc/include $(DEFS)
 
 LIBRARY=	libpython$(VERSION).a
 LDLIBRARY=      libpython$(VERSION).a

@@ -1,6 +1,9 @@
 #include "config.h"
 #ifdef USE_DLMALLOC
 #include "libc_segments.h"
+#include "stdlib.h"
+#include "string.h"
+
 /*
   This is a version (aka dlmalloc) of malloc/free/realloc written by
   Doug Lea and released to the public domain.  Use, modify, and
@@ -313,12 +316,12 @@ static int cpuinfo (int whole, unsigned long *kernel, unsigned long *user);
 
 /*
 #if __STD_C
-#include <stddef.h>   /* for size_t 
+#include <stddef.h>
 #else
 #include <sys/types.h>
 #endif
 */
-typedef unsigned long size_t;
+/* typedef unsigned long size_t; */
 
 #ifdef __cplusplus
 extern "C" {
@@ -591,8 +594,8 @@ extern "C" {
 /* On Win32 memset and memcpy are already declared in windows.h */
 #else
 #if __STD_C
-void* memset(void*, int, size_t);
-void* memcpy(void*, const void*, size_t);
+/* void* memset(void*, int, size_t); */
+/* void* memcpy(void*, const void*, size_t); */
 #else
 Void_t* memset();
 Void_t* memcpy();
@@ -610,8 +613,7 @@ Void_t* memcpy();
 
 #ifndef MALLOC_FAILURE_ACTION
 #if __STD_C
-#define MALLOC_FAILURE_ACTION \
-   errno = ENOMEM;
+#define MALLOC_FAILURE_ACTION errno = ENOMEM;
 
 #else
 #define MALLOC_FAILURE_ACTION
@@ -912,6 +914,7 @@ void     public_fREe();
 */
 #if __STD_C
 Void_t*  public_cALLOc(size_t, size_t);
+Void_t*  public_cALLOc(size_t, size_t);
 #else
 Void_t*  public_cALLOc();
 #endif
@@ -945,6 +948,7 @@ Void_t*  public_cALLOc();
 */
 #if __STD_C
 Void_t*  public_rEALLOc(Void_t*, size_t);
+Void_t*  public_rEALLOc(Void_t*, size_t);
 #else
 Void_t*  public_rEALLOc();
 #endif
@@ -963,6 +967,7 @@ Void_t*  public_rEALLOc();
 */
 #if __STD_C
 Void_t*  public_mEMALIGn(size_t, size_t);
+Void_t*  public_mEMALIGn(size_t, size_t);
 #else
 Void_t*  public_mEMALIGn();
 #endif
@@ -975,6 +980,7 @@ Void_t*  public_mEMALIGn();
   size of the system. If the pagesize is unknown, 4096 is used.
 */
 #if __STD_C
+Void_t*  public_vALLOc(size_t);
 Void_t*  public_vALLOc(size_t);
 #else
 Void_t*  public_vALLOc();
@@ -1035,9 +1041,9 @@ int      public_mALLOPt();
   thus be inaccurate.
 */
 #if __STD_C
-struct mallinfo public_mALLINFo(void)  SEG_LIBC;
+struct mallinfo public_mALLINFo(void);
 #else
-struct mallinfo public_mALLINFo()  SEG_LIBC;
+struct mallinfo public_mALLINFo();
 #endif
 
 #ifndef DL_MINIMAL
@@ -1095,6 +1101,7 @@ struct mallinfo public_mALLINFo()  SEG_LIBC;
   }
 */
 #if __STD_C
+Void_t** public_iCALLOc(size_t, size_t, Void_t**);
 Void_t** public_iCALLOc(size_t, size_t, Void_t**);
 #else
 Void_t** public_iCALLOc();
@@ -1161,6 +1168,7 @@ Void_t** public_iCALLOc();
 */
 #if __STD_C
 Void_t** public_iCOMALLOc(size_t, size_t*, Void_t**);
+Void_t** public_iCOMALLOc(size_t, size_t*, Void_t**);
 #else
 Void_t** public_iCOMALLOc();
 #endif
@@ -1172,6 +1180,7 @@ Void_t** public_iCOMALLOc();
   round up n to nearest pagesize.
  */
 #if __STD_C
+Void_t*  public_pVALLOc(size_t);
 Void_t*  public_pVALLOc(size_t);
 #else
 Void_t*  public_pVALLOc();
@@ -1240,9 +1249,9 @@ int      public_mTRIm();
 
 */
 #if __STD_C
-size_t   public_mUSABLe(Void_t*)  SEG_LIBC;
+size_t   public_mUSABLe(Void_t*);
 #else
-size_t   public_mUSABLe() SEG_LIBC;
+size_t   public_mUSABLe();
 #endif
 
 #ifndef DL_MINIMAL
@@ -1267,9 +1276,9 @@ size_t   public_mUSABLe() SEG_LIBC;
 
 */
 #if __STD_C
-void     public_mSTATs() SEG_LIBC;
+void     public_mSTATs();
 #else
-void     public_mSTATs() SEG_LIBC;
+void     public_mSTATs();
 #endif
 
 #endif
@@ -1374,7 +1383,7 @@ void     public_mSTATs() SEG_LIBC;
 #define M_TRIM_THRESHOLD       -1
 
 #ifndef DEFAULT_TRIM_THRESHOLD
-#define DEFAULT_TRIM_THRESHOLD (128 * 1024)
+#define DEFAULT_TRIM_THRESHOLD (128L * 1024L)
 #endif
 
 /*
@@ -1454,7 +1463,7 @@ void     public_mSTATs() SEG_LIBC;
 #define M_MMAP_THRESHOLD      -3
 
 #ifndef DEFAULT_MMAP_THRESHOLD
-#define DEFAULT_MMAP_THRESHOLD (128 * 1024)
+#define DEFAULT_MMAP_THRESHOLD (128L * 1024L)
 #endif
 
 /*
@@ -1559,7 +1568,7 @@ static pthread_mutex_t mALLOC_MUTEx = PTHREAD_MUTEX_INITIALIZER;
 #define MALLOC_PREACTION   pthread_mutex_lock(&mALLOC_MUTEx)
 #define MALLOC_POSTACTION  pthread_mutex_unlock(&mALLOC_MUTEx)
 
-#endif /* USE_MALLOC_LOCK */
+#endif /* WIN32 */
 
 #else
 
@@ -1568,7 +1577,7 @@ static pthread_mutex_t mALLOC_MUTEx = PTHREAD_MUTEX_INITIALIZER;
 #define MALLOC_PREACTION   (0)
 #define MALLOC_POSTACTION  (0)
 
-#endif
+#endif /* USE_MALLOC_LOCK */
 
 Void_t* public_mALLOc(size_t bytes) {
   Void_t* m;
@@ -1769,7 +1778,7 @@ do {                                                                          \
   }                                                                           \
 } while(0)
 
-define MALLOC_COPY(dest,src,nbytes)                                           \
+#define MALLOC_COPY(dest,src,nbytes)                                          \
 do {                                                                          \
   INTERNAL_SIZE_T* mcsrc = (INTERNAL_SIZE_T*) src;                            \
   INTERNAL_SIZE_T* mcdst = (INTERNAL_SIZE_T*) dest;                           \
@@ -1954,8 +1963,7 @@ nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 /* The smallest size we can malloc is an aligned minimal chunk */
 
-#define MINSIZE  \
-  (unsigned long)(((MIN_CHUNK_SIZE+MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK))
+#define MINSIZE (unsigned long)(((MIN_CHUNK_SIZE+MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK))
 
 /* Check if m has acceptable alignment */
 
@@ -1968,25 +1976,15 @@ nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    low enough so that adding MINSIZE will also not wrap around sero.
 */
 
-#define REQUEST_OUT_OF_RANGE(req)                                 \
-  ((unsigned long)(req) >=                                        \
-   (unsigned long)(INTERNAL_SIZE_T)(-2 * MINSIZE))    
+#define REQUEST_OUT_OF_RANGE(req) ((unsigned long)(req) >= (unsigned long)(INTERNAL_SIZE_T)(-2 * MINSIZE))
 
 /* pad request bytes into a usable size -- internal version */
 
-#define request2size(req)                                         \
-  (((req) + SIZE_SZ + MALLOC_ALIGN_MASK < MINSIZE)  ?             \
-   MINSIZE :                                                      \
-   ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK)
+#define request2size(req) (((req) + SIZE_SZ + MALLOC_ALIGN_MASK < MINSIZE)  ? MINSIZE :  ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK)
 
 /*  Same, except also perform argument check */
 
-#define checked_request2size(req, sz)                             \
-  if (REQUEST_OUT_OF_RANGE(req)) {                                \
-    MALLOC_FAILURE_ACTION;                                        \
-    return 0;                                                     \
-  }                                                               \
-  (sz) = request2size(req);                                              
+#define checked_request2size(req, sz)  if (REQUEST_OUT_OF_RANGE(req)) { MALLOC_FAILURE_ACTION; return 0;  } (sz) = request2size(req);                                              
 
 /*
   --------------- Physical chunk operations ---------------
@@ -2034,26 +2032,20 @@ nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 #define chunk_at_offset(p, s)  ((mchunkptr)(((char*)(p)) + (s)))
 
 /* extract p's inuse bit */
-#define inuse(p)\
-((((mchunkptr)(((char*)(p))+((p)->size & ~PREV_INUSE)))->size) & PREV_INUSE)
+#define inuse(p)((((mchunkptr)(((char*)(p))+((p)->size & ~PREV_INUSE)))->size) & PREV_INUSE)
 
 /* set/clear chunk as being inuse without otherwise disturbing */
-#define set_inuse(p)\
-((mchunkptr)(((char*)(p)) + ((p)->size & ~PREV_INUSE)))->size |= PREV_INUSE
+#define set_inuse(p) ((mchunkptr)(((char*)(p)) + ((p)->size & ~PREV_INUSE)))->size |= PREV_INUSE
 
-#define clear_inuse(p)\
-((mchunkptr)(((char*)(p)) + ((p)->size & ~PREV_INUSE)))->size &= ~(PREV_INUSE)
+#define clear_inuse(p) ((mchunkptr)(((char*)(p)) + ((p)->size & ~PREV_INUSE)))->size &= ~(PREV_INUSE)
 
 
 /* check/set/clear inuse bits in known places */
-#define inuse_bit_at_offset(p, s)\
- (((mchunkptr)(((char*)(p)) + (s)))->size & PREV_INUSE)
+#define inuse_bit_at_offset(p, s)  (((mchunkptr)(((char*)(p)) + (s)))->size & PREV_INUSE)
 
-#define set_inuse_bit_at_offset(p, s)\
- (((mchunkptr)(((char*)(p)) + (s)))->size |= PREV_INUSE)
+#define set_inuse_bit_at_offset(p, s) (((mchunkptr)(((char*)(p)) + (s)))->size |= PREV_INUSE)
 
-#define clear_inuse_bit_at_offset(p, s)\
- (((mchunkptr)(((char*)(p)) + (s)))->size &= ~(PREV_INUSE))
+#define clear_inuse_bit_at_offset(p, s) (((mchunkptr)(((char*)(p)) + (s)))->size &= ~(PREV_INUSE))
 
 
 /* Set size at head, without disturbing its use bit */
@@ -2130,12 +2122,7 @@ typedef struct malloc_chunk* mbinptr;
 #define last(b)      ((b)->bk)
 
 /* Take a chunk off a bin list */
-#define malloc_unlink(P, BK, FD) {                                            \
-  FD = P->fd;                                                          \
-  BK = P->bk;                                                          \
-  FD->bk = BK;                                                         \
-  BK->fd = FD;                                                         \
-}
+#define malloc_unlink(P, BK, FD) { FD = P->fd; BK = P->bk; FD->bk = BK;  BK->fd = FD;}
 
 /*
   Indexing
@@ -2163,22 +2150,13 @@ typedef struct malloc_chunk* mbinptr;
 #define SMALLBIN_WIDTH      8
 #define MIN_LARGE_SIZE    512
 
-#define in_smallbin_range(sz)  \
-  ((unsigned long)(sz) < (unsigned long)MIN_LARGE_SIZE)
+#define in_smallbin_range(sz)  ((unsigned long)(sz) < (unsigned long)MIN_LARGE_SIZE)
 
 #define smallbin_index(sz)     (((unsigned)(sz)) >> 3)
 
-#define largebin_index(sz)                                                   \
-(((((unsigned long)(sz)) >>  6) <= 32)?  56 + (((unsigned long)(sz)) >>  6): \
- ((((unsigned long)(sz)) >>  9) <= 20)?  91 + (((unsigned long)(sz)) >>  9): \
- ((((unsigned long)(sz)) >> 12) <= 10)? 110 + (((unsigned long)(sz)) >> 12): \
- ((((unsigned long)(sz)) >> 15) <=  4)? 119 + (((unsigned long)(sz)) >> 15): \
- ((((unsigned long)(sz)) >> 18) <=  2)? 124 + (((unsigned long)(sz)) >> 18): \
-                                        126)
+#define largebin_index(sz) (((((unsigned long)(sz)) >>  6) <= 32)?  56 + (((unsigned long)(sz)) >>  6):  ((((unsigned long)(sz)) >>  9) <= 20)?  91 + (((unsigned long)(sz)) >>  9): ((((unsigned long)(sz)) >> 12) <= 10)? 110 + (((unsigned long)(sz)) >> 12): ((((unsigned long)(sz)) >> 15) <=  4)? 119 + (((unsigned long)(sz)) >> 15): ((((unsigned long)(sz)) >> 18) <=  2)? 124 + (((unsigned long)(sz)) >> 18):   126)
 
-#define bin_index(sz) \
- ((in_smallbin_range(sz)) ? smallbin_index(sz) : largebin_index(sz))
-
+#define bin_index(sz) ((in_smallbin_range(sz)) ? smallbin_index(sz) : largebin_index(sz))
 
 /*
   Unsorted chunks
@@ -2322,10 +2300,7 @@ typedef struct malloc_chunk* mfastbinptr;
    Setting the value clears fastchunk bit but preserves noncontiguous bit.
 */
 
-#define set_max_fast(M, s) \
-  (M)->max_fast = (((s) == 0)? SMALLBIN_WIDTH: request2size(s)) | \
-  FASTCHUNKS_BIT | \
-  ((M)->max_fast &  NONCONTIGUOUS_BIT)
+#define set_max_fast(M, s)  (M)->max_fast = (((s) == 0)? SMALLBIN_WIDTH: request2size(s)) |  FASTCHUNKS_BIT |  ((M)->max_fast &  NONCONTIGUOUS_BIT)
 
 
 /*
@@ -2406,6 +2381,7 @@ static struct malloc_state av_;  /* never directly referenced */
 */
 
 #if __STD_C
+static void malloc_init_state(mstate av) SEG_LIBC;
 static void malloc_init_state(mstate av)
 #else
 static void malloc_init_state(av) mstate av;
@@ -2440,9 +2416,9 @@ static void malloc_init_state(av) mstate av;
 */
 
 #if __STD_C
-static Void_t*  sYSMALLOc(INTERNAL_SIZE_T, mstate);
-static int      sYSTRIm(size_t, mstate);
-static void     malloc_consolidate(mstate);
+static Void_t*  sYSMALLOc(INTERNAL_SIZE_T, mstate) SEG_LIBC;
+static int      sYSTRIm(size_t, mstate) SEG_LIBC;
+static void     malloc_consolidate(mstate) SEG_LIBC;
 static Void_t** iALLOc(size_t, size_t*, int, Void_t**);
 #else
 static Void_t*  sYSMALLOc();
@@ -2483,6 +2459,7 @@ static Void_t** iALLOc();
 */
 
 #if __STD_C
+static void do_check_chunk(mchunkptr p);
 static void do_check_chunk(mchunkptr p)
 #else
 static void do_check_chunk(p) mchunkptr p;
@@ -2533,6 +2510,7 @@ static void do_check_chunk(p) mchunkptr p;
 */
 
 #if __STD_C
+static void do_check_free_chunk(mchunkptr p);
 static void do_check_free_chunk(mchunkptr p)
 #else
 static void do_check_free_chunk(p) mchunkptr p;
@@ -2573,6 +2551,7 @@ static void do_check_free_chunk(p) mchunkptr p;
 */
 
 #if __STD_C
+static void do_check_inuse_chunk(mchunkptr p);
 static void do_check_inuse_chunk(mchunkptr p)
 #else
 static void do_check_inuse_chunk(p) mchunkptr p;
@@ -2614,6 +2593,7 @@ static void do_check_inuse_chunk(p) mchunkptr p;
 */
 
 #if __STD_C
+static void do_check_remalloced_chunk(mchunkptr p, INTERNAL_SIZE_T s);
 static void do_check_remalloced_chunk(mchunkptr p, INTERNAL_SIZE_T s)
 #else
 static void do_check_remalloced_chunk(p, s) mchunkptr p; INTERNAL_SIZE_T s;
@@ -2638,6 +2618,7 @@ static void do_check_remalloced_chunk(p, s) mchunkptr p; INTERNAL_SIZE_T s;
 */
 
 #if __STD_C
+static void do_check_malloced_chunk(mchunkptr p, INTERNAL_SIZE_T s);
 static void do_check_malloced_chunk(mchunkptr p, INTERNAL_SIZE_T s)
 #else
 static void do_check_malloced_chunk(p, s) mchunkptr p; INTERNAL_SIZE_T s;
@@ -2671,6 +2652,7 @@ static void do_check_malloced_chunk(p, s) mchunkptr p; INTERNAL_SIZE_T s;
   display chunk addresses, sizes, bins, and other instrumentation.
 */
 
+static void do_check_malloc_state();
 static void do_check_malloc_state()
 {
   mstate av = get_malloc_state();
@@ -2795,6 +2777,7 @@ static void do_check_malloc_state()
 */
 
 #if __STD_C
+static Void_t* sYSMALLOc(INTERNAL_SIZE_T nb, mstate av);
 static Void_t* sYSMALLOc(INTERNAL_SIZE_T nb, mstate av)
 #else
 static Void_t* sYSMALLOc(nb, av) INTERNAL_SIZE_T nb; mstate av;
@@ -3174,6 +3157,7 @@ static Void_t* sYSMALLOc(nb, av) INTERNAL_SIZE_T nb; mstate av;
 */
 
 #if __STD_C
+static int sYSTRIm(size_t pad, mstate av);
 static int sYSTRIm(size_t pad, mstate av)
 #else
 static int sYSTRIm(pad, av) size_t pad; mstate av;
@@ -3774,6 +3758,7 @@ void fREe(mem) Void_t* mem;
 */
 
 #if __STD_C
+static void malloc_consolidate(mstate av);
 static void malloc_consolidate(mstate av)
 #else
 static void malloc_consolidate(av) mstate av;
@@ -3877,6 +3862,7 @@ static void malloc_consolidate(av) mstate av;
 
 
 #if __STD_C
+Void_t* rEALLOc(Void_t* oldmem, size_t bytes);
 Void_t* rEALLOc(Void_t* oldmem, size_t bytes)
 #else
 Void_t* rEALLOc(oldmem, bytes) Void_t* oldmem; size_t bytes;
@@ -4103,6 +4089,7 @@ Void_t* rEALLOc(oldmem, bytes) Void_t* oldmem; size_t bytes;
 */
 
 #if __STD_C
+Void_t* mEMALIGn(size_t alignment, size_t bytes) SEG_LIBC;
 Void_t* mEMALIGn(size_t alignment, size_t bytes)
 #else
 Void_t* mEMALIGn(alignment, bytes) size_t alignment; size_t bytes;
@@ -4208,6 +4195,7 @@ Void_t* mEMALIGn(alignment, bytes) size_t alignment; size_t bytes;
 */
 
 #if __STD_C
+Void_t* cALLOc(size_t n_elements, size_t elem_size);
 Void_t* cALLOc(size_t n_elements, size_t elem_size)
 #else
 Void_t* cALLOc(n_elements, elem_size) size_t n_elements; size_t elem_size;
@@ -4270,6 +4258,7 @@ Void_t* cALLOc(n_elements, elem_size) size_t n_elements; size_t elem_size;
 */
 
 #if __STD_C
+void cFREe(Void_t *mem);
 void cFREe(Void_t *mem)
 #else
 void cFREe(mem) Void_t *mem;
@@ -4283,6 +4272,7 @@ void cFREe(mem) Void_t *mem;
 */
 
 #if __STD_C
+Void_t** iCALLOc(size_t n_elements, size_t elem_size, Void_t* chunks[]);
 Void_t** iCALLOc(size_t n_elements, size_t elem_size, Void_t* chunks[])
 #else
 Void_t** iCALLOc(n_elements, elem_size, chunks) size_t n_elements; size_t elem_size; Void_t* chunks[];
@@ -4298,6 +4288,7 @@ Void_t** iCALLOc(n_elements, elem_size, chunks) size_t n_elements; size_t elem_s
 */
 
 #if __STD_C
+Void_t** iCOMALLOc(size_t n_elements, size_t sizes[], Void_t* chunks[]);
 Void_t** iCOMALLOc(size_t n_elements, size_t sizes[], Void_t* chunks[])
 #else
 Void_t** iCOMALLOc(n_elements, sizes, chunks) size_t n_elements; size_t sizes[]; Void_t* chunks[];
@@ -4319,6 +4310,10 @@ Void_t** iCOMALLOc(n_elements, sizes, chunks) size_t n_elements; size_t sizes[];
 
 
 #if __STD_C
+static Void_t** iALLOc(size_t n_elements, 
+                       size_t* sizes,  
+                       int opts,
+                       Void_t* chunks[]);
 static Void_t** iALLOc(size_t n_elements, 
                        size_t* sizes,  
                        int opts,
@@ -4443,6 +4438,7 @@ static Void_t** iALLOc(n_elements, sizes, opts, chunks) size_t n_elements; size_
 */
 
 #if __STD_C
+Void_t* vALLOc(size_t bytes);
 Void_t* vALLOc(size_t bytes)
 #else
 Void_t* vALLOc(bytes) size_t bytes;
@@ -4460,6 +4456,7 @@ Void_t* vALLOc(bytes) size_t bytes;
 
 
 #if __STD_C
+Void_t* pVALLOc(size_t bytes);
 Void_t* pVALLOc(size_t bytes)
 #else
 Void_t* pVALLOc(bytes) size_t bytes;
@@ -4480,6 +4477,7 @@ Void_t* pVALLOc(bytes) size_t bytes;
 */
 
 #if __STD_C
+int mTRIm(size_t pad);
 int mTRIm(size_t pad)
 #else
 int mTRIm(pad) size_t pad;
@@ -4522,6 +4520,7 @@ size_t mUSABLe(mem) Void_t* mem;
   ------------------------------ mallinfo ------------------------------
 */
 
+struct mallinfo mALLINFo() SEG_LIBC;
 struct mallinfo mALLINFo()
 {
   mstate av = get_malloc_state();
@@ -4627,6 +4626,7 @@ void mSTATs()
 */
 
 #if __STD_C
+int mALLOPt(int param_number, int value) SEG_LIBC;
 int mALLOPt(int param_number, int value) 
 #else
 int mALLOPt(param_number, value) int param_number; int value;
@@ -4670,7 +4670,7 @@ int mALLOPt(param_number, value) int param_number; int value;
   }
 }
 
-void get_allocations(long *allocated, long *deallocated)
+void get_dlallocations(long *allocated, long *deallocated)
 {
   struct mallinfo mi = mALLINFo();
 
