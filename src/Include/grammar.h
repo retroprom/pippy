@@ -42,8 +42,8 @@ PERFORMANCE OF THIS SOFTWARE.
 /* A label of an arc */
 
 typedef struct {
-	const int	lb_type;
-	const char	*lb_str;
+	int	lb_type;
+	char	*lb_str;
 } label;
 
 #define EMPTY 0		/* Label number 0 is by definition the empty label */
@@ -66,7 +66,7 @@ typedef struct {
 
 typedef struct {
 	int		 s_narcs;
-	const arc		*s_arc;		/* Array of arcs */
+        arc		*s_arc;		/* Array of arcs */
 	
 	/* Optional accelerators */
 	int		 s_lower;	/* Lowest label index */
