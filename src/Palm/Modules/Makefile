@@ -12,11 +12,11 @@
 
 MODOBJS=	palm_socketmodule.o palm_selectmodule.o palmnetmodule.o\
 		palm_errnomodule.o palm_timemodule.o palmsysmodule.o palmdmmodule.o\
-		palmappsmodule.o instrumentmodule.o palmeventmodule.o\
+		palmappsmodule.o palmeventmodule.o\
 		palmformmodule.o
 #MODOBJS=	palmnetmodule.o palm_timemodule.o
 MODLIBS=	$(LOCALMODLIBS) $(BASEMODLIBS)
-PALM_EXAMPLES= ~/PALM/Examples
+PALM_EXAMPLES= /home/jcollins/PALM/Examples
 PALM_CFLAGS=	-fno-builtin -Wall -I../libc/include -I../libc/palmos_unix_includes -I../../Include -I$(PALM_EXAMPLES)/Memo/Src -I$(PALM_EXAMPLES)/Datebook/Src -I$(PALM_EXAMPLES)/ToDo/Src -I$(PALM_EXAMPLES)/Address/Src
 
 
@@ -153,7 +153,7 @@ clean:
 		-rm -f add2lib hassignal
 
 clobber:	clean
-		-rm -f *.a tags TAGS config.c Makefile.pre
+		-rm -f *.a tags TAGS  Makefile.pre
 		-rm -f *.so *.sl so_locations
 
 getpath.o:	getpath.c Makefile
@@ -167,11 +167,11 @@ getpath.o:	getpath.c Makefile
 # When the configuration changes, we remove the library, so that it
 # gets remade from scratch; this ensures to remove modules that are no
 # longer pertinent (but that were in a previous configuration).
-config.c Makefile: Makefile.pre config.c.in $(MAKESETUP)
-config.c Makefile: Setup.thread Setup Setup.local
-config.c Makefile:
-		-rm -f $(LIBRARY)
-		$(SHELL) $(MAKESETUP) Setup.thread Setup.local Setup
+#config.c Makefile: Makefile.pre config.c.in $(MAKESETUP)
+#config.c Makefile: Setup.thread Setup Setup.local
+#config.c Makefile:
+#		-rm -f $(LIBRARY)
+#		$(SHELL) $(MAKESETUP) Setup.thread Setup.local Setup
 
 hassignal:
 		-rm -f hassignal

@@ -53,7 +53,6 @@ extern void inittime() SEG_TIMEMODULE_C;
 extern void initpalmsys() SEG_PALMSYSMODULE_C;
 extern void initpalmdm() SEG_DMMODULE_C;
 extern void initpalmapps() SEG_APPSMODULE_C;
-extern void initinstrument();
 extern void initpalmevent();
 extern void initpalmform();
 
@@ -80,7 +79,6 @@ struct _inittab _PyImport_Inittab[] = {
 	{"palmsys", initpalmsys},
 	{"palmdm", initpalmdm},
 	{"palmapps", initpalmapps},
-	{"instrument", initinstrument},
 	{"palmevent", initpalmevent},
 	{"palmform", initpalmform},
 
