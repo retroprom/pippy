@@ -25,7 +25,7 @@ results.  If you wish to contribute to improving this interface, see
 INSTALLING THE .prc FILES
 
 1. Download the Pippy application distribution from
-   <http://www.endeavors.com/pippy.html> (pippy_0_7.XXX
+   <http://www.endeavors.com/pippy/> (pippy_0_7.XXX
    where XXX is the format you desire - tar.gz, .zip, .sit or .hqx).
 
 2. Unpack the distribution.  You should now have the following files:
@@ -81,7 +81,7 @@ RUNNING Pippy
 LINKS AND CONTACT INFORMATION
 
     Pippy Development Home
-    <http://www.endeavors.com/pippy.html>
+    <http://www.endeavors.com/pippy/>
 
     Feedback & General Comments
     <pippy@endeavors.com>

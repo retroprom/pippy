@@ -1,80 +1,160 @@
 Pippy - The port of Python to the Palm OS.
 
+
+
 This is Pippy 0.7.
 
+
+
 Copyright (c) 2001 Endeavors Technology, Inc.
+
 All rights reserved.
 
+
+
 This document describes the process for building Pippy using CodeWarrior
+
 for the PalmOS.
 
 
+
+
+
 COPYRIGHT/LICENSE
+
     License and copyright issues are discussed in the file: LICENSE
+
+
 
 Prerequesites
 
+
+
 1.  Cygwin
+
 2.  CodeWarrior 7.0
+
 3.  PilRC plugin (tested with version 2.8)
+
 4.  Python-1.5.2+ from http://www.endeavors.com/pippy/download.html
+
+
 
 Preparing the Development Environment
 
+
+
 Installing Cygwin, Codewarrior and the PilRC plugin are fairly
+
 straight forward.  Unpack, build and install Python-1.5.2+ in the
+
 Cygwin environment.  If you install Cygwin or Python-1.5.2+ in a
+
 location other than the default, you may have to modify
+
 CodeWarrior/frozen/Makefile to reflect the new location of the
+
 corresponding Python executable.
+
+
 
 Building
 
+
+
 Before building the application within the CodeWarrior IDE, some
+
 preparation must first be done in the Cygwin environment.  First, run
+
 src/Palm/Modules/makesetup; this creates some files for compiling the
+
 Python extension modules.  Then, run make in CodeWarrior/frozen to
+
 compile the default Python modules and create the associated resource files.
+
 At this point, all of the require source files should be present for
+
 successful building in CodeWarrior.
+
+
 
 Adding Modules to Pippy
 
+
+
 Additional Python modules can be included in pippy.prc by adding
+
 import statements to CodeWarrior/frozen/app.py, one for each module.
+
 The variable PYTHONPATH in CodeWarrior/frozen/Makefile may have to be modified 
+
 to reflect the location of your Python modules.  Then run make
+
 in CodeWarrior/frozen once again to update the associated files
+
 and build again in CodeWarrior.
+
+
 
 LINKS AND CONTACT INFORMATION
 
+
+
     Pippy Development Home
-    <http://www.endeavors.com/pippy.html>
+
+    <http://www.endeavors.com/pippy/>
+
+
 
     Feedback & General Comments
+
     <pippy@endeavors.com>
 
+
+
     MAILING LISTS
+
         Developer Issues
+
         <pippy-dev@endeavors.org>
+
         Bug Reports
+
         <pippy-bugs@endeavors.org>
+
         Announcements
+
         <pippy-announce@endeavors.org>
 
+
+
     CVS REPOSITORY
+
     <http://www.endeavors.com/pippy/download.html>
 
+
+
     Palm Developers Site
+
     <http://www.palmos.com/dev/>
+
+
+
 
 
 AUTHORS
 
+
+
     Jeffery D. Collins <jcollins@endeavors.com>
+
     John Rickenbrode
+
     Endeavors Technology, Inc.
+
     19700 Fairchild Rd, Suite 200
+
     Irvine, CA  92612
+
+
 
