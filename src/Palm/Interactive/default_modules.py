@@ -19,5 +19,7 @@ import copy_reg
 import test.pystone
 pystone = test.pystone
 import all_palm_tests
+import memoimp
+
 
 
