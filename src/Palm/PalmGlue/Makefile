@@ -14,9 +14,10 @@ INCLDIR=	../Include
 OPT=	-g -O2
 CFLAGS=	$(OPT) -I$(INCLDIR) -I. $(PALM_CFLAGS) $(DEFS)
 
+OTHER =  frozen_importer.o python_utils.o
 OBJS = palmglue.o
 
-all: $(OBJS) frozen_importer.o python_utils.o
+all: $(OBJS) $(OTHER)
 	$(AR) cr $(LIBRARY) palmglue.o
 	$(RANLIB) $(LIBRARY)
 
@@ -27,5 +28,5 @@ add2lib: $(OBJS)
 	touch add2lib
 
 clean:
-	rm -f $(OBJS) add2lib
+	rm -f $(OBJS) add2lib $(OTHER)
 
