@@ -69,8 +69,16 @@ int vfprintf(FILE *stream, const char *fmt, va_list ap)
 
 	/*	flush_buf();
 		ioPutS(buf);*/
-	for (j=0; j<i;j++)
- 	  putchar(buf[j]);
+	/* avoid buffer copy when a whole line is being output */
+	if ((i&&(buf[i-1]=='\n')|| (i>(BUF_LEN-buf_pos))))
+	{
+	  flush_buf();
+	  ioPutS(buf);
+	}
+	else {
+	  for (j=0; j<i;j++)
+	    putchar(buf[j]);
+	}
  	free(buf);
 
 	return i;
