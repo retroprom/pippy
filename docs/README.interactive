@@ -25,7 +25,7 @@ results.  If you wish to contribute to improving this interface, see
 INSTALLING THE .prc FILES
 
 1. Download the Pippy application distribution from
-   <http://www.endeavors.com/pippy/> (pippy_0_6beta.XXX
+   <http://www.endeavors.com/pippy.html> (pippy_0_6beta.XXX
    where XXX is the format you desire - tar.gz, .zip, .sit or .hqx).
 
 2. Unpack the distribution.  You should now have the following files:
@@ -81,21 +81,21 @@ RUNNING Pippy
 LINKS AND CONTACT INFORMATION
 
     Pippy Development Home
-    <http://www.endeavors.com/pippy>
+    <http://www.endeavors.com/pippy.html>
 
     Feedback & General Comments
     <pippy@endeavors.com>
 
-MAILING LISTS
-    Developer Issues
-    <pippy-dev@endeavors.com>
-    Bug Reports 
-    <pippy-bugs@endeavors.com>
-    Announcements
-    <pippy-announce@endeavors.com>
+    MAILING LISTS
+        Developer Issues
+        <pippy-dev@endeavors.org>
+        Bug Reports
+        <pippy-bugs@endeavors.org>
+        Announcements
+        <pippy-announce@endeavors.org>
 
     CVS REPOSITORY
-    <http://www.endeavors.com/pippy/cvs>
+    <http://www.endeavors.com/pippy/download.html>
 
     Palm Developers Site
     <http://www.palmos.com/dev/>

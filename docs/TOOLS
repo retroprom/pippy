@@ -30,7 +30,7 @@ TOOL INSTALLATION
     A. The source code for this version can be obtained in two ways:
     
     (i). Download the file
-        <http://www.endeavors.com/pippy/downloads/Python1.5.2+.tar.gz>
+        <http://www.endeavors.com/pippy/Python-1.5.2+.tar.gz>
     
     (ii). Checkout from the Python CVS Repository
        Website: <http://python.sourceforge.net/>
@@ -85,7 +85,7 @@ sources, i.e., do either (i) or (ii):
     (ii) For Linux only
 
     Download the file:
-        <http://www.endeavors.com/pippy/downloads/prc-tools-0.6.0-1.i386.rpm>
+        <http://www.endeavors.com/pippy/prc-tools-0.6.0-1.i386.rpm>
      
     This file contains:
         prc-tools.0.6.0beta
@@ -246,21 +246,21 @@ Pippy-0.6beta release.
 LINKS AND CONTACT INFORMATION
 
     Pippy Development Home
-    <http://www.endeavors.com/pippy>
+    <http://www.endeavors.com/pippy.html>
 
     Feedback & General Comments
     <pippy@endeavors.com>
 
     MAILING LISTS
         Developer Issues
-        <pippy-dev@endeavors.com>
+        <pippy-dev@endeavors.org>
         Bug Reports
-        <pippy-bugs@endeavors.com>
+        <pippy-bugs@endeavors.org>
         Announcements
-        <pippy-announce@endeavors.com>
+        <pippy-announce@endeavors.org>
 
     CVS REPOSITORY
-    <http://www.endeavors.com/pippy/cvs>
+    <http://www.endeavors.com/pippy/download.html>
 
     Palm Developers Site
     <http://www.palmos.com/dev/>
