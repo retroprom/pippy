@@ -1,3 +1,7 @@
+This is Pippy-0.6beta.
+
+Copyright (c) 2001 Endeavors Technology, Inc.
+All rights reserved.
 
 RUNNING
 
@@ -11,3 +15,11 @@ but provides a means for entering python commands and viewing the
 results.  If you wish to contribute to improving this interface, see
 the TODO list below.
 
+FEEDBACK
+pippy@endtech.com
+
+DEVELOPMENT HOME
+http://www.endeavors.org/Pippy
+
+BUG REPORTS
+Pippy-bugs@endtech.com
