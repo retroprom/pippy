@@ -282,12 +282,23 @@ Py_FindMethod(methods, self, name)
 
 /* Clear out the free list */
 
-void
-PyCFunction_Fini()
+int 
+PyCFunction_FlushFreeList()
 {
+	int count = 0;
 	while (free_list) {
 		PyCFunctionObject *v = free_list;
 		free_list = (PyCFunctionObject *)(v->m_self);
 		PyMem_DEL(v);
+		count++;
 	}
+	return count;
+}
+
+
+void
+PyCFunction_Fini()
+{
+	PyCFunction_FlushFreeList();
+
 }

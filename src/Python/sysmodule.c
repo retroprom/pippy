@@ -281,6 +281,26 @@ sys_flushinterned(self, args)
 }
 #endif /* INTERN_STRINGS */
 
+/* bad place for this, but frameobject.h cannot be added all by itself - 
+   depends on compile.h, at least. */
+
+DL_IMPORT(int)  PyFrame_FlushFreeList Py_PROTO((void)) SEG_FRAMEOBJECT_H;
+
+static PyObject *
+sys_flushall(self, args)
+	PyObject *self, *args;
+{
+	if (!PyArg_Parse(args, ""))
+		return NULL;
+
+	return Py_BuildValue("(iiii)",
+			     PyString_FlushInterned(),
+			     PyMethod_FlushFreeList(),
+			     PyFrame_FlushFreeList(),
+			     PyCFunction_FlushFreeList());
+}
+
+
 #ifdef Py_TRACE_REFS
 /* Defined in objects.c because it uses static globals if that file */
 extern PyObject *_Py_GetObjects Py_PROTO((PyObject *, PyObject *));
@@ -317,6 +337,7 @@ static PyMethodDef sys_methods[] = {
 #if defined(INTERN_STRINGS) || defined(SLOW_INTERN_STRINGS)
 	{"getinterned", PyString_InternedDict, 1},
 	{"flushinterned", sys_flushinterned, 0},
+	{"flushall", sys_flushall, 0},
 #endif
 	{"getallocations", sys_getallocations, 0},
 

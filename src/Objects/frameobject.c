@@ -368,13 +368,22 @@ PyFrame_LocalsToFast(f, clear)
 }
 
 /* Clear out the free list */
-
-void
-PyFrame_Fini()
+DL_IMPORT(int)  PyFrame_FlushFreeList Py_PROTO((void)) SEG_FRAMEOBJECT_H;
+int 
+PyFrame_FlushFreeList()
 {
+	int count = 0;
 	while (free_list != NULL) {
 		PyFrameObject *f = free_list;
 		free_list = free_list->f_back;
 		PyMem_DEL(f);
+		count++;
 	}
+	return count;
+}
+
+void
+PyFrame_Fini()
+{
+     PyFrame_FlushFreeList();
 }

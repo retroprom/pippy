@@ -370,10 +370,12 @@ PyDict_SetItem(op, key, value)
 			return -1;
 	}
 
-#ifdef SLOW_INTERN_STRINGS
+#if defined(SLOW_INTERN_STRINGS) || defined(PALMDM_INTERN_STRINGS)
 
+	DMESSAGE("getting tmpkey");
 	if ( (tmpkey = PyString_GetInterned(key)) != NULL ) /* borrowed reference */
 		key = tmpkey;
+	DMESSAGE("done tmpkey");
 
 #endif /* SLOW_INTERN_STRING */
 
@@ -384,9 +386,13 @@ PyDict_SetItem(op, key, value)
 				return -1;
 		}
 	}
+	DMESSAGE("before incref1");
 	Py_INCREF(value);
+	DMESSAGE("before incref2");
 	Py_INCREF(key);
+	DMESSAGE("done incref");
 	insertdict(mp, key, hash, value);
+	DMESSAGE("done insert");
 	return 0;
 }
 
@@ -784,7 +790,7 @@ PyObject *
 PyDict_Copy(mp)
 	PyObject *mp;
 {
-	return _dict_copy(mp);
+	return _dict_copy((dictobject*) mp);
 }
 	
 
