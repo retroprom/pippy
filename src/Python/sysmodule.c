@@ -101,6 +101,7 @@ PySys_SetObject(name, v)
 		return PyDict_SetItemString(sd, name, v);
 }
 
+#ifndef USE_DLMALLOC
 static PyObject *
 sys_getallocations(self, args)
 	PyObject *self;
@@ -115,6 +116,23 @@ sys_getallocations(self, args)
 	return Py_BuildValue("(lll)", allocated, deallocated, allocated-deallocated);
 
 }
+#else
+static PyObject *
+sys_getallocations(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	long total_allocated, total_consumed;
+
+	if (!PyArg_Parse(args, ""))
+		return NULL;
+	
+	get_dlallocations(&total_allocated, &total_consumed);
+	return Py_BuildValue("(lll)", total_allocated, total_consumed,
+			     total_allocated - total_consumed);
+
+}
+#endif
 
 static PyObject *
 sys_exc_info(self, args)
@@ -349,16 +367,26 @@ list_builtin_module_names()
 {
 	PyObject *list = PyList_New(0);
 	int i;
+	DMESSAGE("list_builtin_module_names: begin");
 	if (list == NULL)
 		return NULL;
+	DMESSAGE("list_builtin_module_names: looping");
 	for (i = 0; PyImport_Inittab[i].name != NULL; i++) {
-		PyObject *name = PyString_FromString(
+		PyObject *name;
+		DMESSAGE("list_builtin_module_names: getting name");
+		DMESSAGE(PyImport_Inittab[i].name);
+		name = PyString_FromString(
 			PyImport_Inittab[i].name);
+		DMESSAGE("list_builtin_module_names: got name");
 		if (name == NULL)
 			break;
+		DMESSAGE("list_builtin_module_names: appending list");
 		PyList_Append(list, name);
+		DMESSAGE("list_builtin_module_names: decrefing name");
 		Py_DECREF(name);
+		DMESSAGE("list_builtin_module_names: loop bottom");
 	}
+	DMESSAGE("list_builtin_module_names: sorting");
 	if (PyList_Sort(list) != 0) {
 		Py_DECREF(list);
 		list = NULL;
@@ -368,6 +396,7 @@ list_builtin_module_names()
 		Py_DECREF(list);
 		list = v;
 	}
+	DMESSAGE("list_builtin_module_names: returning");
 	return list;
 }
 
@@ -507,6 +536,7 @@ _PySys_Init()
 #endif
 	if (PyErr_Occurred())
 		return NULL;
+	DMESSAGE("sysmodule: _PySys_Init finished");
 	return m;
 }
 
