@@ -58,7 +58,6 @@ palmsys_reset(PyObject *self, PyObject *args)
 static PyObject *
 palmsys_ticksPerSecond(PyObject *self, PyObject *args)
 {
-	/* perform a soft reset of the device */
 	if (!PyArg_NoArgs(args))
 		return NULL;
 
