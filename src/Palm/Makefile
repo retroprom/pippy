@@ -44,13 +44,14 @@ clean_python: clean_glue
 	rm -f the_python
 
 PIPPY_NAME=pippy-$(VERSION)
-PIPPY_DIR=/tmp/$(PIPPY_NAME)
+PIPPY_DIR=$(PIPPY_NAME)
 dist: all
 	rm -rf $(PIPPY_DIR)
-	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_DIR) PalmPython
+	mkdir $(PIPPY_DIR)
 	mkdir $(PIPPY_DIR)/prc
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
-	cd $(PIPPY_DIR)/..
+	cd /tmp
+	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_DIR) PalmPython
 	tar czvf $(PIPPY_NAME).tar.gz
 
 clean:
