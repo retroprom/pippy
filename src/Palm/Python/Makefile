@@ -23,7 +23,7 @@ PALM_CFLAGS=	-fno-builtin -Wall -I../libc/include -I../../Include
 
 
 # Machine-dependent subdirectories
-MACHDEP=	m68k-palmos-coff
+MACHDEP=	PalmOS3
 
 
 # === Other things that are customizable but not by configure ===
