@@ -48,7 +48,7 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + ''.joinfields(self.buflist)
+			self.buf = self.buf + ''.join(self.buflist)
 			self.buflist = []
 		if mode == 1:
 			pos = pos + self.pos
@@ -63,7 +63,7 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + ''.joinfields(self.buflist)
+			self.buf = self.buf + ''.join(self.buflist)
 			self.buflist = []
 		if n < 0:
 			newpos = self.len
@@ -76,7 +76,7 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + ''.joinfields(self.buflist)
+			self.buf = self.buf + ''.join(self.buflist)
 			self.buflist = []
 		i = self.buf.find('\n', self.pos)
 		if i < 0:
@@ -106,7 +106,7 @@ class StringIO:
 		newpos = self.pos + len(s)
 		if self.pos < self.len:
 			if self.buflist:
-				self.buf = self.buf + ''.joinfields(self.buflist)
+				self.buf = self.buf + ''.join(self.buflist)
 				self.buflist = []
 			self.buflist = [self.buf[:self.pos], s, self.buf[newpos:]]
 			self.buf = ''
@@ -115,13 +115,13 @@ class StringIO:
 			self.len = newpos
 		self.pos = newpos
 	def writelines(self, list):
-		self.write(''.joinfields(list))
+		self.write(''.join(list))
 	def flush(self):
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 	def getvalue(self):
 		if self.buflist:
-			self.buf = self.buf + ''.joinfields(self.buflist)
+			self.buf = self.buf + ''.join(self.buflist)
 			self.buflist = []
 		return self.buf
 
