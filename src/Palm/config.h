@@ -546,10 +546,10 @@
    1) set POBJS=  in Parser/Makefile
    2) remove graminit from Python/Makefile
 */
-/* #define WITHOUT_COMPILER 1 */
+#define WITHOUT_COMPILER 1
 
 /* Python parser */
-/* #define WITHOUT_PARSER 1 */
+#define WITHOUT_PARSER 1
 
 /* Interrupts */
 #define WITHOUT_INTERRUPTS 1
@@ -606,6 +606,7 @@
 /* #define PALMDM_DICT_OBJECTS */
 #else
 #define SLOW_INTERN_STRINGS
+#define PALMDM_REFCNT 32767
 #endif /* USE_PALMDM_REFS */
 
 
