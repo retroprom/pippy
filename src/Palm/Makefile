@@ -63,7 +63,7 @@ dist_bin:
 	rm -rf $(PIPPY_BIN_DIR)
 	mkdir $(PIPPY_BIN_DIR)
 	cp pylib.prc Interactive/pippy.prc $(PIPPY_BIN_DIR)
-	cp ../../docs/{README.interactive,LICENSE} $(PIPPY_BIN_DIR)
+	cp ../../docs/{README.interactive,LICENSE,NEWS} $(PIPPY_BIN_DIR)
 	(cd /tmp; zip -r $(PIPPY_BIN).zip $(PIPPY_BIN))
 	mv /tmp/$(PIPPY_BIN).zip .
 	(cd /tmp; tar czvf $(PIPPY_BIN).tar.gz $(PIPPY_BIN))
