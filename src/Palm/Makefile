@@ -43,8 +43,8 @@ clean_python: clean_glue
 	make -f Makefile clean
 	rm -f the_python
 
-PIPPY_NAME=pippy-$(PIPPY_VERSION)
-PIPPY_DIR=$(PIPPY_NAME)
+PIPPY_NAME=Pippy-$(PIPPY_VERSION)
+PIPPY_DIR=/tmp/$(PIPPY_NAME)
 dist: all
 	rm -rf $(PIPPY_DIR)
 	mkdir $(PIPPY_DIR)
@@ -52,7 +52,7 @@ dist: all
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
 	cd /tmp
 	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_DIR) PalmPython
-	tar czvf $(PIPPY_NAME).tar.gz
+	tar czvf $(PIPPY_NAME).tar.gz $(PIPPY_NAME)
 
 clean:
 	make -f Makefile.python clean
