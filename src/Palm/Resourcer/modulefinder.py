@@ -7,6 +7,7 @@ import os
 import re
 import string
 import sys
+import new
 
 if sys.platform=="win32":
     # On Windows, we can locate modules in the registry with
@@ -43,7 +44,7 @@ class Module:
 
 class ModuleFinder:
 
-    def __init__(self, path=None, debug=0, excludes = []):
+    def __init__(self, path=None, debug=0, excludes = [], replace_paths = []):
         if path is None:
             path = sys.path
         self.path = path
@@ -52,6 +53,8 @@ class ModuleFinder:
         self.debug = debug
         self.indent = 0
         self.excludes = excludes
+        self.replace_paths = replace_paths
+        self.processed_paths = []   # Used in debugging only
 
     def msg(self, level, str, *args):
         if level <= self.debug:
@@ -230,7 +233,8 @@ class ModuleFinder:
             self.msgout(2, "load_module ->", m)
             return m
         if type == imp.PY_SOURCE:
-            short_pathname = os.path.basename(pathname)
+            #short_pathname = os.path.basename(pathname)
+            short_pathname = pathname
             co = compile(fp.read()+'\n', short_pathname, 'exec')
         elif type == imp.PY_COMPILED:
             if fp.read(4) != imp.get_magic():
@@ -243,6 +247,8 @@ class ModuleFinder:
         m = self.add_module(fqname)
         m.__file__ = pathname
         if co:
+            if self.replace_paths:
+                co = self.replace_paths_in_code(co)
             m.__code__ = co
             self.scan_code(co, m)
         self.msgout(2, "load_module ->", m)
@@ -345,6 +351,31 @@ class ModuleFinder:
         for key in keys:
             print "?", key
 
+    def replace_paths_in_code(self, co):
+        new_filename = original_filename = os.path.normpath(co.co_filename)
+        for f,r in self.replace_paths:
+            if original_filename.startswith(f):
+                new_filename = r+original_filename[len(f):]
+                break
+
+        if self.debug and original_filename not in self.processed_paths:
+            if new_filename!=original_filename:
+                self.msgout(2, "co_filename '%s' changed to '%s'" \
+                                    % (original_filename,new_filename,))
+            else:
+                self.msgout(2, "co_filename '%s' remains unchanged" \
+                                    % (original_filename,))
+            self.processed_paths.append(original_filename)
+
+        consts = list(co.co_consts)
+        for i in range(len(consts)):
+            if isinstance(consts[i], type(co)):
+                consts[i] = self.replace_paths_in_code(consts[i])
+
+        return new.code(co.co_argcount, co.co_nlocals, co.co_stacksize, 
+                         co.co_flags, co.co_code, tuple(consts), co.co_names, 
+                         co.co_varnames, new_filename, co.co_name, 
+                         co.co_firstlineno, co.co_lnotab)
 
 def test():
     # Parse command line

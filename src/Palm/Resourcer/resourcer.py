@@ -40,6 +40,10 @@ Options:
               (For debugging only -- on a win32 platform, win32 behaviour
               is automatic.)
 
+-r prefix=f:  Replace path prefix.
+              Replace prefix with f in the source path references 
+              contained in the resulting binary.
+
 -x module     Exclude the specified module.
 
 -s subsystem: Specify the subsystem (For Windows only.); 
@@ -101,6 +105,7 @@ def main():
     debug = 1
     odir = ''
     win = sys.platform[:3] == 'win'
+    replace_paths = []                  # settable with -r option
 
     # default the exclude list for each platform
 #    if win: exclude = exclude + ['dos', 'dospath', 'mac', 'macpath', 'MACFS', 'posix', 'os2']
@@ -120,7 +125,7 @@ def main():
 
     # parse command line
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'de:hmo:p:P:qs:wx:l:')
+        opts, args = getopt.getopt(sys.argv[1:], 'r:de:hmo:p:P:qs:wx:l:')
     except getopt.error, msg:
         usage('getopt error: ' + str(msg))
 
@@ -153,6 +158,9 @@ def main():
             exclude.append(a)
         if o == '-l':
             addn_link.append(a)
+        if o == '-r':
+            f,r = string.split(a,"=", 2)
+            replace_paths.append( (f,r) )
 
     # default prefix and exec_prefix
     if not exec_prefix:
@@ -277,7 +285,7 @@ def main():
     # collect all modules of the program
     dir = os.path.dirname(scriptfile)
     path[0] = dir
-    mf = modulefinder.ModuleFinder(path, debug, exclude)
+    mf = modulefinder.ModuleFinder(path, debug, exclude, replace_paths)
     
     if win and subsystem=='service':
         # If a Windows service, then add the "built-in" module.
