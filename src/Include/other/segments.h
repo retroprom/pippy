@@ -3,7 +3,11 @@
 /* First, define generic names for the code segments.  The main
    segment is the only one accessible to the debugger.  */
 
+#ifdef CODEWARRIOR
+#define DEF_SEGMENT(name)
+#else
 #define DEF_SEGMENT(name) __attribute__ ((section (name)))
+#endif /*CODEWARROR */
 
 /* length limit of section names = 8 characters */
 #define PALM_SEG_0 "pseg0"
