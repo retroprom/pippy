@@ -260,8 +260,11 @@ Py_Finalize()
 #endif /* Py_TRACE_REFS */
 
 	/* Delete current thread */
+	DMESSAGE("PyInterpreterState_Clear");
 	PyInterpreterState_Clear(interp);
+	DMESSAGE("PyThreadState_Swap");
 	PyThreadState_Swap(NULL);
+	DMESSAGE("PyInterpreterState_Delete");
 	PyInterpreterState_Delete(interp);
 
 	/* Now we decref the exception classes.  After this point nothing
@@ -269,12 +272,19 @@ Py_Finalize()
 	   below has been checked to make sure no exceptions are ever
 	   raised.
 	*/
+	DMESSAGE("_PyBuiltin_Fini_2");
 	_PyBuiltin_Fini_2();
+	DMESSAGE("PyMethod_Fini");
 	PyMethod_Fini();
+	DMESSAGE("PyFrame_Fini");
 	PyFrame_Fini();
+	DMESSAGE("PyCFunction_Fini");
 	PyCFunction_Fini();
+	DMESSAGE("PyTuple_Fini");
 	PyTuple_Fini();
+	DMESSAGE("PyString_Fini");
 	PyString_Fini();
+	DMESSAGE("PyInt_Fini");
 	PyInt_Fini();
 #ifndef WITHOUT_FLOAT
 	PyFloat_Fini();
@@ -287,9 +297,11 @@ Py_Finalize()
 	*/
 
 #ifndef WITHOUT_COMPILER
+	DMESSAGE("PyGrammar_RemoveAccelerators");
 	PyGrammar_RemoveAccelerators(&_PyParser_Grammar);
 #endif /* WITHOUT_COMPILER */
 
+	DMESSAGE("call_ll_exitfuncs");
 	call_ll_exitfuncs();
 
 #ifdef Py_TRACE_REFS
