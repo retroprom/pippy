@@ -727,19 +727,22 @@ load_source_module(name, pathname, fp)
 {
 	long mtime;
 	FILE *fpc;
-	char buf[MAXPATHLEN+1];
+	char *buf;
 	char *cpathname;
 	PyCodeObject *co;
 	PyObject *m;
-
+	
+	buf = (char *)malloc(MAXPATHLEN+1);
 	mtime = PyOS_GetLastModificationTime(pathname, fp);
 	cpathname = make_compiled_pathname(pathname, buf, MAXPATHLEN+1);
 	if (cpathname != NULL &&
 	    (fpc = check_compiled_module(pathname, mtime, cpathname))) {
 		co = read_compiled_module(cpathname, fpc);
 		fclose(fpc);
-		if (co == NULL)
-			return NULL;
+		if (co == NULL) {
+		  free(buf);
+		  return NULL;
+		}
 		if (Py_VerboseFlag)
 			PySys_WriteStderr("import %s # precompiled from %s\n",
 				name, cpathname);
@@ -747,8 +750,10 @@ load_source_module(name, pathname, fp)
 	}
 	else {
 		co = parse_source_module(pathname, fp);
-		if (co == NULL)
-			return NULL;
+		if (co == NULL) {
+		  free(buf);
+		  return NULL;
+		}
 		if (Py_VerboseFlag)
 			PySys_WriteStderr("import %s # from %s\n",
 				name, pathname);
@@ -756,7 +761,7 @@ load_source_module(name, pathname, fp)
 	}
 	m = PyImport_ExecCodeModuleEx(name, (PyObject *)co, pathname);
 	Py_DECREF(co);
-
+	free(buf);
 	return m;
 }
 #endif /* WITHOUT_COMPILER */
@@ -777,7 +782,7 @@ load_package(name, pathname)
 {
 	PyObject *m, *d, *file, *path;
 	int err;
-	char buf[MAXPATHLEN+1];
+	char *buf;
 	FILE *fp = NULL;
 	struct filedescr *fdp;
 
@@ -803,8 +808,9 @@ load_package(name, pathname)
 		m = NULL;
 		goto cleanup;
 	}
+	buf = (char *)malloc(MAXPATHLEN+1);
 	buf[0] = '\0';
-	fdp = find_module("__init__", path, buf, sizeof(buf), &fp);
+	fdp = find_module("__init__", path, buf, MAXPATHLEN, &fp);
 	if (fdp == NULL) {
 		if (PyErr_ExceptionMatches(PyExc_ImportError)) {
 			PyErr_Clear();
@@ -819,6 +825,7 @@ load_package(name, pathname)
   cleanup:
 	Py_XDECREF(path);
 	Py_XDECREF(file);
+	if (buf) free(buf);
 	return m;
 }
 
@@ -872,12 +879,12 @@ find_module(realname, path, buf, buflen, p_fp)
 	struct filedescr *fdp = NULL;
 	FILE *fp = NULL;
 #ifdef HAVE_STAT
-	struct stat statbuf;
+	static struct stat statbuf;
 #endif /* HAVE_STAT */
 	static struct filedescr fd_frozen = {"", "", PY_FROZEN};
 	static struct filedescr fd_builtin = {"", "", C_BUILTIN};
 	static struct filedescr fd_package = {"", "", PKG_DIRECTORY};
-	char name[MAXPATHLEN+1];
+	static char name[MAXPATHLEN+1];
 
 	strcpy(name, realname);
 
@@ -1489,17 +1496,22 @@ import_module_ex(name, globals, locals, fromlist)
 	PyObject *locals;
 	PyObject *fromlist;
 {
-	char buf[MAXPATHLEN+1];
+        char *buf;
 	int buflen = 0;
 	PyObject *parent, *head, *next, *tail;
+	buf = (char *)malloc(MAXPATHLEN + 1);
 
 	parent = get_parent(globals, buf, &buflen);
-	if (parent == NULL)
-		return NULL;
+	if (parent == NULL) {
+	  free(buf);
+	  return NULL;
+	}
 
 	head = load_next(parent, Py_None, &name, buf, &buflen);
-	if (head == NULL)
-		return NULL;
+	if (head == NULL) {
+	  free(buf);
+	  return NULL;
+	}
 
 	tail = head;
 	Py_INCREF(tail);
@@ -1520,15 +1532,17 @@ import_module_ex(name, globals, locals, fromlist)
 
 	if (fromlist == NULL) {
 		Py_DECREF(tail);
+		free(buf);
 		return head;
 	}
 
 	Py_DECREF(head);
 	if (!ensure_fromlist(tail, fromlist, buf, buflen, 0)) {
 		Py_DECREF(tail);
+		free(buf);
 		return NULL;
 	}
-
+	free(buf);
 	return tail;
 }
 
@@ -1782,7 +1796,7 @@ import_submodule(mod, subname, fullname)
 	}
 	else {
 		PyObject *path;
-		char buf[MAXPATHLEN+1];
+		char *buf;
 		struct filedescr *fdp;
 		FILE *fp = NULL;
 
@@ -1796,11 +1810,12 @@ import_submodule(mod, subname, fullname)
 				return Py_None;
 			}
 		}
-
+		buf=(char *)malloc(MAXPATHLEN+1);
 		buf[0] = '\0';
 		fdp = find_module(subname, path, buf, MAXPATHLEN+1, &fp);
 		Py_XDECREF(path);
 		if (fdp == NULL) {
+		  free(buf);
 			if (!PyErr_ExceptionMatches(PyExc_ImportError))
 				return NULL;
 			PyErr_Clear();
@@ -1816,6 +1831,7 @@ import_submodule(mod, subname, fullname)
 				m = NULL;
 			}
 		}
+		free(buf);
 	}
 
 	return m;
@@ -1832,7 +1848,7 @@ PyImport_ReloadModule(m)
 	PyObject *modules = PyImport_GetModuleDict();
 	PyObject *path = NULL;
 	char *name, *subname;
-	char buf[MAXPATHLEN+1];
+	char *buf;
 	struct filedescr *fdp;
 	FILE *fp = NULL;
 
@@ -1871,14 +1887,18 @@ PyImport_ReloadModule(m)
 		if (path == NULL)
 			PyErr_Clear();
 	}
+	buf = (char *)malloc(MAXPATHLEN+1);
 	buf[0] = '\0';
 	fdp = find_module(subname, path, buf, MAXPATHLEN+1, &fp);
 	Py_XDECREF(path);
-	if (fdp == NULL)
-		return NULL;
+	if (fdp == NULL) {
+	  free(buf);
+	  return NULL;
+	}
 	m = load_module(name, fp, buf, fdp->type);
 	if (fp)
 		fclose(fp);
+	free(buf);
 	return m;
 }
 
