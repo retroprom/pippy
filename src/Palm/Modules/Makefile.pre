@@ -82,7 +82,7 @@ CFLAGS=		$(OPT) -I$(INCLDIR) -I$(CONFIGINCLDIR) $(DEFS) $(PALM_CFLAGS)
 MKDEP=		mkdep
 SHELL=		/bin/sh
 
-MAKESETUP=	$(srcdir)/makesetup
+MAKESETUP=	./makesetup
 
 # (The makesetup script inserts all variable definitions
 # found in the Setup file just below the following line.
