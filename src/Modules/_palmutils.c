@@ -18,7 +18,8 @@
 PyObject *
 palmutil_buildErrObject(UInt16 ifErrs) 
 {
-	UInt16 maxLen=30;
+
+	const UInt16 maxLen=30;
 	char netErrString[maxLen];
 	char errnoString[maxLen];
 	/* Grab the error id from the errno.  Extract last byte of 0x1200
