@@ -1,4 +1,4 @@
-This is Pippy-0.6beta.
+This is Pippy 0.6beta.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -6,19 +6,20 @@ All rights reserved.
 
 NOTE
 
-This distribution contains source to the port of Python
-(http://www.python.org) to the PalmOS necessary for modifying the
-application. If you are only interested in running Python on the Palm,
-please download the .prc files at http://www.endeavors.org/Pippy.
+This distribution contains the source code for Pippy, the port of
+Python (http://www.python.org) to the PalmOS (http://www.palm.com).
+If you are only interested in running Pippy, please download
+Pippy-0.6beta.zip at http://www.endeavors.org/Pippy.
 
 INTRODUCTION
 
-Welcome to the port of Python-1.5.2+ to the PalmOS.  This project is a
-continuation of work http://www.isr.uci.edu/projects/sensos/python
-previously released as a joint project between The Aerospace
-Corporation and University of California, Irvine.  Python runs on the
-PalmOS (version 3.5 and higher) and passes a subset of the standard
-Python regression test suite without failures or errors.
+Welcome to Pippy, the port of Python (revision 1.5.2+) to the PalmOS.
+This project is a continuation of work
+http://www.isr.uci.edu/projects/sensos/python previously released as a
+joint project between The Aerospace Corporation and University of
+California, Irvine.  Python runs on the PalmOS (version 3.5 and
+higher) and passes a subset of the standard Python regression test
+suite without failures or errors.
 
 Our primary focus in this code is tighter integration with the PalmOS
 and a simple interactive interface.  Several extension modules have
@@ -35,8 +36,8 @@ SYSTEM REQUIREMENTS
 
 Palm Device
 
-Pippy was tested on POSE (PalmOS Emulator) and on a PalmIIIxe (running
-PalmOS 3.5 or greater with 8M of RAM).  It has run on a PalmIII with 2M
+Pippy was tested on POSE (PalmOS Emulator) and on a Palm IIIxe (running
+PalmOS 3.5 or greater with 8M of RAM).  It has run on a Palm III with 2M
 or RAM, but a bug (see KNOWN PROBLEMS below) currently prevents this.
 
 Development Platform
@@ -54,28 +55,29 @@ tools.  You must use the toolset found in TOOLS.  Other development
 toolsets, such as prc-tools-2.0 and CodeWarrior will not work for this
 port.
 
-2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
-Python-2.0 bytecodes are incompatible with this revision.
+2.  Be sure that there is a copy of Python 1.5.2 - 1.6 on the system.
+Python 2.0 bytecodes are incompatible with this revision.
 
-3.  Unpack Pippy-0.6beta.tar.gz distribution
+3.  Unpack pippy-0.6beta.tar.gz distribution
 
-4.  cd Pippy-0.6beta/src/Palm
-    make
-    cd Interactive
-    make
+4.  cd pippy-0.6beta/src/Palm
+     make
+     cd Interactive
+     make
 
-5.  Install the generated .prc files (Pippy-0.6beta/src/Palm/pylib.prc and
-Pippy-0.6beta/src/Palm/Interactive/python.prc) on your Palm (using something
+5.  Install the generated .prc files (pippy-0.6beta/src/Palm/pylib.prc and
+pippy-0.6beta/src/Palm/Interactive/python.prc) on your Palm (using something
 like pilot-xfer) or POSE.
 
 6.  For the time being, to include your own special modules or the standard
 python library modules, you must perform the following:
 	a)  create a file (wrapper.py, say) in Interactive that contains import
 	statements for the modules you wish to include
-	b)  prepend the environment variable PYTHONPATH with Pippy-0.6beta/src/Lib
+	b)  prepend the environment variable PYTHONPATH with 
+pippy-0.6beta/src/Lib
 	    of this distribution
 	c)  In in a shell, type the following commands:
-		cd Pippy-0.6beta/src/Palm/Interactive 
+		cd pippy-0.6beta/src/Palm/Interactive
 		../Resourcer/resourcer libwrapper.py
 		make
 The resulting python.prc will contain the library modules as Palm resource records.
@@ -83,7 +85,7 @@ The resulting python.prc will contain the library modules as Palm resource recor
 7.  The module palmappsmodule.c requires the Palm SDK Examples
 distribution (downloadable from
 http://www.palmos.com/dev/tech/tools/).  Set the variable
-PALM_EXAMPLES in Pippy-0.6beta/src/Palm/Modules/Setup to path of the
+PALM_EXAMPLES in pippy-0.6beta/src/Palm/Modules/Setup to path of the
 headers in Examples.
 
 
@@ -100,7 +102,7 @@ The internal representation of time on the PalmOS is an unsigned long.
 So, time.time() has been modified to return a (signed) integer.
 
 Since we have eliminated floating point objects in the interest of
-reducing code footprint, the time specifier for select has been
+reducing the code footprint, the time specifier for select has been
 changed to a tuple of the following form: (time_seconds,
 time_micro_seconds).  So, the new signature is:
 
@@ -133,7 +135,7 @@ Object overhead reduction
 Code footprint reduction (remove longobject, fileobject, ...)
 Modified import mechanism - import from Palm databases, URLs, etc
 Stackless Python
-Stackless marshal (recursions can overflow stack)
+Stackless marshal (recursions can overflow the stack)
 Interactive interface (similar to LispMe)
 Integration with Palm
 Port Python library modules (usually require minor mods)
@@ -141,7 +143,7 @@ Improve startup/shutdown speed
 Improve/abstract IO Stream interface
 Python Resource Manager (track stack, heap, free freelists, etc.)
 
-Upgrade to Python-2.0
+Upgrade to Python 2.0
 
 
 REMOVED PYTHON FEATURES
@@ -162,30 +164,30 @@ Recursive Python functions can overflow the stack, possibly requiring
 a hard reset.  The implemenation of Stackless Python will overcome
 this problem.
 
-The dynamic heap is variable for systems running PalmOS version >3.5,
+The dynamic heap is variable for systems running PalmOS version 3.5 or later,
 currently a maximum of 256K.  Some applications may overflow this and
-get raise MemoryError.  It is possible, though, that there isn't
-enough dynamic memory left to clean up Python when that happens,
-requiring a soft reset.
+raise a MemoryError exception.
+However, if this happens there may not be sufficient dynamic memory
+in reserve to clean up after Python necessitating a soft reset of the Palm.
 
-This release currently only runs on PalmOS 3.5 and greater.  There is a
-GUI problem with PalmOS 3.0 that we are working looking into.
+This release currently only runs on PalmOS 3.5 or higher.  There is a
+GUI problem with PalmOS 3.0 that we are also investigating.
 
 The current Break button implemenation responds to any touch of the
-screen, not just the button.  This can be easily fixed, but just haven't
+screen, not just the button.  This can be easily fixed, but we just haven't
 had the time.
 
 FEEDBACK
 pippy@endtech.com
 
 DEVELOPMENT HOME
-http://www.endeavors.org/Pippy
+http://www.endeavors.org/pippy
 
 BUG REPORTS
 Pippy-bugs@endtech.com
 
 CVS REPOSITORY
-????http://www.endeavors.org/Pippy/cvs
+????http://www.endeavors.org/pippy/cvs
 
 
 AUTHORS
