@@ -40,7 +40,7 @@ trailer2 = """
     0}; /* sentinel */
 """
 
-def make_resource(outfp, dict, debug=0, entry_point=None, odir=None):
+def make_resource(resfp, outfp, dict, debug=0, entry_point=None, odir=None):
     done = []
     mods = dict.keys()
     mods.sort()
@@ -57,7 +57,7 @@ def make_resource(outfp, dict, debug=0, entry_point=None, odir=None):
                 # Indicate package by negative size
                 size = -size
             done.append((mod, mangled, size))
-            write_resource(mangled, str, size, odir)
+            write_resource(resfp, mangled, str, size, odir)
     if debug:
         print "generating table of frozen modules"
     outfp.write(header)
@@ -71,9 +71,9 @@ def make_resource(outfp, dict, debug=0, entry_point=None, odir=None):
 
 creatorID = DEFAULT_CID
 address = RESOURCE_BASE
+import os
 
-
-def write_resource(name, str, size, odir=None):
+def write_resource(resfp, name, str, size, odir=None):
     global address
     localfile = creatorID + ("0000%x" % address)[-4:] + '.bin'
     if odir:
@@ -83,4 +83,6 @@ def write_resource(name, str, size, odir=None):
     fh.write(name)
     fh.write('\0')
     fh.write(str)
+    resfp.write('DATA ' + "\"" + creatorID +"\" ID 0x" + ("0000%x" % address)[-4:] + " \"" + localfile + "\"")
+    resfp.write(os.linesep)
     address = address + RESOURCE_INCR
