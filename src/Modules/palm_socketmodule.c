@@ -617,6 +617,8 @@ BUILD_FUNC_DEF_2(PySocketSock_palmos_accept,PySocketSockObject *,s, PyObject *,a
 	timeout_saved = netutil_gettimeout();
 	netutil_settimeout(timeout);
 
+/* 	printf("t_saved, t = %ld %ld\n", timeout_saved, timeout); */
+
 	Py_BEGIN_ALLOW_THREADS
 	newfd = accept(s->sock_fd, (struct sockaddr *) addrbuf, &addrlen);
 	Py_END_ALLOW_THREADS
