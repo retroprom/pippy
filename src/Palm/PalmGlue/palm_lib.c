@@ -1,6 +1,6 @@
 #include "palm_lib.h"
 
-static UInt serialRefNum;
+static UInt16 serialRefNum;
 
 void printSerial(char *mesg) {
 	Err errP, err;
