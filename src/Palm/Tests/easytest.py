@@ -1,4 +1,4 @@
-VERSION = '$Id: easytest.py,v 1.1 2001/02/08 16:15:29 mgorlick Exp $'
+VERSION = '$Id: easytest.py,v 1.2 2001/02/13 20:12:43 mgorlick Exp $'
 
 import sys
 import string
@@ -141,26 +141,24 @@ class Text_Outcome(Outcome):
 
   def Start(self, test):
     Outcome.Start(self, test)
-    self.stream.write('<')
 
   def Failure(self, test, failure):
     Outcome.Failure(self, test, failure)
-    self.stream.write('F')
+    self.stream.write('<F>')
     self.stream.flush()
 
   def Error(self, test, error):
     Outcome.Error(self, test, error)
-    self.stream.write('E')
+    self.stream.write('<E>')
     self.stream.flush()
 
   def Pass(self, test):
     Outcome.Pass(self, test)
-    self.stream.write('P')
+    self.stream.write('<P>')
     self.stream.flush()
 
   def End(self, test):
     Outcome.End(self, test)
-    self.stream.write('>')
     if self.runs % self.RUNS_PER_LINE == 0:
       self.stream.write('\n')
     self.stream.flush()
