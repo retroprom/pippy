@@ -389,7 +389,7 @@ def _behead(head, path):
     if len(h) > 2 and h[-1] == os.sep:
         h = h[:-1]
     path = os.path.normpath(path)
-    if os.path.commonprefix((h, path),1) <> h or len(h) == 0:
+    if os.path.commonprefix((h, path)) <> h or len(h) == 0:
         return path
     if h[-1] <> os.sep:
         h = h + os.sep
