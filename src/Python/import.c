@@ -96,7 +96,7 @@ struct _inittab *PyImport_Inittab = _PyImport_Inittab;
 
 /* these tables define the module suffixes that Python recognizes */
 struct filedescr * _PyImport_Filetab = NULL;
-static struct filedescr _PyImport_StandardFiletab[] = {
+static const struct filedescr _PyImport_StandardFiletab[] = {
 	{".py", "r", PY_SOURCE},
 	{".pyc", "rb", PY_COMPILED},
 	{0, 0}
@@ -217,14 +217,14 @@ PyImport_GetModuleDict()
 
 
 /* List of names to clear in sys */
-static char* sys_deletes[] = {
+const static char* sys_deletes[] = {
 	"path", "argv", "ps1", "ps2", "exitfunc",
 	"exc_type", "exc_value", "exc_traceback",
 	"last_type", "last_value", "last_traceback",
 	NULL
 };
 
-static char* sys_files[] = {
+const static char* sys_files[] = {
 	"stdin", "__stdin__",
 	"stdout", "__stdout__",
 	"stderr", "__stderr__",
@@ -264,12 +264,12 @@ PyImport_Cleanup()
 		char **p;
 		PyObject *v;
 		dict = PyModule_GetDict(value);
-		for (p = sys_deletes; *p != NULL; p++) {
+		for (p = (char **)sys_deletes; *p != NULL; p++) {
 			if (Py_VerboseFlag)
 				PySys_WriteStderr("# clear sys.%s\n", *p);
 			PyDict_SetItemString(dict, *p, Py_None);
 		}
-		for (p = sys_files; *p != NULL; p+=2) {
+		for (p = (char **)sys_files; *p != NULL; p+=2) {
 			if (Py_VerboseFlag)
 				PySys_WriteStderr("# restore sys.%s\n", *p);
 			v = PyDict_GetItemString(dict, *(p+1));
@@ -879,12 +879,12 @@ find_module(realname, path, buf, buflen, p_fp)
 	struct filedescr *fdp = NULL;
 	FILE *fp = NULL;
 #ifdef HAVE_STAT
-	static struct stat statbuf;
+	struct stat statbuf;
 #endif /* HAVE_STAT */
 	static struct filedescr fd_frozen = {"", "", PY_FROZEN};
 	static struct filedescr fd_builtin = {"", "", C_BUILTIN};
 	static struct filedescr fd_package = {"", "", PKG_DIRECTORY};
-	static char name[MAXPATHLEN+1];
+	char name[MAXPATHLEN+1];
 
 	strcpy(name, realname);
 
