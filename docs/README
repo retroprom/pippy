@@ -44,15 +44,12 @@ prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install
 4.  Copy the files in Core/System/Unix in the PalmOS sdk-3.5 to 
 the directory XXX/src/Palm/libc/palmos_unix_includes.
 
-5.  Apply the patch in XXX/src/patches with the following command:
-	patch -??? XXX
-
-6.  cd XXX/src/Palm
+5.  cd XXX/src/Palm
     make -f Makefile.all
     cd Interactive
     make
 
-7.  The .prc files (pylib.prc and python.prc) are ready for installing
+6.  The .prc files (pylib.prc and python.prc) are ready for installing
 on the system.
 
 
