@@ -16,7 +16,7 @@ CFLAGS=	$(OPT) -I$(INCLDIR) -I. $(PALM_CFLAGS) $(DEFS)
 
 OBJS = palmglue.o
 
-all: $(OBJS)
+all: $(OBJS) frozen_importer.o python_utils.o
 	$(AR) cr $(LIBRARY) palmglue.o
 	$(RANLIB) $(LIBRARY)
 

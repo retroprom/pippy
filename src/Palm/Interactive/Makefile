@@ -1,4 +1,4 @@
-OBJS = PythonGUI.o app.o python_utils.o util.o frozen_importer.o  ../pylib-stub-a4.o
+OBJS = PythonGUI.o app.o ../PalmGlue/python_utils.o util.o ../PalmGlue/frozen_importer.o  ../pylib-stub-a4.o
 
 CC = m68k-palmos-coff-gcc
 AS = m68k-palmos-coff-as -m68000 -mno-68881 -l
