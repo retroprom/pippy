@@ -1,52 +1,275 @@
-This document describes how to install the tools necessary for compiling Python
-for the Palm. 
 
-INSTALLATION
+Pippy - The port of Python to the Palm OS.
 
-We used Redhat-6.2 for our development, but the toolset will generally
-work for W95 and higher.  So,
+VERSION: Pippy 0.6beta.
 
-either:
+Copyright (c) 2001 Endeavors Technology, Inc.
+All rights reserved.
 
-Obtain the tools (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
-prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install.
+This document describes how to obtain and install the tools necessary
+for building Pippy, Python for the PalmOS.
 
-or (for Linux only):
 
-Download the file prc-tools-0.6.0-1.i386.rpm.  This file contains
-prc-tools.0.6.0beta, the fixes and pilrc-2.6 and installs in
-<prefix>=/usr/local/palm.  It has been tested using Redhat-6.2,
-but may work with other releases.
+TOOL INSTALLATION
 
-Then:
+    IMPORTANT:  This version of Pippy requires a specific version
+    of Python in order to perform the builds. See below.
+    
+    We used RedHat-6.2 for our development, but the tool set will
+    generally work for Windows 95 and higher.
 
-*  Download the "Palm OS SDK 3.5 Headers and Libraries" from
-http://www.palmos.com/dev/tech/tools.
+    Note that under Linux you may have to be root to perform some of the
+    installations described below.  See you local System Administrator
+    if you have questions.
 
-*  Unpack the headers into <prefix>/com, such that the resulting path
-to the directory "Core" is <prefix>/com/sdk/include/Core.
+1. OBTAIN AND INSTALL THE NECESSARY VERSION OF PYTHON (Version 1.5.2+)
 
-*  Copy libPalmOSGlue.a and libNetSocket.a into <prefix>/m68k-palmos-coff/lib.
-See KNOWN PROBLEMS below for libNetSocket.a caveat.
+    For compatibility purposes, this version of Pippy requires Python
+    Version 1.5.2+.
+    
+    A. The source code for this version can be obtained in two ways:
+    
+    (i). Download the file
+        <http://www.endeavors.com/pippy/downloads/Python1.5.2+.tar.gz>
+    
+    (ii). Checkout from the Python CVS Repository
+       Website: <http://python.sourceforge.net/>
+       
+       How to check it out using CVS under Linux.
+       TAG = pre-unicode
+       
+      
+     B. Build and Install Python 1.5.2+
+     
+        (i). Unpack the distribution file (not required if you checked
+        out the files from the CVS repository).
+        
+        (ii) cd to the directory where you unpacked the Python 1.5.2+ source.
+        
+        (iii) Read the README file - it describes how to build this 
+              version of Python.
+        
+        
+        NOTE: The default installation will put the Python files in
+              /usr/local/{bin, lib}.  If there are any other Python 
+              Version 1.5.X files in this location, the default installation
+              will over write the existing files.  See the Python README.
+              
+              The Python 1.5.2 rpm under RedHat-6.2 installs python into
+              /usr/bin and /usr/lib; so this installation will not be affected.
+     
+        We recommend running the tests (make test , see the Python
+        source README file) to verify your installation.
+        
+        At this point you should have Python 1.5.2+ installed and working on
+        your system.
+        
 
-Your toolset is ready for building Python on the Palm.
+2. OBTAIN THE NECESSARY TOOLS
+
+Perform Steps 2.A-C below.
+
+2.A You will need to obtain the prc-tools from only ONE of the following
+sources, i.e., do either (i) or (ii):
+
+    (i) Obtain the prc-tools from:
+         <ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos>
+         prc-tools.0.6.0beta.tar.gz
+         prc-tools.0.6.0beta-fixes
+         
+         NOTE: These files are provided by the Embedded Systems Engineering
+         (ESE) group at the IFCTF
+
+- OR -
+
+    (ii) For Linux only
+
+    Download the file:
+        <http://www.endeavors.com/pippy/downloads/prc-tools-0.6.0-1.i386.rpm>
+     
+    This file contains:
+        prc-tools.0.6.0beta
+        prc-tools.0.6.0beta-fixes
+        pilrc-2.6 
+
+    The rpm installs into <prefix>=/usr/local/palm.  The rpm has been tested only
+    using RedHat-6.2, but may work with other releases.
+
+
+2.B Palm OS SDK 3.5 Headers and Libraries
+    Go to: <http://www.palmos.com/dev/tech/tools>
+    follow the link: Palm OS SDK version 3.5 [it takes you to a CGI License agreement]
+    After accepting the agreement you will be on a page with links for Win/Mac
+    and Unix SDK software.
+    
+    Under Unix download the "Palm OS SDK 3.5 Headers and Libraries" file.
+    
+    Under Windows, download the "Optional Download of Core SDK Components" file.
+        This file is required since it supplies the file: NetSocket.c which
+        is needed later (see below).
+    
+2.C Palm OS Examples
+    Go to: <http://www.palmos.com/dev/tech/tools>
+    follow the link: Palm OS SDK version 3.5 [takes you to a CGI License agreement]
+    After accepting the agreement you will be on a page with links for Win/Mac
+    and Unix SDK software.
+    
+    Under Unix download the "Examples" file.
+    
+    
+3. INSTALL THE NECESSARY TOOLS
+
+3.A Install prc-tools
+        Using either the rpm or other files you downloaded as described
+        above in (1.A) install the prc-tools. To install using the rpm:
+        
+        rpm -Uvh prc-tools-0.6.0-1.i386.rpm
+        
+       The rpm file will install into the following path:
+           <prefix>=/usr/local/palm 
+
+
+3.B Install the Palm OS SDK 3.5 Header/Library Files
+
+   (i)  Unpack the distributions you downloaded in Step (2.B) above.
+        The SDK 3.5 file for Unix is distributed as: sdk35.tar.gz
+        
+        Change to the directory where you want to install these files
+        (referenced as <Palm SDK path>) and execute the command:
+        
+        gzip -dc sdk35.tar.gz | tar -xvf -
+    
+    
+    (ii) Move some of the files installed in this last step (3.B.i) to a
+         specific target location.  Perform the following steps to create
+         this location:
+        
+            cd /usr/local/palm
+            mkdir com
+            cd com
+            mkdir sdk
+            cd sdk
+            mkdir include
+            
+            You now have the path: /usr/local/palm/com/sdk/include
+    
+    (iii) Next copy some of the Palm SDK files to the proper location.
+    
+          cd <Palm SDK path>/Palm OS 3.5 Support/Incs
+          
+          At this point you are in a subdirectory of the Palm SDK directory.
+          This subdirectory contains other subdirectories and several files.
+          You want to copy all of the files and subdirectories (including their files)
+          from this point down to a target location
+          <prefix>/com/sdk/include/; we used the following command to copy these
+          files:
+           
+          cp -vR --target-directory=/usr/local/palm/com/sdk/include/ *
+
+          If successful the resulting path to the directory "Core" should be
+          <prefix>/com/sdk/include/Core
+    
+
+3.C Install the Palm Examples files
+    
+    Unpack the Examples distribution you downloaded in Step (2.C) above.
+    You can do this in any location, however, we choose to do this in
+    the same subdirectory used in Step 3.B.i: <Palm SDK path>.  
+    
+    Here are the commands we used, assuming the Examples distribution file
+    is in ./xfer/pippy-tools/ off your home directory:
+    
+        cd <Palm SDK path>
+        gzip -dc ../xfer/pippy_tools/sdk35-examples.tar.gz |tar -xvf -
+
+    [Note: The files provided by the Examples distribution are used when you
+           want to include your own Python modules in your build of Pippy.]
+ 
+3.D Update the libNetSocket.a file
+   
+   (i)   Extract the file: NetSocket.c from the Windows distribution
+         file you downloaded in Step 2.B.
+         
+   (ii)  Recompile this file and create a new library: libNetSocket.a,
+         using the commands:
+    
+        m68k-palmos-coff-gcc -c NetSocket.c
+        m68k-palmos-coff-ar -r libNetSocket.a NetSocket.o
+
+    [NOTE: The m68k-palmos-coff-* applications are in /usr/local/palm/bin ]
+
+    (iii) Copy the following two files:
+    
+            GCC Libraries/m68k-palmos-coff/libPalmOSGlue.a 
+            libNetSocket.a 
+            
+            into 
+            
+            <prefix>/m68k-palmos-coff/lib
+
+
+CONGRATULATIONS!
+YOUR TOOLSET IS NOW READY FOR BUILDING PYTHON ON THE PALMOS.
+
 
 KNOWN PROBLEMS
 
-The supplied libNetSocket.a supplied with the SDK has given me problems in the
-past.  Download NetSocket.c from the Palm (found in the SDK for Windows
-Platforms), recompile and create a new libNetSocket.a.
+The libNetSocket.a file supplied with the Palm SDK has given us problems
+in the past. We therefore decided to build a clean version.
+See Step 3.D above.
+
 
 WHY THIS TOOLSET?
 
-There are several toolsets available for developing applications for the Palm.
-Palm supports prc-tools-2.0 (derived from prc-tools-0.5) and Code Warrior
-(Windows only).  We chose prc-tools.0.6.0beta, a revision of prc-tools based on
-prc-tools-0.5, for a variety of reasons.  It provides GLib shared libraries with
-multiple-segment support, seamless access to globals within each segment and
-function pointer support.  None of the other development toolsets currently
-provide all of these features.
+There are several tool sets available for developing applications for
+the Palm. Palm supports prc-tools-2.0 (derived from prc-tools-0.5) and
+Code Warrior (Windows only).  We chose prc-tools.0.6.0beta, a revision
+of prc-tools based on prc-tools-0.5, for a variety of reasons.  It
+provides GLib shared libraries with multiple-segment support, seamless
+access to globals within each segment and function pointer support. 
+None of the other development tool sets currently provide all of these
+features.
 
-CONTACTS
+Our original intention when we started to port Python to the PalmOS was
+to stay in sync with the Python CVS tree.  At the time this version of
+the port was started, the latest snapshot of the Python CVS repository
+was post-string methods and pre-unicode. This snapshot of the repository
+was referred to informally by the development community as Python-1.5.2+
+(TAG = pre-unicode).  Between 1.5.2+ and 1.6, unicode was the most
+obvious addition.  There were also a few minor features added to the
+language. At this time we made specific changes to 1.5.2+ standard
+library modules, therefore, the 1.5.2+ and 1.6 libraries are
+incompatible, and only the 1.5.2+ library is compatible with the
+Pippy-0.6beta release.
 
-For problems, send mail to pippy@endtech.com.
+
+LINKS AND CONTACT INFORMATION
+
+    Pippy Development Home
+    <http://www.endeavors.com/pippy>
+
+    Feedback & General Comments
+    <pippy@endeavors.com>
+
+    MAILING LISTS
+        Developer Issues
+        <pippy-dev@endeavors.com>
+        Bug Reports
+        <pippy-bugs@endeavors.com>
+        Announcements
+        <pippy-announce@endeavors.com>
+
+    CVS REPOSITORY
+    <http://www.endeavors.com/pippy/cvs>
+
+    Palm Developers Site
+    <http://www.palmos.com/dev/>
+
+
+AUTHORS
+
+    Jeffery D. Collins <jcollins@endeavors.com>
+    Michael Gorlick <mgorlick@endeavors.com>
+    Endeavors Technology, Inc.
+    19700 Fairchild Rd, Suite 200
+    Irvine, CA  92612

@@ -1,7 +1,11 @@
-This is Pippy 0.6beta.
+
+Pippy - The port of Python to the Palm OS.
+
+VERSION: Pippy 0.6beta.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
+
 
 RUNNING
 
@@ -9,19 +13,20 @@ Warning:  Backup your Palm device before installing Pippy!
 
 The distribution includes pre-built .prc files for the interactive
 interpreter.  Simply install pippy.prc and pylib.prc on the Palm and
-select the python application.
+select the Pippy application.
 
-The interactive interface is a command-line interface based that
-implemented in LispMe (http://www.lispme.de/).  It is very limited,
+The interactive interface is a command-line interface based on the
+LispMe interface (<http://www.lispme.de/>).  It is very limited,
 but provides a means for entering python commands and viewing the
 results.  If you wish to contribute to improving this interface, see
-http://endeavors.org/pippy/contribute.html
+<http://www.endeavors.org/pippy/contribute.html>
+
 
 FEEDBACK
-pippy@endtech.com
+<pippy@endeavors.com>
 
 DEVELOPMENT HOME
-http://www.endeavors.org/pippy
+<http://www.endeavors.org/pippy>
 
 BUG REPORTS
-pippy-bugs@endtech.com
+<pippy-bugs@endeavors.com>

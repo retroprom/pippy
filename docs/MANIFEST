@@ -1,6 +1,5 @@
 #  This file contains the manifest for the Python port to the Palm.
 #
-#  Jeffery D. Collins
 #  Copyright Endeavors Technology, Inc.
 #
 
@@ -11,6 +10,7 @@
 ./docs/MANIFEST			- This file
 ./docs/LICENSE			- License
 ./docs/TOOLS			- Instructions for installing the tools
+./docs/BUILD			- Instructions for building pylib.prc and pippy.prc
 
 #  The following are part of the standard Python distribution.  These
 #  sources have been modified as part of the port to the Palm.
