@@ -1,6 +1,6 @@
 Pippy - The port of Python to the Palm OS.
 
-This is Pippy 0.6beta.
+This is Pippy 0.7.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -27,15 +27,15 @@ BUILDING AND INSTALLING Pippy
 
 The following instructions are specific to Unix/Linux.
 
-1.  Download the Pippy source distribution: pippy-0.6beta-src.tar.gz
+1.  Download the Pippy source distribution: pippy-0.7-src.tar.gz
     <http://www.endeavors.org/pippy.html>
 
-2.A Unpack the pippy-0.6beta-src.tar.gz distribution into your working
+2.A Unpack the pippy-0.7-src.tar.gz distribution into your working
     build directory.  For example,
     
-    mkdir pippy-0.6beta-src
-    cd pippy-0.6beta-src
-    gzip -dc pippy-0.6beta-src.tar.gz |tar -tvf - 
+    mkdir pippy-0.7-src
+    cd pippy-0.7-src
+    gzip -dc pippy-0.7-src.tar.gz |tar -tvf - 
 
     You should now have the following subdirectories:
         docs/
@@ -84,7 +84,7 @@ The following instructions are specific to Unix/Linux.
     Linux box, and the palm is set into the cradle, the following will
     install the files:
     
-    Assuming you are in the directory pippy-0.6beta-src (that you created above):
+    Assuming you are in the directory pippy-0.7-src (that you created above):
     
     pilot-xfer -p /dev/ttyS1 -i ./src/Palm/pylib.prc ./src/Palm/Interactive/pippy.prc
 
@@ -103,14 +103,15 @@ the standard python library modules, you must perform the following:
  
 1.B Prepend the Linux environment variable PYTHONPATH with 
     the full path to Pippy Lib directory.  For example, if you installed
-    Pippy distribution in the directory pippy-0.6beta-src/ off your home
+    Pippy distribution in the directory pippy-0.7-src/ off your home
     directory (assumed to be /home/palmuser) the you need to modify your
     PYTHONPATH to include:
     
     export PYTHONPATH=\
-    /home/palmuser/pippy-0.6beta-src/src/Palm/Tests:\
-    /home/palmuser/pippy-0.6beta-src/src/Lib:\
-    /home/palmuser/pippy-0.6beta-src/src/Palm:$PYTHONPATH
+    /home/palmuser/pippy-0.7-src/src/Palm/Tests:\
+    /home/palmuser/pippy-0.7-src/src/Lib:\
+    /home/palmuser/pippy-0.7-src/src/Palm/Importer:\
+    /home/palmuser/pippy-0.7-src/src/Palm:$PYTHONPATH
 
     
 1.C From the Linux command line (shell) enter the following commands:
@@ -118,7 +119,7 @@ the standard python library modules, you must perform the following:
     [NOTE: this assumes that you have already performed the make from 
     the ./src/Palm directory to generate the pylib.prc file.]
     
-        cd pippy-0.6beta-src/src/Palm/Interactive
+        cd pippy-0.7-src/src/Palm/Interactive
     
     If you have previously done a make in this directory
     you should do: make clean 

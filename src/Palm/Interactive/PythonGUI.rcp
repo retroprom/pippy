@@ -9,7 +9,7 @@
 
 #include "PythonGUI.h"
 
-VERSION ID 1 "0.6beta"
+VERSION ID 1 "0.7"
 
 ICONFAMILY      "bitmaps/python1.bmp" "" ""
                 "bitmaps/python8.bmp" TRANSPARENTINDEX 0

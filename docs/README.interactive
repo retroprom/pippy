@@ -1,7 +1,7 @@
 
 Pippy - The port of Python to the Palm OS.
 
-VERSION: Pippy 0.6beta.
+VERSION: Pippy 0.7.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -25,16 +25,16 @@ results.  If you wish to contribute to improving this interface, see
 INSTALLING THE .prc FILES
 
 1. Download the Pippy application distribution from
-   <http://www.endeavors.com/pippy.html> (pippy_0_6beta.XXX
+   <http://www.endeavors.com/pippy.html> (pippy_0_7.XXX
    where XXX is the format you desire - tar.gz, .zip, .sit or .hqx).
 
 2. Unpack the distribution.  You should now have the following files:
 
-        pippy_0_6beta/
-        pippy_0_6beta/pylib.prc
-        pippy_0_6beta/pippy.prc
-        pippy_0_6beta/README.interactive
-        pippy_0_6beta/LICENSE
+        pippy_0_7/
+        pippy_0_7/pylib.prc
+        pippy_0_7/pippy.prc
+        pippy_0_7/README.interactive
+        pippy_0_7/LICENSE
 
 3. Depending on your platform there are several tools that allow you to
    install the *.prc files onto your Palm hand held device.
@@ -49,7 +49,7 @@ INSTALLING THE .prc FILES
    Linux:
         You can use pilot-xfer (part of the pilot-link or plink tools;
         see <http://www.rpmfind.net/>).   For example, assuming you are
-        in the directory pippy_0_6beta/:
+        in the directory pippy_0_7/:
         
         make sure that /dev/palm is linked to the proper serial port
         on which your palm cradle is connected.

@@ -1,7 +1,7 @@
 
 Pippy - The port of Python to the Palm OS.
 
-VERSION: Pippy 0.6beta.
+VERSION: Pippy 0.7.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -240,7 +240,7 @@ obvious addition.  There were also a few minor features added to the
 language. At this time we made specific changes to 1.5.2+ standard
 library modules, therefore, the 1.5.2+ and 1.6 libraries are
 incompatible, and only the 1.5.2+ library is compatible with the
-Pippy-0.6beta release.
+Pippy-0.7 release.
 
 
 LINKS AND CONTACT INFORMATION

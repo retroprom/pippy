@@ -2,8 +2,8 @@ SUBDIRS= the_libc the_python the_glue the_glib # the_server
 
 all: $(SUBDIRS)
 
-PIPPY_VERSION= 0.6beta
-PIPPY_WIN_VERSION=0_6beta
+PIPPY_VERSION= 0.7
+PIPPY_WIN_VERSION=0_7
 VERSION=	1.5
 LIBRARY= libpython$(VERSION).a
 
