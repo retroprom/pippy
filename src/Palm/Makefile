@@ -2,6 +2,7 @@ SUBDIRS= the_libc the_python the_glue the_glib
 
 all: $(SUBDIRS)
 
+PIPPY_VERSION= 0.6beta
 VERSION=	1.5
 LIBRARY= libpython$(VERSION).a
 
@@ -41,6 +42,16 @@ clean_glue: clean_glib
 clean_python: clean_glue
 	make -f Makefile clean
 	rm -f the_python
+
+PIPPY_NAME=pippy-$(VERSION)
+PIPPY_DIR=/tmp/$(PIPPY_NAME)
+dist: all
+	rm -rf $(PIPPY_DIR)
+	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_DIR) PalmPython
+	mkdir $(PIPPY_DIR)/prc
+	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
+	cd $(PIPPY_DIR)/..
+	tar czvf $(PIPPY_NAME).tar.gz
 
 clean:
 	make -f Makefile.python clean
