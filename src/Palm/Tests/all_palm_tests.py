@@ -1,7 +1,4 @@
-from test_support import *
 import test_support
-import sys
-sys.modules['test.test_support'] = test_support
 
 try:
     compile("print 1","<string>","exec")
@@ -30,17 +27,17 @@ if has_compiler:
     print "test_grammar"
     import test_grammar
 
-print "test.test_contains"
-import test.test_contains
+print "test_contains"
+import test_contains
 
 print "test_exceptions"
 import test_exceptions
 
-print "test.test_opcodes"
-import test.test_opcodes
+print "test_opcodes"
+import test_opcodes
 
-print "test.test_rfc822"
-import test.test_rfc822
+print "test_rfc822"
+import test_rfc822
 
 print "test_string"
 import test_string
@@ -48,11 +45,11 @@ import test_string
 print "test_time"
 import test_time
 
-print "test.test_userdict"
-import test.test_userdict
+print "test_userdict"
+import test_userdict
 
-print "test.test_userlist"
-import test.test_userlist
+print "test_userlist"
+import test_userlist
 
 print "tests completed"
 
