@@ -34,6 +34,12 @@ DIR=pippy-$(STAMP)
 
 all: $(PRC)
 
+final:
+	make clean
+	python1.5 -OO ../Resourcer/resourcer -x re -x os -R \
+		default_modules.py
+	make
+
 snapshot:   # put this in a script
 	mkdir /tmp/$(DIR)
 	cp $(PRC) /tmp/$(DIR)
