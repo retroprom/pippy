@@ -64,23 +64,6 @@
 ./src/Palm/config.h.in
 ./src/Palm/install-sh
 
->>>> We released the original Palm port with AppWrapper sources.  It
->>>> provides a sample application that interacts with Python VM.  We
->>>> could eliminate this in favor of just providing the interactive
->>>> interpreter.  This ultimately may result in less confusion.
-
-./src/Palm/AppWrapper		- AppWrapper contains a generic framework for
-				  creating Palm applications
-./src/Palm/AppWrapper/Makefile
-./src/Palm/AppWrapper/frozen_importer.c
-./src/Palm/AppWrapper/main.c
-./src/Palm/AppWrapper/myfrozenmain.c
-./src/Palm/AppWrapper/python.bmp
-./src/Palm/AppWrapper/python.pbitm
-./src/Palm/AppWrapper/python.rcp
-./src/Palm/AppWrapper/pythonRsc.h
-./src/Palm/AppWrapper/app.c
-
 # Directories for building the Python interpeter
 ./src/Palm/Parser
 ./src/Palm/Parser/Makefile
