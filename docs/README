@@ -34,19 +34,7 @@ interface or add an extension module, you must first install the tools
 and unpack the distribution.  Following these steps for proper
 installation:
 
-1.  TOOLS
-    Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
-prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install.
-Alternatively, download the file prc-tools-0.6.0-1.i386.rpm.  This file contains
-prc-tools.0.6.0beta, the fixes and pilrc-2.6 and installs in
-<prefix>=/usr/local/palm.  From the SDK, copy the headers into <prefix>/com,
-such that the resulting path to the directory "Core" is
-<prefix>/com/sdk/include/Core.  Download the "Palm OS SDK 3.5 Headers and
-Libraries" from http://www.palmos.com/dev/tech/tools.  This contains the
-required libPalmOSGlue.a and libNetSocket.a - install in
-<prefix>/m68k-palmos-coff/lib.  See KNOWN PROBLEMS below for libNetSocket.a
-caveat.
-
+1.  See TOOLS for instructions to install the development tools.
 
 2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
 Python-2.0 bytecodes are incompatible with this revision.
@@ -162,10 +150,6 @@ GUI problem with PalmOS 3.0 that we are working looking into.
 The current Break button implemenation responds to any touch of the
 screen, not just the button.  This can be easily fixed, but just haven't
 had the time ;(
-
-The supplied libNetSocket.a supplied with the SDK has given me problems in the
-past.  Download NetSocket.c from the Palm (found in the SDK for Windows
-Platforms), recompile and create a new libNetSocket.a.
 
 MAILING LISTS
 http://www.endtech.com/PalmPython/mailing_lists
