@@ -2,7 +2,7 @@ import easytest
 from modulefinder import _behead
 
 
-class behead_Test(utest.Experiment):
+class behead_Test(easytest.Experiment):
 
     def Erect(self):
         self.path = '/a/b/c'
@@ -26,7 +26,7 @@ class behead_Test(utest.Experiment):
         assert _behead('/a/b/c/x',self.path) == self.path
 
 def verify(outcome):
-    suite = utest.Suite()
+    suite = easytest.Suite()
     suite.Enroll(behead_Test(name='testEmpty'))
     suite.Enroll(behead_Test(name='testSlash'))
     suite.Enroll(behead_Test(name='testOne'))
@@ -37,5 +37,5 @@ def verify(outcome):
 
 if __name__ == '__main__':
     import sys
-    utest.trust_but_verify(sys.modules[__name__])
+    easytest.trust_but_verify(sys.modules[__name__])
     
