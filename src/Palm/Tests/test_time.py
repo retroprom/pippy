@@ -1,9 +1,5 @@
 import time
 
-import palmnet
-palmnet.open()
-palmnet.settimeout(3000)
-
 if 1:
     print "timezone:", time.timezone
     time.settimezone(7*3600)
