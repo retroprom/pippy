@@ -7,7 +7,9 @@ PYTHON=$(PYBASE)/bin/python.exe
 
 all:: app.rcp
 
-app.rcp: app.py Makefile
+$(PIPPYSRCBASE)/Palm/Interactive/default_module.py: 
+
+app.rcp: app.py Makefile $(PIPPYSRCBASE)/Palm/Interactive/default_module.py
 	$(PYTHON) -OO $(RESOURCERDIR)/Resourcer.py -x re -x os -x StringIO -R app.py
 
 clean::
