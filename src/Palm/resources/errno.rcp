@@ -1,0 +1,4 @@
+#include "commonRsc.h"
+
+STRINGTABLE errnoStringCodes_tSTL 
+ "" "" "" "" "" "" "ENOMEM" "ENOMEM" "" "EINPROGRESS" "EMSGSIZE" "" "ENETUNREACH" "" "" "EADDRINUSE" "EADDRINUSE" "" "ETIMEDOUT" "EISCONN" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "EPIPE" "" "" "" "" "" "" "EWOULDBLOCK" "EALREADY" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "ENOBUFS" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" 
