@@ -32,12 +32,15 @@ PRC = pippy.prc
 STAMP=$(shell time_stamp)
 DIR=pippy-$(STAMP)
 
+TOPDIR=../..
+DEFAULT_PYTHON_PATH=$(TOPDIR)/Lib:$(TOPDIR)/Palm:$(TOPDIR)/Palm/Tests:$(TOPDIR)/Palm/Importer
+
 all: $(PRC)
 
 final:
 	make clean
-	python1.5 -OO ../Resourcer/resourcer -x re -x os -x StringIO -R \
-		default_modules.py
+	(PYTHONPATH=$(DEFAULT_PYTHON_PATH):$(PYTHONPATH); \
+	python1.5 -OO ../Resourcer/resourcer -x os -x StringIO -R default_modules.py )
 	make
 
 snapshot:   # put this in a script
