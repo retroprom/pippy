@@ -10,36 +10,42 @@
 
 #include "segments.h"
 
-/* main segment */
+/* main segment - pilot-file index 1 */
 #define SEG_MAIN
 
-/* segment 0 */
+/* segment 0    - pilot-file index 2 */
 #define SEG_PYTHONRUN_H DEF_SEGMENT(PALM_SEG_0)
 #define SEG_PYTHONRUN_C DEF_SEGMENT(PALM_SEG_0)
+/* the following moved Thu Mar  1 21:20:17 MST 2001 */
+#define SEG_FILEOBJECT_H DEF_SEGMENT(PALM_SEG_0) 
+#define SEG_LONGOBJECT_H DEF_SEGMENT(PALM_SEG_0)
 
-/* segment 1 */
+#define SEG_DBMEM_H DEF_SEGMENT(PALM_SEG_0)
+
+/* segment 1    - pilot-file index 3 */
 #define SEG_ABSTRACT_H DEF_SEGMENT(PALM_SEG_1)
 #define SEG_PYTHON_H   DEF_SEGMENT(PALM_SEG_1)
 #define SEG_BITSET_H   DEF_SEGMENT(PALM_SEG_1)
 #define SEG_BUFFEROBJECT_H DEF_SEGMENT(PALM_SEG_1)
 
-/* segment 2 */
+/* segment 2    - pilot-file index 4 */
 #define SEG_CSTRINGIO_H DEF_SEGMENT(PALM_SEG_2)
 #define SEG_CLASSOBJECT_H DEF_SEGMENT(PALM_SEG_2)
 #define SEG_COBJECT_H DEF_SEGMENT(PALM_SEG_2)
 #define SEG_COMPLEXOBJECT_H DEF_SEGMENT(PALM_SEG_2)
 #define SEG_DICTOBJECT_H DEF_SEGMENT(PALM_SEG_2)
 #define SEG_MODSUPPORT_H DEF_SEGMENT(PALM_SEG_2)
-/* segment 2A */
+
+
+/* segment 2A   - pilot-file index 5 */
 #define SEG_COMPILE_H DEF_SEGMENT(PALM_SEG_2A)
-/* segment 2B */
+/* segment 2B   - pilot-file index 6 */
 #define SEG_CEVAL_H DEF_SEGMENT(PALM_SEG_2B)
 
 
-/* segment 3 */
+/* segment 3    - pilot-file index 7 */
 #define SEG_ERRCODE_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_EVAL_H DEF_SEGMENT(PALM_SEG_3)
-#define SEG_FILEOBJECT_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_FLOATOBJECT_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_FRAMEOBJECT_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_FUNCOBJECT_H DEF_SEGMENT(PALM_SEG_3)
@@ -55,11 +61,10 @@
 #define SEG_MYTIME_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_OSDEFS_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_INTRCHECK_H DEF_SEGMENT(PALM_SEG_3)
-#define SEG_LONGOBJECT_H DEF_SEGMENT(PALM_SEG_3)
 #define SEG_LONGINTREPR_H DEF_SEGMENT(PALM_SEG_3)
 /* end:  moved Fri Jul  7 16:01:07 PDT 2000 */
 
-/* segment 4 */
+/* segment 4    - pilot-file index 8 */
 #define SEG_INTOBJECT_H DEF_SEGMENT(PALM_SEG_4)
 #define SEG_LISTOBJECT_H DEF_SEGMENT(PALM_SEG_4)
 #define SEG_MARSHAL_H DEF_SEGMENT(PALM_SEG_4)
@@ -69,7 +74,7 @@
 #define SEG_OBJIMPL_H DEF_SEGMENT(PALM_SEG_4)
 #define SEG_OPCODE_H DEF_SEGMENT(PALM_SEG_4)
 
-/* segment 6 */
+/* segment 6    - pilot-file index 9 */
 #define SEG_PATCHLEVEL_H DEF_SEGMENT(PALM_SEG_6)
 #define SEG_PGENHEADERS_H DEF_SEGMENT(PALM_SEG_6)
 #define SEG_PYDEBUG_H DEF_SEGMENT(PALM_SEG_6)
@@ -87,7 +92,7 @@
 #define SEG_TUPLEOBJECT_H DEF_SEGMENT(PALM_SEG_6)
 #define SEG_TYPEOBJECT_H DEF_SEGMENT(PALM_SEG_6)
 
-/* segment 8 */
+/* segment 8   - pilot-file index 10 */
 #define SEG_BLTINMODULE_H DEF_SEGMENT(PALM_SEG_8)
 #define SEG_SYSMODULE_H DEF_SEGMENT(PALM_SEG_8)
 #define SEG_ACCELER_H DEF_SEGMENT(PALM_SEG_8)
@@ -102,7 +107,7 @@
 #define SEG_TOKENIZER_H DEF_SEGMENT(PALM_SEG_8)
 #define SEG_MYREADLINE_H DEF_SEGMENT(PALM_SEG_8)
 
-/* extension module segment - segment 9 */
+/* extension module segment - segment 9  - pilot-file index 11 */
 #define SEG_ERRNOMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_TIMEMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_PALMNETMODULE_C DEF_SEGMENT(PALM_SEG_9)
@@ -111,6 +116,8 @@
 #define SEG_APPSMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_PALMSYSMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_DMMODULE_C DEF_SEGMENT(PALM_SEG_9)
+
+/* not shown: pseglibc   - pilot-file index 12 */
 
 
 #define SEG_ABSTRACT_C SEG_ABSTRACT_H
