@@ -1,4 +1,4 @@
-This is Pippy-0.6beta.
+This is Pippy 0.6beta.
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -13,13 +13,13 @@ The interactive interface is a command-line interface based that
 implemented in LispMe (http://www.lispme.de/).  It is very limited,
 but provides a means for entering python commands and viewing the
 results.  If you wish to contribute to improving this interface, see
-the TODO list below.
+http://endeavors.org/pippy/contribute.html
 
 FEEDBACK
 pippy@endtech.com
 
 DEVELOPMENT HOME
-http://www.endeavors.org/Pippy
+http://www.endeavors.org/pippy
 
 BUG REPORTS
-Pippy-bugs@endtech.com
+pippy-bugs@endtech.com
