@@ -2274,6 +2274,10 @@ PyString_InternInPlace(p)
 		Py_DECREF(s); /* If a PALMDM record, decref will be ignored */
 		return;
 	}
+#ifdef CACHE_HASH
+	/* make sure the hash is calculated before putting is write only memory*/
+	string_hash(s);
+#endif
 	
 	/* here, we make a copy of the string object in the Palm database */
 	
@@ -2288,11 +2292,13 @@ PyString_InternInPlace(p)
 		/* return the newly interned string */
 		*p = t;
 		Py_DECREF(s);
-		{
-			char buf[30];
-			sprintf(buf, "('interned', %d)", dbmem_size(t));
-			DMESSAGE(buf);
-		}
+/*
+ *		{
+ *		char buf[30];
+ *		sprintf(buf, "('interned', %d)", dbmem_size(t));
+ *		DMESSAGE(buf);
+ *	        }
+*/
 		return;
 	}
 
