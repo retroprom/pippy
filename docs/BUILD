@@ -38,11 +38,10 @@ The following instructions are specific to Unix/Linux.
     gzip -dc pippy-0.7-src.tar.gz |tar -xvf - 
 
     You should now have the following subdirectories:
+        CodeWarrior/
         docs/
-        patches/
         src/
         tools/
-    
 
 2.B The module palmappsmodule.c requires the Palm SDK Examples
     distribution (downloadable from <http://www.palmos.com/dev/tech/tools/>). 
