@@ -1,4 +1,8 @@
-VERSION = '$Id: easytest.py,v 1.4 2001/03/12 21:39:39 mgorlick Exp $'
+#
+#  Author: M. Gorlick
+#
+
+VERSION = '$Id: easytest.py,v 1.5 2001/06/08 15:40:48 jcollins Exp $'
 
 import sys
 from utility.traceback import format_exception
@@ -174,7 +178,6 @@ class Text_Outcome(Outcome):
     i = 1
     for test, trace in self.failures:
       self.stream.write("Failure %i:%s\n" % (i, test))
-      #self.stream.write(str(trace))
       self.stream.write(''.join(apply(format_exception, trace)))
       self.stream.write('\n')
       i = i + 1
