@@ -36,29 +36,7 @@ PERFORMANCE OF THIS SOFTWARE.
    Under BeOS, we suffer the same dichotomy as Win32; sockets can be anything
    >= 0.
 */
-
-#include "Python.h"
-
-
-#ifdef PALMOS
-/* PalmOS specific includes */
-/* defines to cause the palm includes to ignore
-   prc-tools libc include file defs */
-#define IGNORE_UNISTD_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_STDLIB_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_SYS_TYPES  /* portions of sys_types.h ignored */
-#define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
-#define __stdio_h  /* causes unix_stdio.h to be ignored */
-
-#include <PalmOS.h>
-#include <Core/System/MemoryMgr.h>
-#include <sys_types.h>
-#include <sys_time.h>
-#include <netdb.h>
-#include <sys_socket.h>
-#include <netinet_in.h>
-#include <unix_fcntl.h>
-#endif /* PALMOS */
+#include "kludge.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

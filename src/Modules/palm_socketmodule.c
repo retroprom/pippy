@@ -89,7 +89,7 @@ Socket methods:
 
 
 /*
-  Port to PalmOS:  jcollins@pacificnet.nett
+  Port to PalmOS:
 
   Eliminated some code associated with other OS's (don't expect
   this code to be rolled into standard distribution.
@@ -100,27 +100,7 @@ Socket methods:
 
 */
 
-#include "Python.h"
-
-
-
-/* PalmOS specific includes */
-/* defines to cause the palm includes to ignore
-   prc-tools libc include file defs */
-#define IGNORE_UNISTD_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_STDLIB_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_SYS_TYPES  /* portions of sys_types.h ignored */
-#define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
-#define __stdio_h  /* causes unix_stdio.h to be ignored */
-
-#include <PalmOS.h>
-#include <Core/System/MemoryMgr.h>
-#include <sys_types.h>
-#include <sys_time.h>
-#include <netdb.h>
-#include <sys_socket.h>
-#include <netinet_in.h>
-#include <unix_fcntl.h>
+#include "kludge.h"
 #include "set_a4.h"
 #include "_palmutils.h"
 

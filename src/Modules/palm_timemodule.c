@@ -1,18 +1,7 @@
 
 /* Time module replacement for PalmOS */
 
-#include "Python.h"
-#include <PalmOS.h>
-#include <Core/System/DateTime.h>
-#define IGNORE_UNISTD_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_STDLIB_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_SYS_TYPES  /* portions of sys_types.h ignored */
-#define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
-#define __stdio_h  /* causes unix_stdio.h to be ignored */
-#include <sys_types.h>
-#include <sys_socket.h>
-
-
+#include "kludge.h"
 
 /* PalmOS doesn't have account for timezones - we allow the user to set
    these values. */

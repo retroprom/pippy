@@ -22,17 +22,8 @@
 
 
 */
-
-#include "Python.h"
+#include "kludge.h"
 #include "structmember.h"
-#define IGNORE_UNISTD_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_STDLIB_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_SYS_TYPES  /* portions of sys_types.h ignored */
-#define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
-#define __stdio_h  /* causes unix_stdio.h to be ignored */
-#include <PalmOS.h>
-#include <Core/UI/Form.h>
-#include <sys_socket.h>
 #include "_palmutils.h"
 #include "PalmCompatibility.h"
 #include "set_a4.h"

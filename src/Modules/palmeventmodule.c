@@ -6,16 +6,9 @@
 
 */
 
-#include "Python.h"
+#include "kludge.h"
 #include "structmember.h"
-#include <PalmOS.h>
-#include <Core/UI/Event.h>
-#define IGNORE_UNISTD_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_STDLIB_STUBS  /* causes portions of sys_socket.h to be ignored */
-#define IGNORE_SYS_TYPES  /* portions of sys_types.h ignored */
-#define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
-#define __stdio_h  /* causes unix_stdio.h to be ignored */
-#include <sys_socket.h>
+
 #include "_palmutils.h"
 #include "palmeventmodule.h"
 #include "PalmCompatibility.h"
