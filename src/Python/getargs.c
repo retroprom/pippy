@@ -228,7 +228,7 @@ vgetargs1(args, format, p_va, compat)
 		return 0;
 	}
 	
-	len = PyTuple_Size(args);
+	len = PyTuple_GET_SIZE(args);
 	
 	if (len < min || max < len) {
 		if (message == NULL) {
@@ -249,7 +249,7 @@ vgetargs1(args, format, p_va, compat)
 	for (i = 0; i < len; i++) {
 		if (*format == '|')
 			format++;
-		msg = convertitem(PyTuple_GetItem(args, i), &format, p_va,
+		msg = convertitem(PyTuple_GET_ITEM(args, i), &format, p_va,
 				 levels, msgbuf);
 		if (msg) {
 			seterror(i+1, msg, levels, fname, message);
@@ -556,8 +556,8 @@ convertsimple1(arg, p_format, p_va)
 	case 'c': /* char */
 		{
 			char *p = va_arg(*p_va, char *);
-			if (PyString_Check(arg) && PyString_Size(arg) == 1)
-				*p = PyString_AsString(arg)[0];
+			if (PyString_Check(arg) && PyString_GET_SIZE(arg) == 1)
+				*p = PyString_AS_STRING(arg)[0];
 			else
 				return "char";
 			break;
@@ -586,10 +586,10 @@ convertsimple1(arg, p_format, p_va)
 			        char **p = va_arg(*p_va, char **);
 			
 			        if (PyString_Check(arg))
-				  *p = PyString_AsString(arg);
+				  *p = PyString_AS_STRING(arg);
 				else
 				  return "string";
-				if ((int)strlen(*p) != PyString_Size(arg))
+				if ((int)strlen(*p) != PyString_GET_SIZE(arg))
 				  return "string without null bytes";
 			}
 			break;
@@ -625,7 +625,7 @@ convertsimple1(arg, p_format, p_va)
 			        if (arg == Py_None)
 				  *p = 0;
 				else if (PyString_Check(arg))
-				  *p = PyString_AsString(arg);
+				  *p = PyString_AS_STRING(arg);
 				else
 				  return "None or string";
 				if (*format == '#') {
@@ -633,11 +633,11 @@ convertsimple1(arg, p_format, p_va)
 				  if (arg == Py_None)
 				    *q = 0;
 				  else
-				    *q = PyString_Size(arg);
+				    *q = PyString_GET_SIZE(arg);
 				  format++;
 				}
 				else if (*p != NULL &&
-					 (int)strlen(*p) != PyString_Size(arg))
+					 (int)strlen(*p) != PyString_GET_SIZE(arg))
 				  return "None or string without null bytes";
 			}
 			break;
