@@ -1,4 +1,4 @@
-#!/usr/bin/env python1.5
+#!/usr/bin/env python
 
 # Only the supplied Python-1.5.2+ (pre-unicode tag in the Python CVS
 # repository).
