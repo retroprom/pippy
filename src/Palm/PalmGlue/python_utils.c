@@ -12,7 +12,7 @@ extern struct _frozen _PyImport_FrozenModules[];
 
 void python_init() {
 
-	int verbose = 1;
+	int verbose = 0;
 	int res;
 
 
@@ -45,9 +45,8 @@ void python_init() {
 	DMESSAGE("before Py_Initialize()");
 	Py_Initialize();
 
-	if (verbose)
-		fprintf(stderr, "Python %s\n%s\n\n",
-			Py_GetVersion(), Py_GetCopyright());
+	fprintf(stderr, "Python %s\n%s\n\n",
+		Py_GetVersion(), Py_GetCopyright());
 	
 	PySys_SetArgv(0, NULL);
 	
