@@ -58,15 +58,15 @@ port.
 2.  Be sure that there is a copy of Python 1.5.2 - 1.6 on the system.
 Python 2.0 bytecodes are incompatible with this revision.
 
-3.  Unpack pippy-0.6beta.tar.gz distribution
+3.  Unpack pippy-0.6beta-src.tar.gz distribution
 
-4.  cd pippy-0.6beta/src/Palm
+4.  cd pippy-0.6beta-src/src/Palm
      make
      cd Interactive
      make
 
-5.  Install the generated .prc files (pippy-0.6beta/src/Palm/pylib.prc and
-pippy-0.6beta/src/Palm/Interactive/pippy.prc) on your Palm (using something
+5.  Install the generated .prc files (pippy-0.6beta-src/src/Palm/pylib.prc and
+pippy-0.6beta-src/src/Palm/Interactive/pippy.prc) on your Palm (using something
 like pilot-xfer) or POSE.
 
 6.  For the time being, to include your own special modules or the standard
@@ -74,10 +74,10 @@ python library modules, you must perform the following:
 	a)  create a file (wrapper.py, say) in Interactive that contains import
 	statements for the modules you wish to include
 	b)  prepend the environment variable PYTHONPATH with 
-pippy-0.6beta/src/Lib
+pippy-0.6beta-src/src/Lib
 	    of this distribution
 	c)  In in a shell, type the following commands:
-		cd pippy-0.6beta/src/Palm/Interactive
+		cd pippy-0.6beta-src/src/Palm/Interactive
 		../Resourcer/resourcer libwrapper.py
 		make
 The resulting pippy.prc will contain the library modules as Palm resource records.
@@ -85,7 +85,7 @@ The resulting pippy.prc will contain the library modules as Palm resource record
 7.  The module palmappsmodule.c requires the Palm SDK Examples
 distribution (downloadable from
 http://www.palmos.com/dev/tech/tools/).  Set the variable
-PALM_EXAMPLES in pippy-0.6beta/src/Palm/Modules/Setup to path of the
+PALM_EXAMPLES in pippy-0.6beta-src/src/Palm/Modules/Setup to path of the
 headers in Examples.
 
 

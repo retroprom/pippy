@@ -44,18 +44,30 @@ clean_python: clean_glue
 	rm -f the_python
 
 PIPPY_NAME=pippy-$(PIPPY_VERSION)
-PIPPY_DIR=/tmp/$(PIPPY_NAME)
-dist: all
-	rm -rf $(PIPPY_DIR)
-	mkdir $(PIPPY_DIR)
-	mkdir $(PIPPY_DIR)/prc
-	cp pylib.prc Interactive/pippy.prc $(PIPPY_DIR)/prc
-	cp ../../docs/README.interactive $(PIPPY_DIR)/prc
-	(cd /tmp; cvs -q -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) pippy)
-	(cd /tmp; tar czf $(PIPPY_NAME).tar.gz $(PIPPY_NAME))
-	(cd $(PIPPY_DIR); zip -r $(PIPPY_NAME).zip prc)
-	mv $(PIPPY_DIR)/$(PIPPY_NAME).zip .
-	mv /tmp/$(PIPPY_NAME).tar.gz .
+PIPPY_SRC=$(PIPPY_NAME)-src
+PIPPY_SRC_DIR=/tmp/$(PIPPY_SRC)
+PIPPY_BIN=$(PIPPY_NAME)
+PIPPY_BIN_DIR=/tmp/$(PIPPY_BIN)
+
+dist: all dist_src dist_bin
+
+dist_bin:
+	rm -rf $(PIPPY_BIN_DIR)
+	mkdir $(PIPPY_BIN_DIR)
+	cp pylib.prc Interactive/pippy.prc $(PIPPY_BIN_DIR)
+	cp ../../docs/{README.interactive,LICENSE} $(PIPPY_BIN_DIR)
+	(cd /tmp; zip -r $(PIPPY_BIN).zip $(PIPPY_BIN))
+	mv /tmp/$(PIPPY_BIN).zip .
+
+dist_src:
+	rm -rf $(PIPPY_SRC_DIR)
+	mkdir $(PIPPY_SRC_DIR)
+	mkdir $(PIPPY_SRC_DIR)/prc
+	cp pylib.prc Interactive/pippy.prc $(PIPPY_SRC_DIR)/prc
+	cp ../../docs/README.interactive $(PIPPY_SRC_DIR)/prc
+	(cd /tmp; cvs -q -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_SRC) pippy)
+	(cd /tmp; tar czf $(PIPPY_SRC).tar.gz $(PIPPY_SRC))
+	mv /tmp/$(PIPPY_SRC).tar.gz .
 
 clean:
 	make -f Makefile.python clean
