@@ -12,6 +12,8 @@ LIBC_SEGMENT_DEFS = DEFS='-DUSE_SEGMENTS -DHAVE_CONFIG -DSEG_NAME=pseglibc -DQ_S
 
 all:  the_libc the_python the_glue the_resources the_glib
 
+TAGS:
+	make -f Makefile.python TAGS
 
 # the following builds python using segments
 the_libc:
