@@ -59,6 +59,9 @@ dist_bin:
 	cp ../../docs/{README.interactive,LICENSE} $(PIPPY_BIN_DIR)
 	(cd /tmp; zip -r $(PIPPY_BIN).zip $(PIPPY_BIN))
 	mv /tmp/$(PIPPY_BIN).zip .
+	(cd /tmp; tar czvf $(PIPPY_BIN).tar.gz $(PIPPY_BIN))
+	mv /tmp/$(PIPPY_BIN).tar.gz .
+
 
 dist_src:
 	rm -rf $(PIPPY_SRC_DIR)
@@ -66,7 +69,7 @@ dist_src:
 	mkdir $(PIPPY_SRC_DIR)/prc
 	cp pylib.prc Interactive/pippy.prc $(PIPPY_SRC_DIR)/prc
 	cp ../../docs/README.interactive $(PIPPY_SRC_DIR)/prc
-	(cd /tmp; cvs -q -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_SRC) pippy)
+	(cd /tmp; cvs -q -z3 -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_SRC) pippy)
 	(cd /tmp; tar czf $(PIPPY_SRC).tar.gz $(PIPPY_SRC))
 	mv /tmp/$(PIPPY_SRC).tar.gz .
 
