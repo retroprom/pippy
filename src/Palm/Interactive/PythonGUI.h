@@ -44,4 +44,6 @@
 #define INPUT_SIZE            4096
 #define READ_SIZE               64
 
+#define KEYWORD_FUNCTION_SPLIT_INDEX 28
+
 #endif /* _PYTHONGUI_H_ */

@@ -332,11 +332,21 @@ static Boolean MainFrameHandleEvent(EventType *e)
 		/*--------------------------------------------------------------*/
 		/* Insert selected symbol into input field                      */
 		/*--------------------------------------------------------------*/
- 		if (bltins || module_list)
+ 		if (module_list && e->data.popSelect.controlID == MODULE_LIST_TRIGGER)
 		{
 			UInt16 sel = e->data.popSelect.selection;
 			char*  item = LstGetSelectionText((ListPtr)e->data.popSelect.listP,sel);
 			FldInsert(inField, item, StrLen(item));
+		}
+		if (bltins && e->data.popSelect.controlID == BUILTIN_LIST_TRIGGER)
+		{
+			UInt16 sel = e->data.popSelect.selection;
+			char*  item = LstGetSelectionText((ListPtr)e->data.popSelect.listP,sel);
+			FldInsert(inField, item, StrLen(item));
+			if (sel < KEYWORD_FUNCTION_SPLIT_INDEX)
+				FldInsert(inField, " ", 1);
+			else
+				FldInsert(inField, "(", 1);
 		}
 		handled = true;
 		break;

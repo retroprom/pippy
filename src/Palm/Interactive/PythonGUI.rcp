@@ -70,11 +70,17 @@ END
 
 
 STRINGTABLE ID BUILTIN_LIST_ITEMS
-"" "import" "print" "def" "class" "raise" "__import__" "abs" "apply" "buffer" "callable" "chr" "cmp" "coerce" "compile" "complex" "delattr" "dir" "divmod" "eval" "execfile" "filter" "float" "getattr" "globals" "hasattr" "hash" "hex" "id" "input" "intern" "int" "isinstance" "issubclass" "len" "list" "locals" "long" "map" "max" "min" "oct" "open" "ord" "pow" "range" "raw_input" "reduce" "reload" "repr" "round" "setattr" "slice" "str" "tuple" "type" "vars"
+"" "and" "assert" "break" "class" "continue" "def" "del" "elif" "else" "except" "exec" "finally" "for" "from" "global" "if" "import" "in" "is" "lambda" "not" "or" "pass" "print" "raise" "return" "try" "while"       "__import__" "abs" "apply" "buffer" "callable" "chr" "cmp" "coerce" "compile" "complex" "delattr" "dir" "divmod" "eval" "execfile" "filter" "float" "getattr" "globals" "hasattr" "hash" "hex" "id" "input" "intern" "int" "isinstance" "issubclass" "len" "list" "locals" "long" "map" "max" "min" "oct" "open" "ord" "pow" "range" "raw_input" "reduce" "reload" "repr" "round" "setattr" "slice" "str" "tuple" "type" "vars"
 
+// Set the following to the index which seperates keywords from builtin
+// function names:
+// KEYWORD_FUNCTION_SPLIT_INDEX 
+// it lives in the header file
+
+ 
 
 STRINGTABLE ID MODULE_LIST_ITEMS
-"" "errno" "imp" "marshal" "palmapps" "palmdm" "palmevent" "palmform" "palmnet" "palmsys" "select" "socket" "sys" "time" "__builtin__" "__main__"
+"" "copy" "copy_reg" "exceptions" "imp" "marshal" "palmapps" "palmdm" "palmevent" "palmnet" "palmsys" "repr" "rfc822" "select" "socket" "string" "sys" "types" "time" "__builtin__" "__main__" "all_palm_tests"
 
 ALERT ID OS_VERSION_ERROR
 CONFIRMATION
@@ -90,8 +96,9 @@ ALERT ID ABOUT
 INFORMATION
 BEGIN
   TITLE  "About Pippy"
-  MESSAGE "Version 0.6beta, Jan. 2001\n"\
+  MESSAGE "Version 0.7, June 2001\n"\
           "Jeffery D. Collins\n"\
+	  "John Rickenbrode\n"\
           "Michael Gorlick\n"\
           "\251 Endeavors Technology, Inc.\n"
   BUTTONS "OK"
