@@ -23,7 +23,7 @@ palmutil_buildErrObject(UInt16 ifErrs)
 	char errnoString[maxLen];
 	/* Grab the error id from the errno.  Extract last byte of 0x1200
 	   error offset. */
-	Err i = ifErrs & 0x00FF;
+	Err i = (ifErrs & 0x00FF) - 1; /* SysStringByIndex is 0 based; errors are 1-based */
 
 /* 	SysStringByIndex (netErrStringCodes_tSTL, i, netErrString, maxLen); */
 	SysErrString(ifErrs, netErrString, maxLen);
