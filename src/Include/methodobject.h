@@ -72,6 +72,8 @@ extern DL_IMPORT(PyObject *) Py_FindMethod
 extern DL_IMPORT(PyObject *) PyCFunction_New
 	Py_PROTO((PyMethodDef *, PyObject *)) SEG_METHODOBJECT_H;
 
+extern DL_IMPORT(int) PyCFunction_FlushFreeList Py_PROTO((void)) SEG_METHODOBJECT_H;
+
 /* Flag passed to newmethodobject */
 #define METH_VARARGS  0x0001
 #define METH_KEYWORDS 0x0002

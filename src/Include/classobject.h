@@ -76,6 +76,7 @@ extern DL_IMPORT(PyObject *) PyMethod_New Py_PROTO((PyObject *, PyObject *, PyOb
 extern DL_IMPORT(PyObject *) PyMethod_Function Py_PROTO((PyObject *))SEG_CLASSOBJECT_H;
 extern DL_IMPORT(PyObject *) PyMethod_Self Py_PROTO((PyObject *))SEG_CLASSOBJECT_H;
 extern DL_IMPORT(PyObject *) PyMethod_Class Py_PROTO((PyObject *))SEG_CLASSOBJECT_H;
+extern DL_IMPORT(int) PyMethod_FlushFreeList Py_PROTO((void)) SEG_CLASSOBJECT_H;
 
 /* Macros for direct access to these values. Type checks are *not*
    done, so use with care. */

@@ -1696,13 +1696,22 @@ PyTypeObject PyMethod_Type = {
 };
 
 /* Clear out the free list */
-
-void
-PyMethod_Fini()
+int 
+PyMethod_FlushFreeList()
 {
+	int count = 0;
 	while (free_list) {
 		PyMethodObject *v = free_list;
 		free_list = (PyMethodObject *)(v->im_self);
 		PyMem_DEL(v);
+		count++;
 	}
+	return count;
 }
+
+void
+PyMethod_Fini()
+{
+	PyMethod_FlushFreeList();
+}
+
