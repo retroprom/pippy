@@ -13,6 +13,18 @@ extern void free (void *ptr) SEG_LIBC;
 extern void *realloc( void *, size_t) SEG_LIBC;
 extern void *calloc( size_t, size_t ) SEG_LIBC;
 
+extern void get_allocations(long *, long *) SEG_LIBC;
+
+/* need to move this macro into the config file */
+#undef DEBUG_MALLOC
+
+#ifdef DEBUG_MALLOC
+extern void dump_to_host(char *which, void *address, long value) SEG_LIBC;
+#define DUMP_TO_HOST(a,b,c) dump_to_host(a,b,c);
+#else
+#define DUMP_TO_HOST(a,b,c);
+#endif
+
 #ifdef __KERNEL__
 
 void *kmalloc(int size, void *tcb) SEG_LIBC;
