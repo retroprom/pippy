@@ -384,6 +384,10 @@ class ModuleFinder:
 def _behead(head, path):
     """Remove the head prefix from the path"""
     h = os.path.normpath(head)
+    # the following conditional is necessary for Python-2.0 and above,
+    # since os.path.normpath no longer strips the trailing /
+    if len(h) > 2 and h[-1] == os.sep:
+        h = h[:-1]
     path = os.path.normpath(path)
     if os.path.commonprefix((h, path),1) <> h or len(h) == 0:
         return path
