@@ -1,0 +1,34 @@
+This document describes how to install the tools necessary for 
+compiling Python for the Palm.  
+
+
+INSTALLATION
+
+Either:
+
+Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
+prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install.
+
+Or:
+
+Download the file prc-tools-0.6.0-1.i386.rpm.  This file contains
+prc-tools.0.6.0beta, the fixes and pilrc-2.6 and installs in
+<prefix>=/usr/local/palm.  
+
+Then:
+
+*  Download the "Palm OS SDK 3.5 Headers and Libraries" from
+http://www.palmos.com/dev/tech/tools.
+
+*  Unpack the headers into <prefix>/com, such that the resulting path
+to the directory "Core" is <prefix>/com/sdk/include/Core.
+
+*  Copy libPalmOSGlue.a and libNetSocket.a into <prefix>/m68k-palmos-coff/lib.
+See KNOWN PROBLEMS below for libNetSocket.a caveat.
+
+
+KNOWN PROBLEMS
+
+The supplied libNetSocket.a supplied with the SDK has given me problems in the
+past.  Download NetSocket.c from the Palm (found in the SDK for Windows
+Platforms), recompile and create a new libNetSocket.a.
