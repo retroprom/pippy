@@ -200,7 +200,11 @@ static char * number(char * str, long num, int base, int size, int precision
 	if (num == 0)
 		tmp[i++]='0';
 	else while (num != 0)
-		tmp[i++] = digits[do_div(num,base)];
+	  {int __res; 
+	  __res = ((unsigned long) num) % (unsigned) base;
+	  num = ((unsigned long) num) / (unsigned) base;
+		tmp[i++] = digits[__res];
+	  }
 	if (i > precision)
 		precision = i;
 	size -= precision;
