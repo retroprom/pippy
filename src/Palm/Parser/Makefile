@@ -37,7 +37,7 @@ POBJS=		acceler.o grammar1.o \
 #		metagrammar.o
 
 # uncomment the following when WITHOUT_COMPILER == 1
-## POBJS=
+POBJS=
 
 AROBJS=		$(POBJS) myreadline.o
 OBJS=		$(AROBJS) intrcheck.o
