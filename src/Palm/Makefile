@@ -43,7 +43,7 @@ clean_python: clean_glue
 	make -f Makefile clean
 	rm -f the_python
 
-PIPPY_NAME=pippy-$(VERSION)
+PIPPY_NAME=pippy-$(PIPPY_VERSION)
 PIPPY_DIR=$(PIPPY_NAME)
 dist: all
 	rm -rf $(PIPPY_DIR)
