@@ -9,6 +9,7 @@
 #include "kludge.h"
 #include "_palmutils.h"
 #include "netutil.h"
+#include "palmnetmodule.h"
 
 static PyObject *palmnet_error;
 extern UInt16 AppNetRefnum;
@@ -30,10 +31,6 @@ static PyObject *palmnet_refcount(PyObject *self, PyObject *args) SEG_PALMNETMOD
 static int init_syslib() SEG_PALMNETMODULE_C;
 static void palmnet_fini(void) SEG_PALMNETMODULE_C;
 static void _close(void) SEG_PALMNETMODULE_C;
-PyObject *Palm_InitNetwork() SEG_PALMNETMODULE_C;
-int PalmNet_EnsureOpen() SEG_PALMNETMODULE_C;
-int PalmNet_IsOpen(void) SEG_PALMNETMODULE_C;
-void initpalmnet(void) SEG_PALMNETMODULE_C;
 
 
 
@@ -233,7 +230,7 @@ int PalmNet_EnsureOpen(){
 }
 
 
-PyObject *Palm_InitNetwork() {
+PyObject *PalmNet_InitNetwork() {
 	/* exported interface */
 	return init_helper();
 }
