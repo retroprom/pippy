@@ -72,9 +72,9 @@ typedef WFILE RFILE; /* Same struct with different invariants */
 #include "other/marshal_c.h"
 
 static void
-w_more(c, p)
-	char c;
-	WFILE *p;
+w_more(
+       char c,
+       WFILE *p)
 {
 	int size, newsize;
 	if (p->str == NULL)
