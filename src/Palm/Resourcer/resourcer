@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+# only recent revisions (>1.5.2) contain the filecmp module
+# check for it
+try:
+	import filecmp
+except ImportError:
+	print "Unable to locate the filecmp module"
+	print "Upgrade python to greater than 1.5.2"
+	import sys
+	sys.exit()
+
+if __name__ == '__main__':
+	import Resourcer.resourcer
+	Resourcer.resourcer.main()
+

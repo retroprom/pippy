@@ -1,0 +1,75 @@
+OURLIB = pylib
+FULLNAME = "Python VM"
+CREATOR = PyLb
+
+PYTHONLIB = libpython1.5.a
+SEGMENT_LIST = pseg0 pseg1 pseg2 pseg2A pseg2B pseg3 pseg4 pseg6 pseg8 pseg9 pseglibc
+
+# Note - need to include the GLibc stub to avoid using
+# the installed libc.a library
+
+###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libsocket.a
+###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libNetSocket.a
+SOCKETLIB= ../NetSocket.o
+###SOCKETLIB= -lNetSocket
+
+OBJS = $(PYTHONLIB)
+
+# end
+
+CC = m68k-palmos-coff-gcc
+AS = m68k-palmos-coff-as -mno-68881 -m68000 -l
+
+#uncomment this if you want to build a gdb debuggable version
+#DEFINES = -DDEBUG
+
+INCLUDES = -I./include 
+CFLAGS = -fno-builtin -O2 -g -Wall $(DEFINES) $(INCLUDES)
+
+OBJRES = m68k-palmos-coff-obj-res
+AR = m68k-palmos-coff-ar
+RANLIB = m68k-palmos-coff-ranlib
+
+BUILDPRC = build-prc
+
+
+all: $(OURLIB).prc $(OURLIB)-stub-a4.o
+
+$(OURLIB).exp: $(PYTHONLIB)
+	m68k-palmos-coff-exportlist $(PYTHONLIB) > $(OURLIB).exp
+
+$(OURLIB)-hdr.s: $(OURLIB).exp
+	m68k-palmos-coff-glibhdrgen < $(OURLIB).exp > $(OURLIB)-hdr.s
+
+$(OURLIB)-stub-a4.s: $(OURLIB).exp
+	m68k-palmos-coff-glibstubgen $(CREATOR) a4data < $(OURLIB).exp > $(OURLIB)-stub-a4.s
+
+
+$(OURLIB): $(OBJS) multiseg.ld $(OURLIB)-hdr.o multisegstub.o
+	$(CC) -v -shared $(CFLAGS) -T multiseg.ld -o $(OURLIB) $(OURLIB)-hdr.o \
+	      $(OBJS) multisegstub.o $(SOCKETLIB)
+
+multiseg.ld multisegstub.s:
+	m68k-palmos-coff-multisegstubgen -l $(SEGMENT_LIST)
+
+
+# a bit if ugliness, because obj-res cannot handle multiple
+# segmented GLib shared libraries
+#  1) first create the code (multisegments, not including main segment) and data
+#  2) create the GLib0000.*.grc resource for our GLib library (main segment)
+#  3) remove the other GLib*grc files
+grc.stamp: $(OURLIB)
+#	$(OBJRES) -c code 2 -d data 0 -D 1 $(OURLIB) $(SEGMENT_LIST)
+	$(OBJRES) -l $(OURLIB) $(SEGMENT_LIST)
+#	mv GLib0000.$(OURLIB).grc tmp
+#	\rm GLib000*grc
+#	mv tmp GLib0000.$(OURLIB).grc
+	touch grc.stamp
+
+$(OURLIB).prc: $(OURLIB) $(OBJS) $(OURLIB)-hdr.o grc.stamp
+	cp resources/*.bin .
+	$(BUILDPRC) -l $(OURLIB).prc $(FULLNAME) $(CREATOR) *.$(OURLIB).grc *.bin
+
+clean:
+	rm -f *.o $(OURLIB)-hdr* $(OURLIB) *.[pg]rc
+	rm -f $(OURLIB)-stub* $(OURLIB)-mwstub* errs *.s *.ld *.exp grc.stamp
