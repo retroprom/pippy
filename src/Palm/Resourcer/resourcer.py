@@ -112,6 +112,7 @@ def main():
 
     # output files
     frozen_c = 'app.c'
+    frozen_rcp = 'app.rcp'    
     config_c = 'config.c'
     target = 'a.out'                    # normally derived from script name
     makefile = 'Makefile'
@@ -252,6 +253,7 @@ def main():
             usage('%s: mkdir failed (%s)' % (odir, str(msg)))
     if odir:
         frozen_c = os.path.join(odir, frozen_c)
+        frozen_rcp = os.path.join(odir, frozen_rcp)
         config_c = os.path.join(odir, config_c)
         target = os.path.join(odir, target)
         makefile = os.path.join(odir, makefile)
@@ -317,10 +319,12 @@ def main():
     except os.error:
         backup = None
     outfp = open(frozen_c, 'w')
+    resfp = open(frozen_rcp, 'w')
     try:
-        make_resource.make_resource(outfp, dict, debug, custom_entry_point, odir=odir)
+        make_resource.make_resource(resfp, outfp, dict, debug, custom_entry_point, odir=odir)
     finally:
         outfp.close()
+        resfp.close()
     if backup:
         if filecmp.cmp(backup, frozen_c):
             sys.stderr.write('%s not changed, not written\n' % frozen_c)
