@@ -37,7 +37,6 @@
 
 */
 
-
 #include "Python.h"
 #include <PalmOS.h>
 #include <stdio.h>
@@ -196,7 +195,11 @@ dbmem_addPyObject(PyObject *s) {
 	PyObject *res;
 	
 	s->ob_refcnt = PALMDM_REFCNT;
+#ifdef USE_DLMALLOC
+	res = (PyObject *) dbmem_addentry((void *)s, malloc_usable_size(s));
+#else
 	res = (PyObject *) dbmem_addentry((void *)s, MemPtrSize(s));
+#endif
 	s->ob_refcnt = saved_refcnt;
 
 	return res;
@@ -347,7 +350,7 @@ dbmem_set( void *recP, UInt8 value, UInt32 count)
 void
 dbmem_write( void *recP, UInt32 offset, void *srcP, UInt32 count)
 {
-	Err err;
+  /*	Err err;*/
 
 	DMESSAGE("dbmem_write/start");
 
