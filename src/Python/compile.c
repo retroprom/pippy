@@ -55,6 +55,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 #include <ctype.h>
 #include "other/compile0_c.h"
+#include "dbmem.h"
 
 /* Three symbols from graminit.h are also defined in Python.h, with
    Py_ prefixes to their names.  Python.h can't include graminit.h
@@ -285,6 +286,10 @@ PyCode_New(argcount, nlocals, stacksize, flags,
 		co->co_varnames = varnames;
 		Py_INCREF(filename);
 		co->co_filename = filename;
+		
+		/* pippy - be sure the filename is interned */
+		PyString_InternInPlace(&(co->co_filename));
+
 		Py_INCREF(name);
 		co->co_name = name;
 		co->co_firstlineno = firstlineno;
@@ -3433,7 +3438,7 @@ jcompile(n, filename, base)
 		varnames = PyList_AsTuple(sc.c_varnames);
 		filename = PyString_InternFromString(sc.c_filename);
 		name = PyString_InternFromString(sc.c_name);
-		if (!PyErr_Occurred())
+		if (!PyErr_Occurred()) {
 			co = PyCode_New(sc.c_argcount,
 					   sc.c_nlocals,
 					   sc.c_maxstacklevel,
@@ -3446,6 +3451,32 @@ jcompile(n, filename, base)
 					   name,
 					   sc.c_firstlineno,
 					   sc.c_lnotab);
+#if 0
+/* We don't want to store interactive compiles in the DM - they are
+   generally short lived.  This may change if we need to compile modules
+   on the fly and store the temporary results in a database.
+*/
+
+/* #ifdef PALMDM_CODE_OBJECTS				 */
+			/* try to intern the result */
+			DMESSAGE("compile: before code");
+			if (co != NULL) {
+				PyObject *res;
+				if ( (res = dbmem_addPyObject((PyObject *) co)) != NULL) {
+					Py_XINCREF(co->co_code);
+					Py_XINCREF(co->co_consts);
+					Py_XINCREF(co->co_names);
+					Py_XINCREF(co->co_varnames);
+					Py_XINCREF(co->co_filename);
+					Py_XINCREF(co->co_name);
+					Py_XINCREF(co->co_lnotab);
+
+					Py_DECREF(co);
+					co = (PyCodeObject *)res;
+				}
+			}
+#endif /* PALMDM_CODE_OBJECTS */
+		}
 		Py_XDECREF(consts);
 		Py_XDECREF(names);
 		Py_XDECREF(varnames);

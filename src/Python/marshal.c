@@ -38,6 +38,7 @@ PERFORMANCE OF THIS SOFTWARE.
 #include "longintrepr.h"
 #include "compile.h"
 #include "marshal.h"
+#include "dbmem.h"
 
 #define TYPE_NULL	'0'
 #define TYPE_NONE	'N'
@@ -645,12 +646,19 @@ r_object(p)
 				firstlineno = r_short(p);
 				lnotab = r_object(p);
 			}
+			DMESSAGE("marshal: before code");
 			
 			if (!PyErr_Occurred()) {
 				v = (PyObject *) PyCode_New(
 					argcount, nlocals, stacksize, flags, 
 					code, consts, names, varnames,
 					filename, name, firstlineno, lnotab);
+
+				DMESSAGE("marshal co created");
+#ifdef PALMDM_CODE_OBJECTS				
+				/* try to intern the result */
+				v = dbmem_addPyCodeObject(v);
+#endif /* PALMDM_CODE_OBJECTS */
 			}
 			else
 				v = NULL;
