@@ -71,7 +71,9 @@ palm_selectmodule.c:
 Since we have eliminated floating point objects in the interest of
 reducing code footprint, the time specifier for select has been
 changed to a tuple of the following form: (time_seconds,
-time_micro_seconds).  
+time_micro_seconds).  So, the call now has the following signature:
+select(rlist, wlist, xlist[, (timeout_sec, timeout_usec)]) -> (rlist, wlist, xlist)
+
 
 The following modules are PalmOS specific.  Most of these represent
 the beginning of a more thorough implementation.  Documentation is
