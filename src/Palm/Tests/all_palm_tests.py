@@ -1,5 +1,11 @@
 from test_support import *
 
+try:
+    compile("","","")
+    has_compiler = 1
+except MissingFeatureError:
+    has_compiler = 0
+
 import sys
 print 'test_b1'
 import test_b1
@@ -22,8 +28,9 @@ import test_pow
 del test_pow
 unload('test_pow')
 
-# print "test_grammar"
-# import test_grammar
+if has_compiler:
+    print "test_grammar"
+    import test_grammar
 
 print "all tests passed"
 
