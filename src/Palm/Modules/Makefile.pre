@@ -11,7 +11,7 @@
 
 MODOBJS=	_MODOBJS_
 MODLIBS=	_MODLIBS_
-PALM_CFLAGS=	-fno-builtin -Wall -I/localhome/collins/Palm/libs/libc/include -I/localhome/collins/Palm/Python/python/dist/src/Palm/Include
+PALM_CFLAGS=	-fno-builtin -Wall -I../libc/include -I../../Include
 
 # === Variables set by configure ===
 
@@ -94,7 +94,7 @@ MAKESETUP=	$(srcdir)/makesetup
 
 # === Fixed definitions ===
 
-FIXOBJS=	config.o getpath.o getbuildinfo.o
+FIXOBJS=	config.o getpath.o getbuildinfo.o _palmutils.o
 OBJS=		$(MODOBJS) $(FIXOBJS)
 
 #MAINOBJ=	python.o
@@ -168,9 +168,9 @@ Setup:
 Setup.local:
 		echo "# Edit this file for local setup changes" >Setup.local
 
-Makefile.pre:	Makefile.pre.in ../config.status
-		(cd ..; CONFIG_FILES=Modules/Makefile.pre CONFIG_HEADERS= \
-		$(SHELL) config.status)
+#Makefile.pre:	Makefile.pre.in ../config.status
+#		(cd ..; CONFIG_FILES=Modules/Makefile.pre CONFIG_HEADERS= \
+#		$(SHELL) config.status)
 
 depend:
 		$(MKDEP) $(CFLAGS) `echo $(OBJS) | tr ' ' '\012' | \
@@ -212,14 +212,15 @@ rgbimgmodule.o: rgbimgmodule.c
 rotormodule.o: rotormodule.c
 selectmodule.o: selectmodule.c
 sgimodule.o: sgimodule.c
-socketmodule.o: socketmodule.c
 stdwinmodule.o: stdwinmodule.c
 stropmodule.o: stropmodule.c
 structmodule.o: structmodule.c
 sunaudiodev.o: sunaudiodev.c
 svmodule.o: svmodule.c
 threadmodule.o: threadmodule.c
-timemodule.o: timemodule.c
+palm_timemodule.o: palm_timemodule.c
+palm_socketmodule.o: palm_socketmodule.c
+palmnetmodule.o: palmnetmodule.c
 timingmodule.o: timingmodule.c
 xxmodule.o: xxmodule.c
 yuvconvert.o: yuvconvert.c
