@@ -1,0 +1,162 @@
+
+This distribution contains the source of the Python port to the PalmOS.  
+It is a continuation of the work Pioneered at the Aerospace corporation:)
+
+
+COPYRIGHT/LICENSE (see LICENSE)
+
+REQUIREMENTS
+
+A device running PalmOS 3.5 (XXX check this), such as the PalmIIIxe.
+We did all of our testing using POSE on the desktop and the PalmIIIxe
+device.  The test suite completes fine on both platforms.  We
+performed some early tests on PalmOS 3.0 devices.  See KNOWN PROBLEMS
+below.
+
+
+INSTALLING/RUNNING THE PALM APPLICATION
+
+The distribution includes pre-built .prc files for the interactive
+interpreter.  Simply install python.prc and pylib.prc on the Palm
+and select the python application.
+
+The interactive interface is a command-line interface based that
+implemented in LispMe (http://www.lispme.de/).  It is very limited,
+but provides a means for entering python commands and viewing the
+results.  If you wish to contribute to improving this interface,
+see the TODO list below.
+
+
+BUILDING
+
+If you wish to modify the Python VM, the interactive interpreter
+interface or add an extension module, you must first install the tools
+and unpack the distribution.  Following these steps for proper
+installation:
+
+1.  Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
+prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install
+
+2.  Be sure that there is a copy of Python1.5.2 on the system
+
+3.  Unpack the XXX.tar.gz distribution
+
+4.  Copy the files in Core/System/Unix in the PalmOS sdk-3.5 to 
+the directory XXX/src/Palm/libc/palmos_unix_includes.
+
+5.  Apply the patch in XXX/src/patches with the following command:
+	patch -??? XXX
+
+6.  cd XXX/src/Palm
+    make -f Makefile.all
+    cd Interactive
+    make
+
+7.  The .prc files (pylib.prc and python.prc) are ready for installing
+on the system.
+
+
+CHANGES
+
+The following modules have been ported to the Palm.
+
+palm_socketmodule.c
+palm_errnomodule.c
+
+palm_timemodule.c:
+The internal representation of time on the PalmOS is an unsigned long.
+So, time.time() has been modified to return a (signed) integer.
+
+palm_selectmodule.c: 
+Since we have eliminated floating point objects in the interest of
+reducing code footprint, the time specifier for select has been
+changed to a tuple of the following form: (time_seconds,
+time_micro_seconds).  
+
+The following modules are PalmOS specific.  Most of these represent
+the beginning of a more thorough implementation.  Documentation is
+forthcoming.
+./src/Modules/palmnetmodule.c	- Controls the palm network connection
+./src/Modules/palmeventmodule.c	- Exports events to the Palm
+./src/Modules/palmsysmodule.c	- Provides access to Palm system functions
+./src/Modules/palmdmmodule.c	- Database interface
+./src/Modules/palmappsmodule.c	- Standard Palm applications
+./src/Modules/palmformmodule.c	- Palm forms
+
+Added a break button, which when pressed, raises a KeyboardInterrupt
+exception.
+
+
+TODO
+
+If you are interested in helping with this effort, please email us for
+further explanation on one of the following topics.  We will also
+entertain suggestions for additional features.
+
+Improve/rewrite the interactive interface.  This will ideally be based
+on the LispMe interface.
+
+Object overhead reduction
+Code footprint reduction (remove longobject, fileobject, ...)
+Modified import mechanism - import from Palm databases, URLs, etc
+Stackless Python
+Stackless marshal (recursions can overflow stack)
+Interactive interface (similar to LispMe)
+Integration with Palm
+Port Python library modules (usually require minor mods)
+Improve startup/shutdown speed
+Improve/abstract IO Stream interface
+Python Resource Manager (track stack, heap, free freelists, etc.)
+
+
+REMOVED PYTHON FEATURES
+
+The following features have been removed from this port of Python:
+
+float, complex objects
+file IO (stdio, stderr simulated)
+documentation strings
+parser, compiler - in non-interactive environments, the parser and compiler
+		   can be easily eliminated to reduce code footprint
+most python library modules
+most extension modules
+
+KNOWN PROBLEMS
+
+Recursive Python functions can overflow the stack, possibly requiring
+a hard reset.  The implemenation of Stackless Python will overcome
+this problem.
+
+The dynamic heap is variable for systems running PalmOS version >3.5,
+currently a maximum of 256K.  Some applications may overflow this and
+get raise MemoryError.  It is possible, though, that there isn't
+enough dynamic memory left to clean up Python when that happens,
+requiring a soft reset.
+
+The port currently only runs on PalmOS 3.5 and greater.  There is a
+GUI problem with PalmOS 3.0 that we are working looking into.
+
+The current Break button implemenation responds to any touch of the
+screen, not just the button.  This can be easily fixed, but just haven't
+had the time ;(
+
+The supplied libNetSocket.a supplied with the SDK has given me problems
+in the past.  Download NetSocket.c from the Palm, recompile and link.
+
+MAILING LISTS
+http://www.endtech.com/PalmPython/mailing_lists
+
+DEVELOPMENT HOME
+http://www.endtech.com/PalmPython
+
+BUG REPORTS
+http://www.endtech.com/PalmPython/bugs
+
+CVS REPOSITORY
+http://www.endtech.com/PalmPython/cvs
+
+
+AUTHORS
+
+Jeffery D. Collins (jcollins@endtech.com)
+Michael Gorlick (mgorlick@endtech.com)
