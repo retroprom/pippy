@@ -34,6 +34,8 @@ PERFORMANCE OF THIS SOFTWARE.
 #include "Python.h"
 #include "other/object_c.h"
 
+     int static_int_max = 32767;
+
 #if defined( Py_TRACE_REFS ) || defined( Py_REF_DEBUG )
 DL_IMPORT(long) _Py_RefTotal;
 #endif

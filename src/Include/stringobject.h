@@ -96,7 +96,7 @@ extern DL_IMPORT(PyObject *) PyString_InternFromString Py_PROTO((const char *)) 
 extern DL_IMPORT(PyObject *) PyString_InternedDict Py_PROTO((PyObject *, PyObject *)) SEG_STRINGOBJECT_H;
 extern DL_IMPORT(int) PyString_FlushInterned Py_PROTO((void)) SEG_STRINGOBJECT_H;
 #else
-#ifdef SLOW_INTERN_STRINGS
+#if defined(SLOW_INTERN_STRINGS) || defined(PALMDM_INTERN_STRINGS)
 extern DL_IMPORT(void) PyString_InternInPlace Py_PROTO((PyObject **)) SEG_STRINGOBJECT_H;
 extern DL_IMPORT(PyObject *) PyString_InternFromString Py_PROTO((const char *)) SEG_STRINGOBJECT_H;
 extern DL_IMPORT(PyObject *) PyString_InternedDict Py_PROTO((PyObject *, PyObject *)) SEG_STRINGOBJECT_H;

@@ -3,6 +3,8 @@
 #include "palmglue.h"
 #include "palm_lib.h"
 
+#include "dbmem.h"
+
 
 int initialize_FrozenModules();
 int cleanup_FrozenModules();
@@ -12,6 +14,11 @@ void python_init() {
 
 	int verbose = 1;
 	int res;
+
+
+	if (dbmem_init() == -1)
+	     printf("problem with initializing scratch database\n");
+
 
 	DMESSAGE("starting python_init");
 
@@ -55,6 +62,10 @@ void python_finalize(){
 	ErrFatalDisplayIf( !res,
 			   "Problem during frozen module cleanup");
 
-	DMESSAGE("done python_finalize")
+	DMESSAGE("done python_finalize");
+
+	if (dbmem_fini() == -1)
+	     printf("problem cleaning up scratch database\n");
+
 }
 

@@ -389,12 +389,14 @@ extern DL_IMPORT(long) _Py_RefTotal;
 #endif
 #endif /* !Py_TRACE_REFS */
 
+
 #define Py_INCREF(op) (_Py_RefTotal++, (op)->ob_refcnt++)
 #define Py_DECREF(op) \
 	if (--_Py_RefTotal, --(op)->ob_refcnt != 0) \
 		; \
 	else \
 		_Py_Dealloc((PyObject *)(op))
+
 #else /* !Py_REF_DEBUG */
 
 #ifdef COUNT_ALLOCS
@@ -403,12 +405,25 @@ extern DL_IMPORT(long) _Py_RefTotal;
 #define _Py_NewReference(op) ((op)->ob_refcnt = 1)
 #endif
 
+#ifndef USE_PALMDM_REFS
 #define Py_INCREF(op) ((op)->ob_refcnt++)
 #define Py_DECREF(op) \
 	if (--(op)->ob_refcnt != 0) \
 		; \
 	else \
 		_Py_Dealloc((PyObject *)(op))
+
+#else /* USE_PALMDM_REFS */
+#define Py_INCREF(op) if ((op)->ob_refcnt != PALMDM_REFCNT) (op)->ob_refcnt++
+#define Py_DECREF(op) \
+	if ((op)->ob_refcnt != PALMDM_REFCNT) { \
+            if (--(op)->ob_refcnt != 0) \
+		; \
+	    else \
+		_Py_Dealloc((PyObject *)(op)); }
+
+#endif /* USE_PALMDM_REFS */
+
 #endif /* !Py_REF_DEBUG */
 
 /* Macros to use in case the object pointer may be NULL: */

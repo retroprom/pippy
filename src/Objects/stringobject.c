@@ -37,6 +37,8 @@ PERFORMANCE OF THIS SOFTWARE.
 #include "mymath.h"
 #include <ctype.h>
 
+#include "dbmem.h"
+
 #ifdef COUNT_ALLOCS
 int null_strings, one_strings;
 #endif
@@ -2148,7 +2150,7 @@ PyString_Format(format, args)
 	return NULL;
 }
 
-#ifdef SLOW_INTERN_STRINGS
+#if defined(SLOW_INTERN_STRINGS)
 
 static PyObject *interned;
 
@@ -2227,6 +2229,118 @@ PyString_InternedDict(self, args)
 
 
 #endif /* SLOW_INTERN_STRINGS ---------------------------- */
+
+
+
+
+
+
+#ifdef PALMDM_INTERN_STRINGS
+
+static PyObject *interned;
+
+PyObject *
+PyString_GetInterned(PyObject *op)
+{
+	/* return a borrowed reference from the interned string dictionary,
+	   or NULL if it doesn't exist. */
+
+	/* there are faster ways than this */
+
+	return PyDict_GetItem(interned, op);
+}
+
+
+void
+PyString_InternInPlace(p)
+	PyObject **p;
+{
+	register PyStringObject *s = (PyStringObject *)(*p);
+	PyObject *t;
+
+	DMESSAGE("InternInPlace");
+	if (s == NULL || !PyString_Check(s))
+		Py_FatalError("PyString_InternInPlace: strings only please!");
+
+	if (interned == NULL) {
+		interned = PyDict_New();
+		if (interned == NULL)
+			return;
+	}
+	if ((t = PyDict_GetItem(interned, (PyObject *)s)) != NULL) {
+		DMESSAGE("Already interned");
+		Py_INCREF(t); /* If a PALMDM record, decref will be ignored */
+		*p = t;
+		Py_DECREF(s); /* If a PALMDM record, decref will be ignored */
+		return;
+	}
+	
+	/* here, we make a copy of the string object in the Palm database */
+	
+	DMESSAGE("Setting db");
+	
+
+	t = dbmem_addPyObject((PyObject *)s);
+	if (t == NULL) /* problem with adding another item - don't intern */
+		return;
+
+	if (PyDict_SetItem(interned, t, t) == 0) {
+		/* return the newly interned string */
+		*p = t;
+		Py_DECREF(s);
+		{
+			char buf[30];
+			sprintf(buf, "('interned', %d)", dbmem_size(t));
+			DMESSAGE(buf);
+		}
+		return;
+	}
+
+	DMESSAGE("Done setting dict");
+	PyErr_Clear();
+}
+
+
+PyObject *
+PyString_InternFromString(cp)
+	const char *cp;
+{
+	PyObject *s = PyString_FromString(cp);
+	if (s == NULL)
+		return NULL;
+	PyString_InternInPlace(&s);
+	return s;
+}
+
+PyObject *
+PyString_InternedDict(self, args)
+	PyObject *self;
+	PyObject *args;
+{
+	
+	if (interned != NULL) {
+		PyObject *d;
+
+		d = PyDict_New();
+		if (d == NULL)
+			return NULL;
+		return PyDict_Copy(interned);
+	}
+	else {
+		Py_INCREF(Py_None);
+		return Py_None;
+
+	}
+}
+
+
+#endif /* PALMDM_INTERN_STRINGS ---------------------------- */
+
+
+
+
+
+
 
 
 

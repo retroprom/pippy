@@ -594,14 +594,26 @@
 #define SMALL_PLATFORM 1
 
 #define DONT_SHARE_SHORT_STRINGS 1
+
+/* These macros pertain to using the Palm Datamanager */
+
+#define USE_PALMDM_REFS 1
+
+#ifdef USE_PALMDM_REFS
+#define PALMDM_REFCNT 32767
+#define PALMDM_INTERN_STRINGS 
+#define PALMDM_CODE_OBJECTS
+#else
+#define SLOW_INTERN_STRINGS
+#endif /* USE_PALMDM_REFS */
+
+
 /* the following has been extracted from stringobject.h to prevent
    the interning of strings */
 /* #define CACHE_HASH 1 */
-#define SLOW_INTERN_STRINGS
 
 /* #define PALM_SERIAL_IO 1 */
 /* #undef PALM_SERIAL_IO */
-#undef DEBUG_MESSAGES
 /* #define DEBUG_MESSAGES */
 
 /* CUT_EXCESS_METHODS - eliminate unnecessary methods to reduce memory usage.
@@ -609,12 +621,20 @@
 
 #define CUT_EXCESS_METHODS
 
+#define DEBUG_MESSAGES
+#define PALM_HOST_IO
+
+
 #ifdef DEBUG_MESSAGES
 #ifdef PALM_SERIAL_IO
 #include "newPalmLibs/palm_lib.h"
 #define DMESSAGE(mesg) { printSerial(mesg); }
 
-#else /* PALM_SERIAL_IO */
+#elif defined(PALM_HOST_IO)
+#include "PalmGlue/host_lib.h"
+#define DMESSAGE(mesg) {host_printf(mesg);}
+
+#else  /* PALM_SERIAL_IO */
 #define DMESSAGE(mesg) { ErrFatalDisplayIf(1, mesg); }
 #endif /* PALM_SERIAL_IO */
 
