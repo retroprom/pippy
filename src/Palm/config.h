@@ -546,10 +546,8 @@
    1) set POBJS=  in Parser/Makefile
    2) remove graminit from Python/Makefile
 */
-/*#define WITHOUT_COMPILER 1*/
-
-/* Python parser */
-/*#define WITHOUT_PARSER 1*/
+/* #define WITHOUT_COMPILER 1 */
+/* #define WITHOUT_PARSER 1 */
 
 /* Interrupts */
 #define WITHOUT_INTERRUPTS 1
@@ -591,7 +589,7 @@
 #define WITHOUT_PCREMODULE 1
 #define WITH_GLOBAL_STRUCT 1
 #define PALM_PLATFORM 1
-#define SMALL_PLATFORM 1
+/* #define SMALL_PLATFORM 1 */
 
 #define DONT_SHARE_SHORT_STRINGS 1
 
