@@ -15,5 +15,9 @@ modules.
 
 """
 
-import exceptions, types
+import copy_reg
+import test.pystone
+pystone = test.pystone
+import all_palm_tests
+
 
