@@ -519,7 +519,7 @@ PyDict_DelItem(op, key)
 	Py_INCREF(dummy);
 	old_value = ep->me_value;
 
-#ifdef USE_PALM_DB
+#ifdef PALMDM_DICT_OBJECTS
 
        	{
 	     PyObject *tmp;
@@ -528,7 +528,7 @@ PyDict_DelItem(op, key)
 	     tmp = NULL;
 	     DMMEM_WRITE_MEMBER(ep->me_value, tmp, mp->ma_table);
        	}
-#elseif
+#else
         ep->me_key = dummy;
        	ep->me_value = NULL;
 #endif
