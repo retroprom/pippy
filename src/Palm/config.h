@@ -597,12 +597,17 @@
 /* the following has been extracted from stringobject.h to prevent
    the interning of strings */
 /* #define CACHE_HASH 1 */
-/* #define SLOW_INTERN_STRINGS */
+#define SLOW_INTERN_STRINGS
 
 /* #define PALM_SERIAL_IO 1 */
 /* #undef PALM_SERIAL_IO */
 #undef DEBUG_MESSAGES
 /* #define DEBUG_MESSAGES */
+
+/* CUT_EXCESS_METHODS - eliminate unnecessary methods to reduce memory usage.
+  Some these cuts could be included under other macro defs  */
+
+#define CUT_EXCESS_METHODS
 
 #ifdef DEBUG_MESSAGES
 #ifdef PALM_SERIAL_IO
