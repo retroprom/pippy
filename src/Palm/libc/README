@@ -1,0 +1,6 @@
+This is the source to the standard GLib shared libc library
+provided with prc-tools distribution.  It has been modified
+slightly for our use, but we intend to eliminate our dependence
+on it by substituting PalmOS equivalents.  This is on our
+near term TODO list.
+
