@@ -50,9 +50,9 @@ dist: all
 	mkdir $(PIPPY_DIR)
 	mkdir $(PIPPY_DIR)/prc
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
-	cd /tmp
-	pwd
-	# cvs -q -d:pserver:jcollins@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) PalmPython)
+	(cd /tmp; cvs -q -d:pserver:jcollins@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) PalmPython)
+	(cd /tmp; tar czf $(PIPPY_NAME).tar.gz $(PIPPY_NAME))
+	cp $(PIPPY_DIR)/$(PIPPY_NAME).tar.gz .
 
 clean:
 	make -f Makefile.python clean
