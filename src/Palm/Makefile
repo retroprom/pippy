@@ -1,4 +1,4 @@
-SUBDIRS= the_libc the_python the_glue the_glib
+SUBDIRS= the_libc the_python the_glue the_glib the_server
 
 all: $(SUBDIRS)
 
@@ -10,7 +10,6 @@ LIBRARY= libpython$(VERSION).a
 
 LIBC_SEGMENT_DEFS = DEFS='-DUSE_SEGMENTS -DHAVE_CONFIG -DSEG_NAME=pseglibc -DQ_SEG_NAME=\"pseglibc\"'
 
-all:  the_libc the_python the_glue the_resources the_glib
 
 TAGS:
 	make -f Makefile.python TAGS
@@ -28,11 +27,16 @@ the_python: the_libc
 the_glue: the_python
 	(cd PalmGlue; make $(LIBC_SEGMENT_DEFS) LIBRARY=../$(LIBRARY) add2lib; cd ..)
 	touch the_glue
+
+the_server: the_glue
+	(cd Server;  make $(LIBC_SEGMENT_DEFS) LIBRARY=../$(LIBRARY) add2lib; cd ..)
+	touch the_server
+
 the_resources: the_glue
 	(cd resources; make; cd ..)
 	touch the_resources
 
-the_glib: the_resources
+the_glib: the_resources the_server
 	make -f Makefile.glib
 	touch the_glib
 
@@ -45,6 +49,7 @@ clean_glue: clean_glib
 clean_python: clean_glue
 	make -f Makefile clean
 	rm -f the_python
+
 
 PIPPY_NAME=pippy-$(PIPPY_VERSION)
 PIPPY_SRC=$(PIPPY_NAME)-src
@@ -81,5 +86,6 @@ clean:
 	(cd PalmGlue; make clean)
 	(cd libc; make clean)
 	(cd resources; make clean)
+	(cd Server; make clean)
 	rm -f the_*
 	rm -f *.bin
