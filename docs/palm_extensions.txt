@@ -1,0 +1,325 @@
+$Id: palm_extensions.txt,v 1.1 2001/02/20 20:59:19 sgasster Exp $
+
+This file provides the documentation for extension modules ported to
+or created specifically for the PalmOS.  Each entry consists of the
+module name and its api.  For ported extension modules, any deviations
+from the standard are noted.
+
+Note:  Naming convention of module functions are inconsistent.  Make
+all lower case.
+
+
+palm_errnomodule.c
+	Module name: errno
+	same as standard
+
+palm_selectmodule.c
+	Module name: select
+
+	same as standard:  select(rlist, wlist, xlist[, timeout])
+	except that timeout is a tuple containing (time_seconds, time_microseconds)
+
+palm_socketmodule.c
+	Module name: socket
+
+	Unsupported module functions:
+	-- getprotobyname()
+
+	Unsupported socket methods:
+	-- dup()
+	-- fromfd()
+	-- makefile()
+
+	Unsupported features:
+	-- signal
+	-- SSL
+	-- AF_UNIX sockets
+
+	New module function:
+	-- sethostname('name') -> None
+	   Sets the hostname to the string specified by name.
+
+	See the Palm Network Library documentation for additional limitations.  Among
+	the limitations include:
+	    -- maximum of 4 opened sockets
+	    -- maximum of 15 sockets in any state
+
+palm_timemodule.c:
+	Module name: time
+
+	This module was nearly completely rewritten to accomodate the
+	internal time format of the PalmOS.  The interface conforms
+	to the standard with a few exceptions:
+
+	Added the module functions:
+	-- settimezone(offset_seconds)
+	   This function sets timezone attribute of the time module, normally
+	   set at compile time in standard Python.   Set the timezone offset from UTC
+	   in seconds.
+
+	Modified module functions:	  
+	-- time()
+	   Returns a long representing the local time in seconds since
+	   Jan 1, 1970.  Since this number is greater than 31 bits, the number
+	   returned will always be negative.  The alternative is to use long objects,
+	   a feature we plan to eliminate.  Normally time returns a float, but
+	   floats are not included in the ported feature set.
+
+	-- sleep(time_in_seconds, time_in_microseconds) 
+	   Sleeps for the specified time.  The argument would normally be
+	   a floating point number of the equivalent time
+	   (time_in_seconds + time_in_microseconds * 10**(-6)).  This
+	   interface was changed to because of the lack of floatin point
+	   numbers.
+
+	-- gmtime(time) 
+	   Takes an integer argument, such as that returned by
+	   time.time() and returns the corresponding UTC time.  The integer argument
+	   is the main deviation from the standard module.
+
+	-- localtime(time) 
+	   The same as time.gmtime(), except for local time instead.
+
+	Unsupported module functions
+	-- strftime
+	-- strptime
+	-- ctime
+
+palmappsmodule.c:
+	Module name: palmapps
+	
+	This module provides a set of routines for converting a database record
+	(represented by a Python buffer) to a tuple.  Each element of the tuple
+	is a buffer and contains some aspect of the database record.  Only a 
+	minimal view of each database record type is supported.  To extract a buffer 
+	from a database, see the documentation for the palmdm module.
+
+	Module functions:
+
+	-- memo(buffer) -> memo buffer
+	   This currently returns a buffer containing the memo, not a
+	   tuple.  This will soon be changed to return a tuple containing
+	   (title, memo), where title is the first line of the memo.
+
+	-- datebook(buffer) -> (datebook_entry, note)
+
+	-- todo(buffer) -> (priority, description, note)
+	
+	-- addrbook(buffer) -> (lastName, firstName, company, phone1, phone2, phone3, phone4,
+			        phone5, address, city, state, zipCode, country, title,
+				custom1, custom2, custom3, custom4, note)
+
+palmdmmodule.c:
+	Module name: palmdm
+
+	This module is still under construction and the API, particularly with respect
+	to records, is expected to change.
+
+	Module functions:
+	-- open(database_name, [mode]) -> palmdb object
+	   This function opens the named database, currently read-only.  When
+	   finished with the database, it should be closed before exiting the application.
+
+	   Other supported modes - see the PalmOS DataManager documentation for 
+		 an explanation of each mode:
+		 o - leave the database opened after leaving the application
+		 e - exclusive mode
+		 s - show secret records
+		 N - no overlay
+
+	Methods of palmdb:
+	-- listrecords() -> list of valid record indexes
+	   
+	-- listcategories() -> list of category names
+
+	-- info() -> (name, attributes, version, crDate, modDate, bckUpDate, 
+		      modNum, None, None, type_s, creator_s)
+	   Returns the info header of the database. See the PalmOS documentation for 
+	   details.
+
+	-- queryrecord(record_index) -> palmrec object
+	   Return a palmrec object representing the raw contents of record at index
+	   record_index in the database.  When the record is no longer needed, call
+	   palmrec.release() method to unlock the database memory.
+
+	-- close()
+	   Close the database.  Prior to closing, be sure that all records have been
+	   released.
+
+	Methods of palmrec:
+	-- info() -> None
+	   Not implemented
+
+	-- getbuffer() -> buffer
+	   Returns a buffer whose contents is the raw database record.  The buffer
+	   data is not duplicated but is accessed directly from the database.  The
+	   buffer becomes invalid after the record is released.
+
+	-- release() -> None
+	   Indicates to the DataManager that the record is no longer needed.  This 
+	   step must be performed on each palmrec object before closing the database.
+	   Invoking this method invalidates the associated buffer.  That is, further
+	   attempts to access the buffer raises a ValueError.
+
+palmeventmodule.c:
+	Module name: palmevent
+
+	This module is still under development and doesn't yet provide
+	sufficient functionality for building a purely Python event
+	loop.
+
+	Module functions:
+	-- getevent
+	-- syseventavail
+	-- eventavail
+	-- syshandleevent
+	-- menuhandleevent
+	-- genericHandleEvent
+	-- ioHandleEvent
+	
+	Attributes of event object (see PalmOS event documentation):
+	-- eType
+	-- penDown
+	-- tapCount
+	-- screenX
+	-- screenY
+	-- data
+	   The member "data" of the underlying PalmOS event structure
+	   is a union of structures.  Each structure is unique for each 
+	   event type, but each contains an identification member (eg, formID, fieldID).
+	   To avoid the task of exposing each of these nested structures, the data
+	   member contains only the ID of the event.
+	   ** Change this to data.ID instead.
+	   
+
+palmformmodule.c:
+	Module name: palmform
+
+	This module exports a portion of the Palm forms interface.  This module is
+	currently under development.
+
+	Module functions:
+	-- getActiveForm
+	-- setActiveForm
+	-- initForm
+	-- alert
+	-- gotoForm
+	-- closeAllForms
+	-- saveAllForms
+	-- dispatchEvent
+
+	Methods of palmform:
+	-- draw
+	-- handleEvent
+	-- setEventHandler
+	-- setActive
+	-- setFocus
+
+	Attributes of palmform:
+	-- formId
+	-- numObjects
+
+palmnetmodule.c:
+	Module name: palmnet
+
+	This module is used for managing the network connections on the PalmOS.
+	It exports several routines in the network library, NetLib.  
+
+	Module functions:
+	-- settimeout(time_in_seconds) -> None
+	   Every socket function in the NetLib will return if the time
+	   exceeds that specified by time_in_seconds.  This differs from
+	   the standard Berkeley socket implementation and prevents
+	   the Palm device from hanging due to network problems.
+
+	-- gettimeout() -> time_in_seconds
+	
+	-- open() -> None
+	   Exports NetLibOpen
+	   Establishes a network connection.
+
+	-- isopen() -> 1 if open
+	   Returns true if the network is currently up.
+
+	-- refnum() -> number
+	   For debugging purposes, this function returns the reference number	
+	   of the NetLib shared library.
+
+	-- refcount() -> number
+	   For debugging purposes, this function returns the reference count
+	   of the NetLib library.  If other applications have opened the network,
+	   this count will be > 1.
+
+	-- close() -> None
+	   Exports NetLibClose
+	   Closes the connection.  To avoid the reconnection overhead, the network remains
+	   alive for a short period of time. 
+	   ** We need to add an argument to this function to force the network
+	   closed.
+
+palmsysmodule.c:
+	Module name: palmsys
+
+	Module functions:
+	-- getstackinfo() -> (stack_not_overflow, stack_start, stack_end)
+	   Exports  SysGetStackInfo().
+
+	   Shows whether the stack has overflowed, and the starting and ending
+	   addresses of the chunk allocated for the stack.  This does not show
+	   actual stack usage.
+	   
+	-- reset() -> None
+	   Exports SysReset().
+
+	   Performs a soft reset of the device.
+
+	-- ticksPerSecond() -> systems ticks per second
+	   Exports SysTicksPerSecond().
+	   
+	-- batteryinfo() -> (volts*100, warnThresh, criticalThresh,
+			     maxTicks, batterKind, pluggedIn, percent)
+	   Exports the system function SysBatteryInfo().
+
+	-- heapcompact(heap_id) -> None
+	   Exports MemHeapCompact()
+
+	-- heapfreebytes(heap_id) -> (amt_free, max_contig_free)
+	   Exports MemHeapFreeBytes()
+
+	-- heapid(card, heap_index) -> heap id
+	   Exports MemHeapID()
+
+	-- displayError(cond, message) -> None
+	   Exports ErrFatalDisplayIf()
+
+	   Displays a message on the screen if cond is true.
+
+Examples
+
+1.  Extracting a record from the database
+
+"""
+Extract a record from a database
+"""
+import palmdm
+db = palmdm.open('MemoDB','r')
+r = db.listrecords()
+rec = None
+
+# get record 0
+rec = db.queryrecord(0)
+
+# extract the buffer
+buf = rec.getbuffer()
+r = rope.Rope(buf)
+
+# convert to a string and print the result <Note>Try a rope here</Note>
+print r
+
+rec.release()
+db.close()
+
+
+
+	2.  Selecting on PalmStdIn
+	3.  Other socket stuff
