@@ -37,13 +37,9 @@ void python_init() {
 
 	DMESSAGE("before Py_Initialize()");
 	Py_Initialize();
-	DMESSAGE("before cleanup_FrozenModules()");
-	res = cleanup_FrozenModules();
-	ErrFatalDisplayIf( !res,
-			   "Problem during frozen module cleanup");
 
 	if (verbose)
-		fprintf(stderr, "Python %s\n%s\n",
+		fprintf(stderr, "Python %s\n%s\n\n",
 			Py_GetVersion(), Py_GetCopyright());
 	
 	PySys_SetArgv(0, NULL);
@@ -51,7 +47,14 @@ void python_init() {
 }
 
 void python_finalize(){
+	int res;
 	Py_Finalize();
+	
+	DMESSAGE("before cleanup_FrozenModules()");
+	res = cleanup_FrozenModules();
+	ErrFatalDisplayIf( !res,
+			   "Problem during frozen module cleanup");
+
 	DMESSAGE("done python_finalize")
 }
 
