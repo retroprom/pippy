@@ -99,13 +99,18 @@ PYTHONPATH=$(COREPYTHONPATH)
 socket palm_socketmodule.c
 select palm_selectmodule.c
 time   palm_timemodule.c
-errno  palm_errnomodule.c
+#errno  palm_errnomodule.c
 palmsys palmsysmodule.c
 palmdm palmdmmodule.c
 palmnet palmnetmodule.c
 palmevent palmeventmodule.c
 palmform palmformmodule.c
-palmserver palmservermodule.c -I../Server
+#palmserver palmservermodule.c -I../Server
+palmemu palmemumodule.c
+
+# Digital Creations' cStringIO and cPickle
+cStringIO cStringIO.c
+cPickle cPickle.c
 
 PALM_EXAMPLES= /home/jcollins/PALM/Examples
 
@@ -406,10 +411,6 @@ TKPATH=:lib-tk
 
 # Fred Drake's interface to the Python parser
 #parser parsermodule.c
-
-# Digital Creations' cStringIO and cPickle
-#cStringIO cStringIO.c
-#cPickle cPickle.c
 
 
 # Lee Busby's SIGFPE modules.
