@@ -65,7 +65,7 @@ extern DL_IMPORT(PyTypeObject) PyCode_Type;
 
 #define PyCode_Check(op) ((op)->ob_type == &PyCode_Type)
 
-#define CO_MAXBLOCKS 20 /* Max static block nesting within a function */
+#define CO_MAXBLOCKS 5 /* Max static block nesting within a function */
 
 /* Public interface */
 struct _node; /* Declare the existence of this type */
