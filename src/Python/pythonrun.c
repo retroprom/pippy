@@ -1162,16 +1162,26 @@ call_ll_exitfuncs()
 	fflush(stderr);
 }
 
+#ifdef PALM_PLATFORM
+#include "PalmOS.h"
+#endif
 void
 Py_Exit(sts)
 	int sts;
 {
+#ifndef PALM_PLATFORM
 	Py_Finalize();
 
 #ifdef macintosh
 	PyMac_Exit(sts);
 #else
 	exit(sts);
+#endif
+
+#else /* for PALM_PLATFORM */
+	EventType event;
+	event.eType = appStopEvent;
+	EvtAddUniqueEventToQueue(&event, 0, 0);
 #endif
 }
 
