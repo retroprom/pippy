@@ -74,7 +74,14 @@ STRINGTABLE ID BUILTIN_LIST_ITEMS
 STRINGTABLE ID MODULE_LIST_ITEMS
 "" "errno" "imp" "marshal" "palmapps" "palmdm" "palmevent" "palmform" "palmnet" "palmsys" "select" "socket" "sys" "time" "__builtin__" "__main__"
 
-STRING ID OS_VERSION_ERROR    "Pippy requires at least PalmOS 3.5"
+ALERT ID OS_VERSION_ERROR
+CONFIRMATION
+BEGIN
+  TITLE  "Unsupported OS"
+  MESSAGE "Warning: Pippy requires at least PalmOS 3.5.\n"\
+	"Memory may not be sufficient for other versions."
+  BUTTONS "Try anyway" "Bye"
+END
 
 
 ALERT ID ABOUT

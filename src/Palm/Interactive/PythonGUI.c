@@ -173,26 +173,20 @@ static Boolean StartApp()
 	char errmsg[80];
 
 
-	/* open the VM library */
-
-	GLib_PyLb_libref = GLibOpenSoft('PyLb',"Python VM", errmsg);
-	if (!GLib_PyLb_libref)
-		ErrFatalDisplayIf(GLib_PyLb_libref == NULL, "Cannot open Python VM GLib");
-
-
-	/*------------------------------------------------------------------*/
-	/* Check for PalmOS2                                                */
-	/*------------------------------------------------------------------*/
+	/* check for recent PalmOS revision */
 	error = FtrGet(sysFtrCreator, sysFtrNumROMVersion, &ver);
 	if (error || ver < 0x03500000)
 	{
-		FrmAlert(OS_VERSION_ERROR);
-		return false;
+		UInt16 res;
+		res = FrmAlert(OS_VERSION_ERROR);
+		if (res == 1) return false;
 	}
 	
-	/*------------------------------------------------------------------*/
-	/* Version-specific settings                                        */
-	/*------------------------------------------------------------------*/
+
+	/* open the VM library */
+	GLib_PyLb_libref = GLibOpenSoft('PyLb',"Python VM", errmsg);
+	if (!GLib_PyLb_libref)
+		ErrFatalDisplayIf(GLib_PyLb_libref == NULL, "Cannot open Python VM GLib");
 
 	startPanel = MAINFRAME;
 
@@ -418,7 +412,7 @@ UInt32 PilotMain(UInt16 cmd, MemPtr cmdPBP, UInt16 launchFlags)
 	EventType e;
 	short err;
 
-/*	_gdb_hook(); */
+/* 	_gdb_hook(); */
 
 	switch (cmd)
 	{
