@@ -105,6 +105,7 @@ palmdm palmdmmodule.c
 palmnet palmnetmodule.c
 palmevent palmeventmodule.c
 palmform palmformmodule.c
+palmserver palmservermodule.c -I../Server
 
 PALM_EXAMPLES= /home/jcollins/PALM/Examples
 
