@@ -1,0 +1,165 @@
+#  This file contains the manifest for the Python port to the Palm.
+#
+#  Jeffery D. Collins
+#  Copyright Endeavors Technology, Inc.
+#
+
+./docs				- Documention for the release
+./docs/Implementation_Notes	- Changes
+./docs/INSTALL.AERO		- Original Aerospace INSTALL
+./docs/README.AERO		- Original Aerospace README
+./docs/DISCLAIMER.AERO		- Original Aerospace disclaimer
+./docs/README			- New Readme
+./docs/INSTALL			- New Install
+./docs/CHANGES			- Important changes since the last release
+./docs/MANIFEST			- This file
+./docs/LICENSE			- License
+./patches			- Patches required for the build
+
+#  The following are part of the standard Python distribution.  These
+#  sources have been modified as part of the port to the Palm.
+
+./src
+./src/README
+./src/Grammar
+./src/Lib
+./src/Misc
+./src/Modules
+./src/Parser
+./src/Python
+./src/Objects
+./src/Include
+
+./src/Include/other		- These include files contain declarations
+				  necessary for multi-segmenting.
+
+# The following are ports of the respective extension modules to the palm
+./src/Modules/palm_selectmodule.c
+./src/Modules/palm_socketmodule.c
+./src/Modules/palm_timemodule.c
+./src/Modules/palm_errnomodule.c
+
+# The following extension modules are palm-specific.
+./src/Modules/palmnetmodule.c	- Controls the palm network connection
+./src/Modules/palmeventmodule.c	- Exports events to the Palm
+./src/Modules/palmeventmodule.h
+./src/Modules/_palmutils.c	- Utilities used by several modules
+./src/Modules/_palmutils.h
+./src/Modules/palmsysmodule.c	- Provides access to Palm system functions
+./src/Modules/palmdmmodule.c	- Database interface
+./src/Modules/palmappsmodule.c	- Standard Palm applications
+./src/Modules/palmformmodule.c	- Palm forms
+
+# The following directory contains sources for building the Python VM
+# shared library for the Palm.  It also contains the interactive
+# interpreter, a sample front end application to the Python VM
+# library.
+
+./src/Palm
+./src/Palm/Makefile
+./src/Palm/Makefile.all
+./src/Palm/Makefile.glib
+./src/Palm/buildno
+./src/Palm/config.h
+./src/Palm/config.h.in
+./src/Palm/install-sh
+
+>>>> We released the original Palm port with AppWrapper sources.  It
+>>>> provides a sample application that interacts with Python VM.  We
+>>>> could eliminate this in favor of just providing the interactive
+>>>> interpreter.  This ultimately may result in less confusion.
+
+./src/Palm/AppWrapper		- AppWrapper contains a generic framework for
+				  creating Palm applications
+./src/Palm/AppWrapper/Makefile
+./src/Palm/AppWrapper/frozen_importer.c
+./src/Palm/AppWrapper/main.c
+./src/Palm/AppWrapper/myfrozenmain.c
+./src/Palm/AppWrapper/python.bmp
+./src/Palm/AppWrapper/python.pbitm
+./src/Palm/AppWrapper/python.rcp
+./src/Palm/AppWrapper/pythonRsc.h
+./src/Palm/AppWrapper/app.c
+
+# Directories for building the Python interpeter
+./src/Palm/Parser
+./src/Palm/Parser/Makefile
+./src/Palm/Parser/Makefile.in
+./src/Palm/Python
+./src/Palm/Python/Makefile
+./src/Palm/Python/Makefile.in
+./src/Palm/Modules
+./src/Palm/Modules/Makefile
+./src/Palm/Modules/Makefile.pre
+./src/Palm/Modules/Makefile.pre.in
+./src/Palm/Modules/Setup
+./src/Palm/Modules/Setup.local
+./src/Palm/Modules/Setup.thread
+./src/Palm/Modules/Setup.thread.in
+./src/Palm/Modules/config.c
+./src/Palm/Modules/config.c.in
+./src/Palm/Modules/makesetup
+./src/Palm/Objects
+./src/Palm/Objects/Makefile
+./src/Palm/Objects/Makefile.in
+
+./src/Palm/PalmGlue		- Routines for accessing the Python VM from the Palm
+				  application
+./src/Palm/PalmGlue/Makefile
+./src/Palm/PalmGlue/palm_lib.c
+./src/Palm/PalmGlue/palm_lib.h
+./src/Palm/PalmGlue/palmglue.c
+./src/Palm/PalmGlue/palmglue.h
+./src/Palm/PalmGlue/pref0000.bin - Modifies the stack preference
+
+./src/Palm/Resourcer		- Module for converting Python modules to Palm resources
+./src/Palm/Resourcer/__init__.py
+./src/Palm/Resourcer/checkextensions.py
+./src/Palm/Resourcer/make_resource.py
+./src/Palm/Resourcer/modulefinder.py
+./src/Palm/Resourcer/parsesetup.py
+./src/Palm/Resourcer/resourcer
+./src/Palm/Resourcer/resourcer.py
+
+./src/Palm/Tests 		- various ported Python test modules
+./src/Palm/Tests/all_palm_tests.py
+./src/Palm/Tests/exec_test.py
+./src/Palm/Tests/palmnet_test.py
+./src/Palm/Tests/print_test.py
+./src/Palm/Tests/test2.py
+./src/Palm/Tests/test_b1.py
+./src/Palm/Tests/test_b2.py
+./src/Palm/Tests/test_grammar.py
+./src/Palm/Tests/test_pow.py
+./src/Palm/Tests/test_raise.py
+./src/Palm/Tests/test_socket.py
+./src/Palm/Tests/test_support.py
+./src/Palm/Tests/test_types.py
+./src/Palm/Tests/socket_server.py
+./src/Palm/Tests/socket_client.py
+./src/Palm/Tests/test_time.py
+
+./src/Palm/Tools		- Misc modules
+./src/Palm/Tools/palm_pdb.py	- Module for writing Python modules to a Palm database
+./src/Palm/libc			- replacement for the libc distributed with the 
+				  prc-tools-0.5.0
+
+./src/Palm/Interactive		- Source for the interactive interpreter application
+./src/Palm/Interactive/PythonGUI.c
+./src/Palm/Interactive/python_utils.c
+./src/Palm/Interactive/util.c
+./src/Palm/Interactive/PythonGUI.h
+./src/Palm/Interactive/store.h
+./src/Palm/Interactive/util.h
+./src/Palm/Interactive/Makefile
+./src/Palm/Interactive/app.c
+./src/Palm/Interactive/PythonGUI.rcp
+./src/Palm/Interactive/frozen_importer.c
+./src/Palm/Interactive/bitmaps
+./src/Palm/Interactive/bitmaps/python1.bmp
+./src/Palm/Interactive/bitmaps/python8.bmp
+
+./src/Palm/resources		- Additional resources required for the application
+./src/Palm/resources/errno.rcp
+./src/Palm/resources/Makefile
+./src/Palm/resources/README
