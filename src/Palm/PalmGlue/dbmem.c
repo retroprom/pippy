@@ -358,18 +358,18 @@ dbmem_write( void *recP, UInt32 offset, void *srcP, UInt32 count)
 /* 		DMESSAGE(buf); */
 /* 	} */
 
-	if ((err = (Err)DmWriteCheck(recP, offset, count))!=errNone) {
-	  switch(err) {
-	  case dmErrNotValidRecord:
-	    DMESSAGE("dmem_write-invalid record");
-	    break;
-	  case dmErrWriteOutOfBounds:
-	    DMESSAGE("dmem_write-out of bounds");
-	  default:
-	    DMESSAGE("dmem_write-error");
-	    break;
-	  }
-	}
+/* 	if ((err = (Err)DmWriteCheck(recP, offset, count))!=errNone) { */
+/* 	  switch(err) { */
+/* 	  case dmErrNotValidRecord: */
+/* 	    DMESSAGE("dmem_write-invalid record"); */
+/* 	    break; */
+/* 	  case dmErrWriteOutOfBounds: */
+/* 	    DMESSAGE("dmem_write-out of bounds"); */
+/* 	  default: */
+/* 	    DMESSAGE("dmem_write-error"); */
+/* 	    break; */
+/* 	  } */
+/* 	} */
 	DmWrite(recP, offset, srcP, count);
 	DMESSAGE("dbmem_write/end");
 }
