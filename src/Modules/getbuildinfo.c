@@ -1,4 +1,4 @@
-#include "config.h"
+#include "Python.h"
 
 #ifdef macintosh
 #include "macbuildno.h"
