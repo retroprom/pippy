@@ -148,6 +148,9 @@ PyDict_New()
 	mp->ma_table = NULL;
 	mp->ma_fill = 0;
 	mp->ma_used = 0;
+#ifdef PALMDM_DICT_OBJECTS
+	mp->db_index = 0;
+#endif
 	return (PyObject *)mp;
 }
 
@@ -259,10 +262,11 @@ insertdict(mp, key, hash, value)
 		old_value = ep->me_value;
 #ifdef PALMDM_DICT_OBJECTS
 		DMESSAGE("dict: dbmem_write");
-
-		DMMEM_WRITE_MEMBER(ep->me_value, value, mp->ma_table);
-
-		DMESSAGE("dict: dbmem_write/done");
+	     if (mp->db_index)
+	       DMMEM_WRITE_MEMBER(ep->me_value, value, mp->ma_table);
+	     else
+	       ep->me_value = value;
+	     DMESSAGE("dict: dbmem_write/done");
 #else
 		ep->me_value = value;
 #endif
@@ -275,6 +279,7 @@ insertdict(mp, key, hash, value)
 		else
 			Py_DECREF(ep->me_key);
 #ifdef PALMDM_DICT_OBJECTS
+	     if (mp->db_index)
 		{ 
 
 		  dictentry tmpEntry;
@@ -282,24 +287,19 @@ insertdict(mp, key, hash, value)
 		  tmpEntry.me_hash = hash;
 		  tmpEntry.me_value = value;
 		  DMESSAGE("dict: dbmem_write entry");
-		  {
-		       char buf[100];
-		       sprintf(buf, "dict:recP, offset, srcP, count = %p %ld %p %ld", 
-			       mp->ma_table, 
-			      (unsigned long)ep - (unsigned long)mp->ma_table, 
-			       &tmpEntry, 
-			       sizeof(dictentry));
-		       DMESSAGE(buf);
-		  }
 
 		  dbmem_write(mp->ma_table, 
 			      (unsigned long)ep - (unsigned long)mp->ma_table, 
-/* 			      ep - mp->ma_table,  */
 			      &tmpEntry, 
 			      sizeof(dictentry));
 
 		  DMESSAGE("dict: dbmem_write entry/done");
 		}
+	     else {
+		ep->me_key = key;
+		ep->me_hash = hash;
+		ep->me_value = value;
+	     }
 #else
 		ep->me_key = key;
 		ep->me_hash = hash;
@@ -342,7 +342,12 @@ dictresize(mp, minused)
 	}
 #ifdef PALMDM_DICT_OBJECTS
 	DMESSAGE("dict: dbmem_create entry");
-	newtable = (dictentry *) dbmem_createentry(&(mp->db_index), sizeof(dictentry) * newsize);
+	if (newsize > 16)
+	  newtable = (dictentry *) dbmem_createentry(&(mp->db_index), sizeof(dictentry) * newsize);
+	else {
+	  newtable = (dictentry *) malloc(sizeof(dictentry) * newsize);
+	  mp->db_index=0;
+	}
 	DMESSAGE("dict: dbmem_create entry/done");
 #else
 	newtable = (dictentry *) malloc(sizeof(dictentry) * newsize);
@@ -353,7 +358,10 @@ dictresize(mp, minused)
 	}
 #ifdef PALMDM_DICT_OBJECTS
 	DMESSAGE("dict: dbmem_set");
-	dbmem_set(newtable,'\0', sizeof(dictentry) * newsize);
+	if (mp->db_index)
+	  dbmem_set(newtable,'\0', sizeof(dictentry) * newsize);
+	else
+	  memset(newtable, '\0', sizeof(dictentry) * newsize);
 	DMESSAGE("dict: dbmem_set/done");
 #else
 	memset(newtable, '\0', sizeof(dictentry) * newsize);
@@ -382,7 +390,10 @@ dictresize(mp, minused)
 #ifdef PALMDM_DICT_OBJECTS
 	if (oldtable != NULL) {
 	     DMESSAGE("dict: dbmem_deleteentry");
-	     dbmem_deleteentry(oldindex, oldtable);
+	     if (oldindex)
+	       dbmem_deleteentry(oldindex, oldtable);
+	     else
+	       PyMem_XDEL(oldtable);	  
 	     DMESSAGE("dict: dbmem_deleteentry/done");
 	}
 #else
@@ -520,13 +531,17 @@ PyDict_DelItem(op, key)
 	old_value = ep->me_value;
 
 #ifdef PALMDM_DICT_OBJECTS
-
+	if (mp->db_index)
        	{
 	     PyObject *tmp;
 	     tmp = dummy;
 	     DMMEM_WRITE_MEMBER(ep->me_key, tmp,  mp->ma_table);
 	     tmp = NULL;
 	     DMMEM_WRITE_MEMBER(ep->me_value, tmp, mp->ma_table);
+       	}
+       	else {
+       	    ep->me_key = dummy;
+	    ep->me_value = NULL;
        	}
 #else
         ep->me_key = dummy;
@@ -563,7 +578,10 @@ PyDict_Clear(op)
 #ifdef PALMDM_DICT_OBJECTS
 	if (table != NULL) {
 		DMESSAGE("dict Clear: dbmem_deleteentry");
-		dbmem_deleteentry(mp->db_index, table);
+		if (mp->db_index)
+		  dbmem_deleteentry(mp->db_index, table);
+		else
+		  PyMem_DEL(table);
 		DMESSAGE("dict Clear: dbmem_deleteentry");
 	}
 #else
@@ -617,7 +635,10 @@ dict_dealloc(mp)
 #ifdef PALMDM_DICT_OBJECTS
 	if (mp->ma_table != NULL) {
 		DMESSAGE("dict dealloc: dbmem_deleteentry");
-		dbmem_deleteentry(mp->db_index, mp->ma_table);
+		if (mp->db_index)
+		  dbmem_deleteentry(mp->db_index, mp->ma_table);
+		else
+		  PyMem_XDEL(mp->ma_table);
 		DMESSAGE("dict dealloc: dbmem_deleteentry");
 	}
 #else
