@@ -52,7 +52,7 @@ dist: all
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
 	(cd /tmp; cvs -q -d:pserver:jcollins@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) Pippy)
 	(cd /tmp; tar czf $(PIPPY_NAME).tar.gz $(PIPPY_NAME))
-	cp $(PIPPY_DIR)/$(PIPPY_NAME).tar.gz .
+	cp /tmp/$(PIPPY_NAME).tar.gz .
 
 clean:
 	make -f Makefile.python clean
