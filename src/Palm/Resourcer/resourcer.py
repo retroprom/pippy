@@ -113,7 +113,8 @@ def main():
     # modules that are imported by the Python runtime
     implicits = ["exceptions"]
     ###implicits = [] # exceptions is already present in pymod.prc
-    exclude = ['strop']
+    exclude = ['strop', 'dos', 'dospath', 'mac', 'macpath', 'MACFS', 'posix',
+               'stat', 'os2', 'ntpath', 'stringold', 'tempfile']
 
     # output files
     frozen_c = 'app.c'
@@ -125,7 +126,7 @@ def main():
 
     # parse command line
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'r:de:hmo:p:P:qs:wx:l:')
+        opts, args = getopt.getopt(sys.argv[1:], 'Rr:de:hmo:p:P:qs:wx:l:')
     except getopt.error, msg:
         usage('getopt error: ' + str(msg))
 
@@ -161,7 +162,11 @@ def main():
         if o == '-r':
             f,r = string.split(a,"=", 2)
             replace_paths.append( (f,r) )
-
+        if o == '-R':
+            l = filter(None, sys.path)                           # remove empty entries
+            r = map(None, l, len(l) * [''])                      # map pathnames to ''
+            map(replace_paths.append, r)                         # add items to replace list
+        
     # default prefix and exec_prefix
     if not exec_prefix:
         if prefix:
