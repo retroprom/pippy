@@ -598,7 +598,7 @@ BUILD_FUNC_DEF_2(PySocketSock_palmos_accept,PySocketSockObject *,s, PyObject *,a
 	PyObject *res = NULL;
 
 
-	if (!PyArg_Parse(args,"|O", &o))
+	if (!PyArg_ParseTuple(args,"|O", &o))
 		return NULL;
 
 	if (o == Py_None)
