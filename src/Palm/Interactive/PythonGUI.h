@@ -40,7 +40,7 @@
 
 #define ABOUT                 1140
 
-#define OUTPUT_SIZE            256
+#define OUTPUT_SIZE           1024
 #define INPUT_SIZE            4096
 #define READ_SIZE               64
 
