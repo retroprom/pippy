@@ -1,9 +1,7 @@
-VERSION = '$Id: easytest.py,v 1.2 2001/02/13 20:12:43 mgorlick Exp $'
+VERSION = '$Id: easytest.py,v 1.3 2001/03/07 21:09:01 mgorlick Exp $'
 
 import sys
-import string
 import traceback
-from types import ListType, TupleType
 
 STANDARD_ERROR = sys.stderr
 
@@ -116,7 +114,7 @@ class Suite:
     return n
 
   def Enroll(self, enrollee):
-    if type(enrollee) in (ListType, TupleType):
+    if type(enrollee) in (type([]), type(())):
       for x in enrollee:
         self.experiments.append(x)
     else:
@@ -167,7 +165,7 @@ class Text_Outcome(Outcome):
     i = 1
     for test, trace in self.errors:
       self.stream.write("Error %i:%s\n" % (i, test))
-      self.stream.write(string.join(apply(traceback.format_exception, trace), ''))
+      self.stream.write(''.join(apply(traceback.format_exception, trace)))
       self.stream.write('\n')
       i = i + 1
 
@@ -175,7 +173,7 @@ class Text_Outcome(Outcome):
     i = 1
     for test, trace in self.failures:
       self.stream.write("Failure %i:%s\n" % (i, test))
-      self.stream.write(string.join(apply(traceback.format_exception, trace), ''))
+      self.stream.write(''.join(apply(traceback.format_exception, trace)))
       self.stream.write('\n')
       i = i + 1
 
