@@ -2,13 +2,33 @@
 
 # only recent revisions (>1.5.2) contain the filecmp module
 # check for it
+
 import sys
 
+# test for Python standard library correctness
+
+
 if not ( 0x10502 <= (sys.hexversion >> 8) <= 0x10600 ):
-	print "Invalid Python version"
-	print "Must use either Python 1.5.2 or 1.6"
+	print """
+ERROR:
+	Invalid Python version
+	Use either Python 1.5.2 or 1.6
+"""
 	sys.exit()
 	
+
+import exceptions
+try:
+	exceptions.MissingFeatureError
+except AttributeError:
+	print """
+ERROR:
+	The path to the standard Python library must be
+	the one supplied with the Pippy distribution.  Prepend either
+	PYTHONPATH or sys.path with the correct path.
+"""
+	sys.exit()
+
 
 if __name__ == '__main__':
 	import Resourcer.resourcer
