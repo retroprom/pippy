@@ -78,6 +78,32 @@ When importing a module from a package, note that __import__('A.B', ...)\n\
 returns package A when fromlist is empty, but its submodule B when\n\
 fromlist is not empty.");
 
+static PyObject *
+builtin_typesize(PyObject *self, PyObject *args)
+{
+        PyObject *v;
+        int s;
+	int adjust=0;
+        PyTypeObject *t;
+
+        if (!PyArg_ParseTuple(args, "O|i:typesize", &v, &adjust))
+                return NULL;
+        if (PyType_Check(v))
+                t = (PyTypeObject *)v;
+        else
+                t = (PyTypeObject *)v->ob_type;
+
+        /* Handle the singletons None and Ellipsis */
+        if (t == Py_None->ob_type || t == Py_Ellipsis->ob_type)
+                return Py_BuildValue("ii", 0,0);
+        s = t->tp_basicsize;
+#ifdef Py_TRACE_REFS
+	if (adjust) {
+        s -= 2*sizeof(struct _object *);
+	}
+#endif 
+        return Py_BuildValue("(ii)", s, t->tp_itemsize);
+}
 
 static PyObject *
 builtin_abs(self, args)
@@ -2195,57 +2221,61 @@ Return whether class C is a subclass (i.e., a derived class) of class B.");
 
 
 static PyMethodDef builtin_methods[] = {
-	{"__import__",	builtin___import__, 1, USE_DOC(import_doc)},
+        {"typesize",    builtin_typesize, 1, NULL},
+#ifdef CUT_EXCESS_METHODS
 	{"abs",		builtin_abs, 1, USE_DOC(abs_doc)},
-	{"apply",	builtin_apply, 1, USE_DOC(apply_doc)},
-	{"buffer",	builtin_buffer, 1, USE_DOC(buffer_doc)},
-	{"callable",	builtin_callable, 1, USE_DOC(callable_doc)},
-	{"chr",		builtin_chr, 1, USE_DOC(chr_doc)},
 	{"cmp",		builtin_cmp, 1, USE_DOC(cmp_doc)},
+	{"callable",	builtin_callable, 1, USE_DOC(callable_doc)},
 	{"coerce",	builtin_coerce, 1, USE_DOC(coerce_doc)},
 	{"compile",	builtin_compile, 1, USE_DOC(compile_doc)},
 	{"complex",	builtin_complex, 1, USE_DOC(complex_doc)},
 	{"delattr",	builtin_delattr, 1, USE_DOC(delattr_doc)},
-	{"dir",		builtin_dir, 1, USE_DOC(dir_doc)},
 	{"divmod",	builtin_divmod, 1, USE_DOC(divmod_doc)},
 	{"eval",	builtin_eval, 1, USE_DOC(eval_doc)},
 	{"execfile",	builtin_execfile, 1, USE_DOC(execfile_doc)},
 	{"filter",	builtin_filter, 1, USE_DOC(filter_doc)},
-	{"float",	builtin_float, 1, USE_DOC(float_doc)},
 	{"getattr",	builtin_getattr, 1, USE_DOC(getattr_doc)},
+	{"float",	builtin_float, 1, USE_DOC(float_doc)},
 	{"globals",	builtin_globals, 1, USE_DOC(globals_doc)},
+	{"input",	builtin_input, 1, USE_DOC(input_doc)},
+	{"int",		builtin_int, 1, USE_DOC(int_doc)},
+	{"intern",	builtin_intern, 1, USE_DOC(intern_doc)},
+	{"issubclass",  builtin_issubclass, 1, USE_DOC(issubclass_doc)},
+	{"locals",	builtin_locals, 1, USE_DOC(locals_doc)},
+	{"long",	builtin_long, 1, USE_DOC(long_doc)},
+	{"oct",		builtin_oct, 1, USE_DOC(oct_doc)},
+	{"open",	builtin_open, 1, USE_DOC(open_doc)},
+	{"raw_input",	builtin_raw_input, 1, USE_DOC(raw_input_doc)},
+	{"reload",	builtin_reload, 1, USE_DOC(reload_doc)},
+	{"round",	builtin_round, 1, USE_DOC(round_doc)},
+	{"vars",	builtin_vars, 1, USE_DOC(vars_doc)},
+	{"ord",		builtin_ord, 1, USE_DOC(ord_doc)},
+#endif
+	{"__import__",	builtin___import__, 1, USE_DOC(import_doc)},
+	{"apply",	builtin_apply, 1, USE_DOC(apply_doc)},
+	{"buffer",	builtin_buffer, 1, USE_DOC(buffer_doc)},
+	{"chr",		builtin_chr, 1, USE_DOC(chr_doc)},
+	{"dir",		builtin_dir, 1, USE_DOC(dir_doc)},
+	{"getattr",	builtin_getattr, 1, USE_DOC(getattr_doc)},
 	{"hasattr",	builtin_hasattr, 1, USE_DOC(hasattr_doc)},
 	{"hash",	builtin_hash, 1, USE_DOC(hash_doc)},
 	{"hex",		builtin_hex, 1, USE_DOC(hex_doc)},
 	{"id",		builtin_id, 1, USE_DOC(id_doc)},
-	{"input",	builtin_input, 1, USE_DOC(input_doc)},
-	{"intern",	builtin_intern, 1, USE_DOC(intern_doc)},
-	{"int",		builtin_int, 1, USE_DOC(int_doc)},
 	{"isinstance",  builtin_isinstance, 1, USE_DOC(isinstance_doc)},
-	{"issubclass",  builtin_issubclass, 1, USE_DOC(issubclass_doc)},
 	{"len",		builtin_len, 1, USE_DOC(len_doc)},
 	{"list",	builtin_list, 1, USE_DOC(list_doc)},
-	{"locals",	builtin_locals, 1, USE_DOC(locals_doc)},
-	{"long",	builtin_long, 1, USE_DOC(long_doc)},
 	{"map",		builtin_map, 1, USE_DOC(map_doc)},
 	{"max",		builtin_max, 1, USE_DOC(max_doc)},
 	{"min",		builtin_min, 1, USE_DOC(min_doc)},
-	{"oct",		builtin_oct, 1, USE_DOC(oct_doc)},
-	{"open",	builtin_open, 1, USE_DOC(open_doc)},
-	{"ord",		builtin_ord, 1, USE_DOC(ord_doc)},
 	{"pow",		builtin_pow, 1, USE_DOC(pow_doc)},
 	{"range",	builtin_range, 1, USE_DOC(range_doc)},
-	{"raw_input",	builtin_raw_input, 1, USE_DOC(raw_input_doc)},
 	{"reduce",	builtin_reduce, 1, USE_DOC(reduce_doc)},
-	{"reload",	builtin_reload, 1, USE_DOC(reload_doc)},
 	{"repr",	builtin_repr, 1, USE_DOC(repr_doc)},
-	{"round",	builtin_round, 1, USE_DOC(round_doc)},
 	{"setattr",	builtin_setattr, 1, USE_DOC(setattr_doc)},
 	{"slice",       builtin_slice, 1, USE_DOC(slice_doc)},
 	{"str",		builtin_str, 1, USE_DOC(str_doc)},
 	{"tuple",	builtin_tuple, 1, USE_DOC(tuple_doc)},
 	{"type",	builtin_type, 1, USE_DOC(type_doc)},
-	{"vars",	builtin_vars, 1, USE_DOC(vars_doc)},
 	{"xrange",	builtin_xrange, 1, USE_DOC(xrange_doc)},
 	{NULL,		NULL},
 };
