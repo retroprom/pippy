@@ -2048,7 +2048,7 @@ call_find_module(name, path)
 	extern int fclose Py_PROTO((FILE *));
 	PyObject *fob, *ret;
 	struct filedescr *fdp;
-	char *pathname
+	char *pathname;
 	FILE *fp = NULL;
 
 	pathname = (char *)malloc(MAXPATHLEN+1);
