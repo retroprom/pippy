@@ -603,6 +603,7 @@
 #define PALMDM_REFCNT 32767
 #define PALMDM_INTERN_STRINGS 
 #define PALMDM_CODE_OBJECTS
+/* #define PALMDM_DICT_OBJECTS */
 #else
 #define SLOW_INTERN_STRINGS
 #endif /* USE_PALMDM_REFS */
@@ -621,7 +622,7 @@
 
 #define CUT_EXCESS_METHODS
 
-#define DEBUG_MESSAGES
+/* #define DEBUG_MESSAGES */
 #define PALM_HOST_IO
 
 
