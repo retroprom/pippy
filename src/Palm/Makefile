@@ -3,6 +3,7 @@ SUBDIRS= the_libc the_python the_glue the_glib
 all: $(SUBDIRS)
 
 PIPPY_VERSION= 0.6beta
+PIPPY_WIN_VERSION=0_6beta
 VERSION=	1.5
 LIBRARY= libpython$(VERSION).a
 
@@ -46,7 +47,7 @@ clean_python: clean_glue
 PIPPY_NAME=pippy-$(PIPPY_VERSION)
 PIPPY_SRC=$(PIPPY_NAME)-src
 PIPPY_SRC_DIR=/tmp/$(PIPPY_SRC)
-PIPPY_BIN=$(PIPPY_NAME)
+PIPPY_BIN=pippy$(PIPPY_WIN_VERSION)
 PIPPY_BIN_DIR=/tmp/$(PIPPY_BIN)
 
 dist: all dist_src dist_bin
