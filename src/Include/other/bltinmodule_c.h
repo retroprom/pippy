@@ -7,6 +7,7 @@
 PYCFUNCTION_PROTO(builtin___import__, PyObject) SEG_BLTINMODULE_C;
 PYCFUNCTION_PROTO(builtin_typesize, PyObject) SEG_BLTINMODULE_C;
 PYCFUNCTION_PROTO(builtin_abs, PyObject) SEG_BLTINMODULE_C;
+static int abstract_issubclass(PyObject *derived, PyObject *cls, char *err, int first) SEG_BLTINMODULE_C;
 PYCFUNCTION_PROTO(builtin_apply, PyObject) SEG_BLTINMODULE_C;
 PYCFUNCTION_PROTO(builtin_buffer, PyObject) SEG_BLTINMODULE_C;
 PYCFUNCTION_PROTO(builtin_callable, PyObject) SEG_BLTINMODULE_C;

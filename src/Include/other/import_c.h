@@ -20,8 +20,13 @@ static PyObject * import_submodule Py_PROTO((PyObject *mod,
 					     char *name, char *fullname)) SEG_IMPORT_C;
 /* end forward decls */
 
+#ifdef WITH_THREAD
 static void lock_import() SEG_IMPORT_C;
 static void unlock_import() SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_dynamic, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_resource, PyObject) SEG_IMPORT_C;
+#endif
+
 static char *make_compiled_pathname Py_PROTO((char *pathname,char *buf,	int buflen)) SEG_IMPORT_C;
 static FILE *check_compiled_module Py_PROTO((char *pathname,long mtime,	char *cpathname)) SEG_IMPORT_C;
 static PyCodeObject *read_compiled_module Py_PROTO((char *cpathname,FILE *fp)) SEG_IMPORT_C;
@@ -47,31 +52,31 @@ static struct _frozen *find_frozen Py_PROTO((char *name)) SEG_IMPORT_C;
 static PyObject *get_frozen_object Py_PROTO((char *name)) SEG_IMPORT_C;
 static PyObject *import_module_ex Py_PROTO((char *name,PyObject *globals,PyObject *locals,PyObject *fromlist)) SEG_IMPORT_C;
 
-PYCFUNCTION_PROTO(imp_get_magic) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_get_suffixes) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(call_find_module) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_find_module) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_init_builtin) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_init_frozen) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_get_frozen_object) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_is_builtin) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_is_frozen) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_magic, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_suffixes, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_find_module, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_init_builtin, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_init_frozen, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_frozen_object, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_is_builtin, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_is_frozen, PyObject) SEG_IMPORT_C;
+static PyObject *call_find_module(char *name, PyObject *path) SEG_IMPORT_C;
 static FILE * get_file Py_PROTO((char *pathname, PyObject *fob, char *mode)) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_find_module) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_get_magic) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_get_suffixes) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_module) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_new_module) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_get_frozen_object) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_init_builtin) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_init_frozen) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_is_builtin) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_is_frozen) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_compiled) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_dynamic) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_package) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_resource) SEG_IMPORT_C;
-PYCFUNCTION_PROTO(imp_load_source) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_find_module, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_magic, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_suffixes, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_module, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_new_module, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_get_frozen_object, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_init_builtin, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_init_frozen, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_is_builtin, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_is_frozen, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_compiled, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_package, PyObject) SEG_IMPORT_C;
+PYCFUNCTION_PROTO(imp_load_source, PyObject) SEG_IMPORT_C;
 static int setint Py_PROTO((PyObject *d, char *name,int value)) SEG_IMPORT_C;
+
+void initimp() SEG_IMPORT_C;
 
 #endif /* IMPORT_C_H */

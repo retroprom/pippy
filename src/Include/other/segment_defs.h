@@ -115,11 +115,14 @@
 #define SEG_APPSMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_PALMSYSMODULE_C DEF_SEGMENT(PALM_SEG_9)
 #define SEG_DMMODULE_C DEF_SEGMENT(PALM_SEG_9)
-#define SEG_CPICKLE_C DEF_SEGMENT(PALM_SEG_9)
-#define SEG_CSTRINGIO_H DEF_SEGMENT(PALM_SEG_9)
 #define SEG_CONFIG_C DEF_SEGMENT(PALM_SEG_9)
+#define SEG_CSTRINGIO_H DEF_SEGMENT(PALM_SEG_9)
+#define SEG_PALMEMUMODULE_C DEF_SEGMENT(PALM_SEG_9)
 
-/* not shown: pseglibc   - pilot-file index 12 */
+/* extension module segment - segment 10  - pilot-file index 12 */
+#define SEG_CPICKLE_C DEF_SEGMENT(PALM_SEG_10)
+
+/* not shown: pseglibc   - pilot-file index 13 */
 
 
 #define SEG_ABSTRACT_C SEG_ABSTRACT_H

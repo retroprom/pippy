@@ -60,6 +60,10 @@ static int com_newlocal_o Py_PROTO((struct compiling *c, PyObject *nameval)) SEG
 static int com_addlocal_o Py_PROTO((struct compiling *c, PyObject *nameval)) SEG_COMPILE_C;
 static int com_newlocal_o Py_PROTO((struct compiling *c, PyObject *nameval)) SEG_COMPILE_C;
 COMPNODEFUNC_PROTO(com_exec_stmt) SEG_COMPILE_C;
+static void com_add_lnotab(struct compiling *c, int addr, int line) SEG_COMPILE_C;
+static void com_addoparg(struct compiling *c, int op, int arg) SEG_COMPILE_C;
+static int com_mangle(struct compiling *c, char *name, char *buffer, int maxlen) SEG_COMPILE_C;
+static void com_set_lineno(struct compiling *c, int lineno) SEG_COMPILE_C;
 
 static int is_constant_false Py_PROTO((struct compiling *c, node *n));
 COMPNODEFUNC_PROTO(com_if_stmt) SEG_COMPILE_C;

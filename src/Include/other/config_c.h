@@ -14,6 +14,6 @@ void initpalmserver() SEG_CONFIG_C;
 void initcStringIO() SEG_CONFIG_C;
 void initcPickle() SEG_CONFIG_C;
 void initpalmapps() SEG_CONFIG_C;
-void initpalmemu();
+void initpalmemu() SEG_CONFIG_C;
 
 #endif

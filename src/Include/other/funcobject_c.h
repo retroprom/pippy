@@ -9,6 +9,7 @@ GETATTRFUNC_PROTO(func_getattr, PyFunctionObject) SEG_FUNCOBJECT_C;
 CMPFUNC_PROTO(func_compare, PyFunctionObject) SEG_FUNCOBJECT_C;
 REPRFUNC_PROTO(func_repr, PyFunctionObject) SEG_FUNCOBJECT_C;
 HASHFUNC_PROTO(func_hash, PyFunctionObject) SEG_FUNCOBJECT_C;
+static int func_setattr(PyFunctionObject *op, char *name, PyObject *value) SEG_FUNCOBJECT_C;
 
 
 #endif /* FUNCOBJECT_C_H */
