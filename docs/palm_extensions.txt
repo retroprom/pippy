@@ -1,4 +1,4 @@
-$Id: palm_extensions.txt,v 1.1 2001/02/20 20:59:19 sgasster Exp $
+$Id: palm_extensions.txt,v 1.2 2003/09/06 00:14:53 jpetrone Exp $
 
 This file provides the documentation for extension modules ported to
 or created specifically for the PalmOS.  Each entry consists of the
@@ -323,3 +323,27 @@ db.close()
 
 	2.  Selecting on PalmStdIn
 	3.  Other socket stuff
+
+
+palmwinmodule.c:
+  Module name: palmwin
+
+  Module functions: 
+  -- drawpixel(x, y) -> None
+     draws a pixel on the screen at (x, y)
+  
+  -- drawchars(s, x, y) -> None
+     draws the string s at (x, y)
+  
+  -- drawinvertchars(s, x, y) -> None
+     draws the string s in reverse colors at (x, y)
+
+  -- drawline(x0, y0, x1, x2) -> None
+     draws a line from point (x0, y0) to (x1, x2)
+  
+  -- drawrect(x, y, w, h) -> None
+     draws a rectangle with width w and height h at (x, y)
+  
+  -- erasewin() -> None
+     clears the screen
+
