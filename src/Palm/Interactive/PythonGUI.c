@@ -261,7 +261,6 @@ static Boolean MainFrameHandleEvent(EventType *e)
 
 		break;
 	case ctlSelectEvent:
-		printf("in MainFrameHandleEvent\n");
 		switch (e->data.ctlSelect.controlID)
 		{
 		case BREAK_BUTTON:
@@ -406,8 +405,6 @@ Boolean bogusEventHandler(EventType *e)
 	Boolean res;
 	SET_A4_FROM_A5;
 	/* A bogus event handler to test genericEventHandler */
-	printf("in bogusEventHandler\n");
-	printf("event type: %d\n", e->eType);
 	res = MainFrameHandleEvent(e);
 	RESTORE_A4;
 	return res;
