@@ -101,6 +101,7 @@ select palm_selectmodule.c
 time   palm_timemodule.c
 #errno  palm_errnomodule.c
 palmsys palmsysmodule.c
+palmwin palmwinmodule.c
 palmdm palmdmmodule.c
 palmnet palmnetmodule.c
 palmevent palmeventmodule.c
@@ -112,6 +113,7 @@ palmemu palmemumodule.c
 cStringIO cStringIO.c
 cPickle cPickle.c
 
+#PALM_EXAMPLES= /usr/local/palm/Examples/
 PALM_EXAMPLES= /home/jcollins/PALM/Examples
 
 # Comment the following if you don't have the PalmOS Example sources

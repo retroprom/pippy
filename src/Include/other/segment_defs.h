@@ -121,6 +121,7 @@
 
 /* extension module segment - segment 10  - pilot-file index 12 */
 #define SEG_CPICKLE_C DEF_SEGMENT(PALM_SEG_10)
+#define SEG_PALMWINMODULE_C DEF_SEGMENT(PALM_SEG_10)
 
 /* not shown: pseglibc   - pilot-file index 13 */
 

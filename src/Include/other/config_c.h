@@ -6,6 +6,7 @@ void initselect() SEG_CONFIG_C;
 void inittime() SEG_CONFIG_C;
 void initerrno() SEG_CONFIG_C;
 void initpalmsys() SEG_CONFIG_C;
+void initpalmwin() SEG_CONFIG_C;
 void initpalmdm() SEG_CONFIG_C;
 void initpalmnet() SEG_CONFIG_C;
 void initpalmevent() SEG_CONFIG_C;
