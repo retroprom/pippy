@@ -103,6 +103,7 @@ Socket methods:
 #include "kludge.h"
 #include "set_a4.h"
 #include "_palmutils.h"
+#include "netutil.h"
 
 /*  The following were gleaned from the windows version of the
     palm SDK:  sdk35-core.zip.  Also, see NetSocket.c. */
@@ -584,6 +585,79 @@ BUILD_FUNC_DEF_2(getsockaddrlen,PySocketSockObject *,s, int *,len_ret)
 /* s.accept() method */
 
 static PyObject *
+BUILD_FUNC_DEF_2(PySocketSock_palmos_accept,PySocketSockObject *,s, PyObject *,args)
+{
+	char addrbuf[256];
+	int addrlen, newfd;
+	long timeout;
+	long timeout_saved;
+	PyObject *o;
+
+	PyObject *sock = NULL;
+	PyObject *addr = NULL;
+	PyObject *res = NULL;
+
+
+	if (!PyArg_Parse(args,"|O", &o))
+		return NULL;
+
+	if (o == Py_None)
+		timeout = -1;
+	else if (PyInt_Check(o)) /* grab timeout in milliseconds */
+		timeout = PyInt_AS_LONG(o);
+	else
+	{
+		PyErr_SetString(PyExc_ValueError, "Argument must be None or an integer");
+		return NULL;
+	}
+
+	if (!getsockaddrlen(s, &addrlen))
+		return NULL;
+
+	timeout_saved = netutil_gettimeout();
+	netutil_settimeout(timeout);
+
+	Py_BEGIN_ALLOW_THREADS
+	newfd = accept(s->sock_fd, (struct sockaddr *) addrbuf, &addrlen);
+	Py_END_ALLOW_THREADS
+
+	netutil_settimeout(timeout_saved);
+
+	if (newfd < 0)
+		return palmSocket_Err();
+
+	/* Create the new object with unspecified family,
+	   to avoid calls to bind() etc. on it. */
+	sock = (PyObject *) PySocketSock_New(newfd,
+					s->sock_family,
+					s->sock_type,
+					s->sock_proto);
+	if (sock == NULL) {
+		close(newfd);
+		goto finally;
+	}
+	if (!(addr = makesockaddr((struct sockaddr *) addrbuf, addrlen)))
+		goto finally;
+
+	if (!(res = Py_BuildValue("OO", sock, addr)))
+		goto finally;
+
+  finally:
+	Py_XDECREF(sock);
+	Py_XDECREF(addr);
+	return res;
+}
+
+DEF_DOC(palmos_accept_doc, "accept() -> (socket object, address info)\n\
+\n\
+Wait for an incoming connection.  Return a new socket representing the\n\
+connection, and the address of the client.  For IP sockets, the address\n\
+info is a pair (hostaddr, port).");
+
+
+/* s.accept() method */
+
+static PyObject *
 BUILD_FUNC_DEF_2(PySocketSock_accept,PySocketSockObject *,s, PyObject *,args)
 {
 	char addrbuf[256];
@@ -629,6 +703,7 @@ DEF_DOC(accept_doc, "accept() -> (socket object, address info)\n\
 Wait for an incoming connection.  Return a new socket representing the\n\
 connection, and the address of the client.  For IP sockets, the address\n\
 info is a pair (hostaddr, port).");
+
 
 
 /* s.setblocking(1 | 0) method */
@@ -1201,6 +1276,7 @@ of the socket (flag == 1), or both ends (flag == 2).");
 static PyMethodDef PySocketSock_methods[] = {
 	{"accept",		(PyCFunction)PySocketSock_accept, 0,
 				USE_DOC(accept_doc)},
+	{"palmos_accept",	(PyCFunction)PySocketSock_palmos_accept, 1},
 	{"bind",		(PyCFunction)PySocketSock_bind, 0,
 				USE_DOC(bind_doc)},
 	{"close",		(PyCFunction)PySocketSock_close, 0,
