@@ -34,8 +34,20 @@ interface or add an extension module, you must first install the tools
 and unpack the distribution.  Following these steps for proper
 installation:
 
-1.  Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
-prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install
+1.  TOOLS
+    A) Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
+prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install.
+Alternatively, download the file prc-tools-0.6.0-1.i386.rpm.  This file contains
+prc-tools.0.6.0beta, the fixes and pilrc-2.6 and installs in
+<prefix>=/usr/local/palm.  From the SDK, copy the headers into <prefix>/com,
+such that the resulting path to the directory "Core" is
+<prefix>/com/sdk/include/Core.
+
+    B) If you wish to uses sockets on the Palm, then download NetSocket.c (it
+actually comes in library form; see the warning below) and libPalmOSGlue.a from
+www.palmos.com.  These are typically found in SDK for Windows platforms.
+Compile NetSocket.c, place in libNetSocket.a and install in
+<prefix>/m68k-palmos-coff/lib.
 
 2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
 Python-2.0 bytecodes are incompatible with this revision.
@@ -49,6 +61,23 @@ Python-2.0 bytecodes are incompatible with this revision.
 
 5.  The .prc files (pylib.prc and python.prc) are ready for installing
 on the system.
+
+6.  For the time being, to include library modules in your interpreter,
+you must perform the following:
+	a)  create a file (libwrapper.py, say) in Interactive that contains import
+	statements for the modules you wish to include
+	b)  prepend the environment variable PYTHONPATH with Lib of this distribution
+	c)  ../Resourcer/resourcer libwrapper.py
+	d)  make
+The resulting python.prc will contain the library modules as Palm resource records.
+
+7.  Some of the extensions have been shipped disabled, since they have
+additional dependencies.  The extensions palm_timemodule, palm_selectmodule and
+palm_socketmodule all depend on NetSocket.c being present.  If set B has been
+completed, then proceed to uncomment these extensions in src/Palm/Modules/Setup.
+The module palmappsmodule.c requires the Palm SDK Examples (downloadable from
+http://www.palmos.com).  See Setup for setting up the path to the headers in
+Examples.
 
 
 CHANGES
