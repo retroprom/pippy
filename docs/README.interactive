@@ -1,0 +1,13 @@
+
+RUNNING
+
+The distribution includes pre-built .prc files for the interactive
+interpreter.  Simply install python.prc and pylib.prc on the Palm and
+select the python application.
+
+The interactive interface is a command-line interface based that
+implemented in LispMe (http://www.lispme.de/).  It is very limited,
+but provides a means for entering python commands and viewing the
+results.  If you wish to contribute to improving this interface, see
+the TODO list below.
+
