@@ -50,9 +50,12 @@ dist: all
 	mkdir $(PIPPY_DIR)
 	mkdir $(PIPPY_DIR)/prc
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
+	cp ../../docs/README.interactive $(PIPPY_DIR)/prc
 	(cd /tmp; cvs -q -d:pserver:jcollins@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) Pippy)
 	(cd /tmp; tar czf $(PIPPY_NAME).tar.gz $(PIPPY_NAME))
-	cp /tmp/$(PIPPY_NAME).tar.gz .
+	(cd $(PIPPY_DIR); zip -r $(PIPPY_NAME).zip prc)
+	mv $(PIPPY_DIR)/$(PIPPY_NAME).zip .
+	mv /tmp/$(PIPPY_NAME).tar.gz .
 
 clean:
 	make -f Makefile.python clean
