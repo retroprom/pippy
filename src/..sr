@@ -1,0 +1,12 @@
+Sun Jul  9 15:56:23 PDT 2000
+
+	- removed much of the autoconfig framework
+	- minor changes to Resourcer module
+	- removed libc from the toplevel Makefile and placed in
+	  Makefile.all
+
+Sat Jul  8 21:28:37 PDT 2000
+
+	- added __INT_MAX__ to config.h to avoid modifying the gnu toolchain
+	- rearranged the palm segments
+	- replaced -lsocket with -lNetSocket in Makefile.glib and libc/Makefile
