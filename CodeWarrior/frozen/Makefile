@@ -1,15 +1,18 @@
-PYBASE=/cygdrive/c/gnu/Python
+PYBASE=/cygdrive/c/cygwin/usr/local
 PIPPYSRCBASE=../../src
 RESOURCERDIR=$(PIPPYSRCBASE)/Palm/Resourcer
-PYTHONPATH=.:$(RESOURCERDIR):$(PIPPYSRCBASE)/lib:$(PYBASE)/lib:$(PIPPYSRCBASE)/Palm/Tests:$(PIPPYSRCBASE)/Palm/Interactive
+PYTHONPATH=.:$(RESOURCERDIR):$(PIPPYSRCBASE)/lib:$(PYBASE)/lib:$(PIPPYSRCBASE)/Palm/Tests:$(PIPPYSRCBASE)/Palm/Interactive:$(PIPPYSRCBASE)/Palm/Importer
 
-PYTHON=$(PYBASE)/bin/python.exe
+PYTHON=$(PYBASE)/bin/python1.5.exe
+
+DEFAULT_MODULES = $(PIPPYSRCBASE)/Palm/Interactive/default_modules.py
 
 all:: app.rcp
 
-$(PIPPYSRCBASE)/Palm/Interactive/default_module.py: 
+$(DEFAULT_MODULES):
+	
 
-app.rcp: app.py Makefile $(PIPPYSRCBASE)/Palm/Interactive/default_module.py
+app.rcp: app.py Makefile $(DEFAULT_MODULES)
 	$(PYTHON) -OO $(RESOURCERDIR)/Resourcer.py -x re -x os -x StringIO -R app.py
 
 clean::
