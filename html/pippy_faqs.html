@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<!--
+	$Id: pippy_faqs.html,v 1.1 2001/02/14 16:26:35 sgasster Exp $
+-->
+<HTML>
+<HEAD>
+     <TITLE>Pippy: FAQs</TITLE>
+     <META NAME="generator" CONTENT="BBEdit 5.1.1">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" ALINK="#00FF00" VLINK="#CC0000">
+   
+<H1 ALIGN="center">	Pippy: FAQs</H1>
+<!--
+
+    START Table of Contents
+    
+-->
+<A NAME="TOC"></A>
+<H2 ALIGN="left">Table of Contents</H2>
+
+<OL>
+	<LI><A HREF="#pippy_name">Where did the name Pippy come from?</A></LI>
+	<LI><A HREF="#pippy_contacts">Who can I contact with questions?</A></LI>
+	<LI><A HREF="#add_modules">How do I add my own Python modules to Pippy and run them on my Palm?</A></LI>
+</OL>
+
+<HR ALIGN="center" NOSHADE SIZE="3" WIDTH="75%">
+<!--
+
+    END Table of Contents
+    
+-->
+
+
+<A NAME="pippy_name"></A>
+<H3>Where did the name Pippy come from?</H3> 
+
+The name Pippy was formed by appending the suffix ".PY" to the acronym
+PIP (Python In Palm).  The name is reminiscent of Pippi Longstocking,
+a female fictional character of small stature, enormous strength, and
+unbounded free spirit.
+
+<P>
+<A HREF="./pippy_faqs.html#TOC">Return to the Table of Contents</A>
+</P>
+
+
+<HR ALIGN="center" SIZE="2" WIDTH="75%">
+<A NAME="pippy_contacts"></A>
+<H3>Who can I contact with questions?</H3>
+
+<H3 ALIGN="left">Contacts and Mailing Lists</H3>
+<DL>
+	<DT><B>General questions or problems</B></DT>
+		<DD><A HREF="mailto:pippy@endeavors.com">pippy@endeavors.com</A></DD>
+
+	<DT><B>Developer Issues</B></DT>
+		<DD><A HREF="mailto:pippy-dev@endeavors.com">pippy-dev@endeavors.com</A></DD>
+
+	<DT><B>Announcements</B></DT>
+		<DD><A HREF="mailto:pippy-announce@endeavors.com">pippy-announce@endeavors.com</A></DD>
+		
+	<DT><B>Bug Reports</B></DT>
+		<DD><A HREF="mailto:pippy-bugs@endeavors.com">pippy-bugs@endeavors.com</A></DD>
+</DL>
+
+
+<P>
+<A HREF="./pippy_faqs.html#TOC">Return to the Table of Contents</A>
+</P>
+<HR ALIGN="center" SIZE="2" WIDTH="75%">
+
+<A NAME="add_modules"></A>
+<H3>How do I add my own Python modules to Pippy and run them on my Palm?</H3>
+
+<H3 ALIGN="left">Pippy Version: 0.6beta</H3>
+
+<P>
+If you only downloaded the pre-built Pippy distribution
+(<CODE>.prc</CODE> files) you cannot install and  run separate python
+modules.  You must also download and unpack the Pippy source code
+distribution (see the <A HREF="./download.html" TARGET="_blank">download</A> page).
+</P>
+
+<P>
+<B>STEP 1.</B><BR>
+Make sure you have read the README, TOOLS and BUILD files that are supplied  with
+the source distribution.  I assume that you have read this files, installed all
+the necessary tools and have unpacked the Pippy source distribution.  If not
+DO IT NOW!  It wouldn't hurt to review the BUILD documentation  at this time.
+I assume that you are running under RedHat Linux 6.2 (see the README file).
+</P>
+
+<P>
+In order to provide a concrete example we will  create, build and install a
+Pippy version of <B>Hello World</B> 
+(hey what did you expect - 
+<A HREF="http://www.britannica.com/bcom/eb/article/8/0,5716,63738%2B1,00.html" TARGET="_blank">Quantum Electrodynamics</A> calculations!).
+</P>
+
+
+<P>
+<B>STEP 2.</B><BR>
+Create the following files (in this example they are in a directory /home/test/source,
+but you can put them anywhere):
+</P>
+
+<P>
+<PRE>
+    palm_hello.py
+    wrapper.py 
+</PRE>
+</P>
+
+<P>
+The files contain:
+<PRE>
+    $ cat palm_hello.py
+    #  palm_hello.py is a simple example script to
+    #  demonstrate how you can add your own Python
+    #  scripts to Pippy and run them on the Palm.
+    #  S. Gasster, Endeavors Technology 2001.02.12
+
+    import sys
+
+    print "Hello World!"
+    print "I'm Pippy!"
+    print "Where am I: ", sys.platform
+    print "Bye..."
+
+
+    $ cat wrapper.py
+    # import the example Python script
+    # into the wrapper file
+
+    import palm_hello
+</PRE>
+</P>
+
+<P>
+As a test, on your Linux system, if you run<BR>
+<CODE>$ python wrapper.py</CODE> <BR>
+you should  get the following results:
+</P>
+
+<P>
+<PRE>
+    $ python  wrapper.py
+    Hello World!
+    I'm Pippy!
+    Where am I:  linux2
+    Bye...
+</PRE>
+</P>
+
+<P>
+<B>STEP 3.</B><BR>
+Next modify your PYTHONPATH environment variable (see BUILD 1.B) to include
+the path to the wrapper.py and palm_hello.py files:
+</P>
+
+<P>
+<PRE>
+    export PYTHONPATH=/home/test/source:$PYTHONPATH
+</P>
+
+<P>
+    printenv PYTHONPATH
+    /home/test/source:
+    /home/magipalm/pippy-0.6beta-src/src/Palm/Tests:
+    /home/magipalm/pippy-0.6beta-src/src/Lib:
+    /home/magipalm/pippy-0.6beta-src/src/Palm:
+</P>
+
+<P>
+(note I inserted newlines for readability. )
+</PRE>
+</P>
+
+
+<P>
+<B>STEP 4.A</B><BR>
+If you have NOT previously performed a build of Pippy from source
+do so now.  Follow the instructions in BUILD, BUILDING AND INSTALLING Pippy,
+Steps 0. through 2.  Stop at Step 3.  If you have performed a complete build of Pippy
+Skip to Step 4.B below.  
+
+Perform the following commands:
+<PRE>
+    cd ./src/Palm/
+    make
+</PRE>
+This will build the <CODE>pylib.prc</CODE> file.
+</P>
+
+
+<P>
+<B>STEP 4.B</B><BR>
+Perform the following commands:
+<PRE>
+    cd ./src/Palm/Interactive
+    make clean
+</PRE>
+You should still have the previously built <CODE>pylib.prc</CODE> file in <CODE>./src/Palm</CODE>
+</P>
+
+
+<P>
+<B>STEP 5.</B><BR>
+Perform the following commands (note that I have included the output from
+these commands in the examples below):
+
+<PRE>
+    cd ./src/Palm/Interactive
+    ../Resourcer/resourcer /home/test/source/wrapper.py
+    
+          Name                      File
+          ----                      ----
+        m __main__                  /home/test/source/wrapper.py
+        m exceptions                /home/magipalm/pippy-0.6beta-src/src/Lib/exceptions.py
+        m palm_hello                /home/test/source/palm_hello.py
+        m sys                       
+
+        freezing __main__ ...
+        freezing exceptions ...
+        freezing palm_hello ...
+        generating table of frozen modules
+        app.c not changed, not written
+            
+    make
+        m68k-palmos-coff-gcc -fno-builtin -O0 -g -Wall  -I../libc/include
+        -I../../Include -I.. -I../PalmGlue -I../../Modules   -c -o
+        PythonGUI.o PythonGUI.c
+        .
+        .
+        .
+        Writing ./MBAR03f2.bin
+        292 bytes
+        Writing ./tFRM03f2.bin
+        466 bytes
+        Writing ./tSTL0442.bin
+        346 bytes
+        Writing ./tSTL0456.bin
+        116 bytes
+        Writing ./Talt046a.bin
+        132 bytes
+        Writing ./Talt0474.bin
+        115 bytes
+        touch bin.stamp
+        cp ../PalmGlue/pref0000.bin .
+        cp ../resources/*.bin .
+        build-prc pippy.prc "Pippy" PyAp *.grc *.bin
+</PRE>
+</P>
+
+<P>
+This will build the <CODE>pippy.prc</CODE> file with the palm_hello.py module installed.
+</P>
+
+<P>
+<B>STEP 6.</B><BR>
+Install the <CODE>pylib.prc</CODE> (if required) and the
+<CODE>pippy.prc</CODE> files onto your Palm (this example
+uses the <CODE>pilot-xfer</CODE> application - see the BUILD file):
+
+<PRE>
+    pilot-xfer -p /dev/ttyS1 -i ./src/Palm/pylib.prc ./src/Palm/Interactive/pippy.prc
+</PRE>
+This assumes you are in the directory containing the <CODE>src/</CODE> directory and that
+the Palm cradle is connected to serial port ttyS1.  You may have to be  root
+to perform this command.
+</P>
+
+
+<P>
+<B>STEP 7.</B><BR>
+The  Python VM and Pippy applications are now installed on your Palm device.<BR>
+Run Pippy.  At the interactive interface  enter:
+
+<PRE>
+    import  palm_hello
+</PRE>
+Select the <B><CODE>Eval</CODE></B> button<BR>
+
+You should see the following output:
+<PRE>
+    Hello World!
+    I'm Pippy!
+    Where am I:  PalmOS3
+    Bye...
+</PRE>
+</P>
+
+<B>Congratulations!</B>
+
+<P>
+<A HREF="./pippy_faqs.html#TOC">Return to the Table of Contents</A>
+</P>
+
+<HR>
+<!--Navigation bar-->
+
+<CENTER>
+    [<A HREF="./pippy.html">Pippy Home</A> | 
+    <A HREF="./download.html">Downloads</A> | 
+    <A HREF="./screen_shots.html">Screen Shots</A> | 
+    <A HREF="./contribute.html">Contribute</A> | 
+    <A HREF="./pippy_faqs.html">FAQ</A>]<BR>
+    [<A HREF="http://www.endeavors.com/">Endeavors Home</A>]
+</CENTER>
+
+
+<HR>
+<!-- Copyright begin -->
+<CENTER>
+    <ADDRESS>
+    <FONT SIZE="small">
+        &copy; 2001 Endeavors Technology, Inc., All Rights Reserved.<BR>
+        Last modified: Wed Feb  7 10:32:13 PST 2001
+    </FONT>
+    </ADDRESS>
+</CENTER>
+<!-- Copyright end -->
+
+
+</BODY>
+</HTML>
