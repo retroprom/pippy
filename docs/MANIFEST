@@ -4,13 +4,15 @@
 #
 
 ./docs				- Documention for the release
-./docs/DISCLAIMER.AERO		- Original Aerospace disclaimer
-./docs/README			- New Readme
-./docs/INSTALL			- New Install
+./docs/NEWS			- Contains a description of each release
+./docs/README			- Readme file
+./docs/README.CodeWarrior	- Instructions for developing under CodeWarrior
+./docs/INSTALL			- Installation instructions
 ./docs/MANIFEST			- This file
 ./docs/LICENSE			- License
 ./docs/TOOLS			- Instructions for installing the tools
 ./docs/BUILD			- Instructions for building pylib.prc and pippy.prc
+./docs/DISCLAIMER.AERO		- Original Aerospace disclaimer
 
 #  The following are part of the standard Python distribution.  These
 #  sources have been modified as part of the port to the Palm.
@@ -45,6 +47,7 @@
 ./src/Modules/palmdmmodule.c	- Database interface
 ./src/Modules/palmappsmodule.c	- Standard Palm applications
 ./src/Modules/palmformmodule.c	- Palm forms
+./src/Modules/palmemumodule.c   - Exposes the Host* interface of the PalmOS Emulator
 
 # The following directory contains sources for building the Python VM
 # shared library for the Palm.  It also contains the interactive
@@ -106,24 +109,36 @@
 ./src/Palm/Tests/exec_test.py
 ./src/Palm/Tests/palmnet_test.py
 ./src/Palm/Tests/print_test.py
-./src/Palm/Tests/test2.py
+./src/Palm/Tests/socket_client.py
+./src/Palm/Tests/socket_server.py
 ./src/Palm/Tests/test_b1.py
 ./src/Palm/Tests/test_b2.py
+./src/Palm/Tests/test_contains.py
+./src/Palm/Tests/test_cpickle.py
+./src/Palm/Tests/test_exceptions.py
 ./src/Palm/Tests/test_grammar.py
+./src/Palm/Tests/test_opcodes.py
 ./src/Palm/Tests/test_pow.py
 ./src/Palm/Tests/test_raise.py
+./src/Palm/Tests/test_rfc822.py
 ./src/Palm/Tests/test_socket.py
+./src/Palm/Tests/test_string.py
 ./src/Palm/Tests/test_support.py
-./src/Palm/Tests/test_types.py
-./src/Palm/Tests/socket_server.py
-./src/Palm/Tests/socket_client.py
 ./src/Palm/Tests/test_time.py
+./src/Palm/Tests/test_types.py
+./src/Palm/Tests/test_userdict.py
+./src/Palm/Tests/test_userlist.py
+
 
 ./src/Palm/Tools		- Misc modules
 ./src/Palm/Tools/palm_pdb.py	- Module for writing Python modules to a Palm database
 ./src/Palm/libc			- replacement for the libc distributed with the 
 				  prc-tools-0.5.0.  This will soon be replaced with 
 				  PalmOS equivalents.
+
+./src/Palm/Importer		- Experimental Memo Database importer
+./src/Palm/Importer/memoimp.py
+./src/Palm/Importer/palm_imputil.py
 
 ./src/Palm/Interactive		- Source for the interactive interpreter application
 ./src/Palm/Interactive/PythonGUI.c

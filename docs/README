@@ -1,7 +1,7 @@
 
 Pippy - The port of Python to the Palm OS.
 
-VERSION: Pippy 0.6beta.
+VERSION: Pippy 0.7
 
 Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
@@ -18,6 +18,8 @@ you may download the pre-built PRC files (Pippy-0.6beta.tar.gz) from:
 
     WARNING: Backup your Palm device before installing Pippy!
 
+NEWS
+See the file "NEWS".
 
 INTRODUCTION
 
