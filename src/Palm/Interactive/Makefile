@@ -36,7 +36,7 @@ all: $(PRC)
 
 final:
 	make clean
-	python1.5 -OO ../Resourcer/resourcer -x re -x os -R \
+	python1.5 -OO ../Resourcer/resourcer -x re -x os -x StringIO -R \
 		default_modules.py
 	make
 
