@@ -751,10 +751,10 @@ com_addopnamestr(c, op, name)
 	PyObject *v;
 	int i;
 #ifdef PRIVATE_NAME_MANGLING
-	char buffer[256];
+	char *buffer = (char *)malloc(256);
 	if (name != NULL && name[0] == '_' && name[1] == '_' &&
 	    c->c_private != NULL &&
-	    com_mangle(c, name, buffer, (int)sizeof(buffer)))
+	    com_mangle(c, name, buffer,256))
 		name = buffer;
 #endif
 	if (name == NULL || (v = PyString_InternFromString(name)) == NULL) {
@@ -778,6 +778,9 @@ com_addopnamestr(c, op, name)
 			}
 		}
 	}
+#ifdef PRIVATE_NAME_MANGLING
+	if (buffer) free(buffer);
+#endif	
 	com_addoparg(c, op, i);
 }
 
@@ -788,7 +791,7 @@ com_addopname(c, op, n)
 	node *n;
 {
 	char *name;
-	char buffer[1000];
+	char  *buffer = (char *)malloc(1000);
 	/* XXX it is possible to write this code without the 1000
 	   chars on the total length of dotted names, I just can't be
 	   bothered right now */
@@ -800,7 +803,7 @@ com_addopname(c, op, n)
 		name = buffer;
 		for (i = 0; i < NCH(n); i += 2) {
 			char *s = STR(CHILD(n, i));
-			if (p + strlen(s) > buffer + (sizeof buffer) - 2) {
+			if (p + strlen(s) > buffer + 1000 - 2) {
 				com_error(c, PyExc_MemoryError,
 					  "dotted_name too long");
 				name = NULL;
@@ -817,6 +820,7 @@ com_addopname(c, op, n)
 		name = STR(n);
 	}
 	com_addopnamestr(c, op, name);
+	free(buffer);
 }
 
 static PyObject *
