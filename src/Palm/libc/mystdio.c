@@ -41,7 +41,7 @@ int printf(const char *fmt, ...)
 	va_list args;
 	int i;
 	char *buf;
-	buf = (char)malloc(500);
+	buf = (char *)malloc(500);
 
 	va_start(args, fmt);
 	i=vsprintf(buf,fmt,args);
