@@ -37,7 +37,7 @@ PERFORMANCE OF THIS SOFTWARE.
    See init_builtin() in import.c. */
 
 #include "Python.h"
-
+#include "other/config_c.h"
 
 /* -- ADDMODULE MARKER 1 -- */
 

@@ -38,6 +38,7 @@ PERFORMANCE OF THIS SOFTWARE.
 #include "patchlevel.h"
 #include "config.h"
 #include "other/all_segments.h"
+#include "other/config_c.h"
 
 /* config.h may or may not define DL_IMPORT */
 #ifndef DL_IMPORT	/* declarations for DLL import/export */
