@@ -18,6 +18,7 @@
 #define MENU_HelpAbout        1001
 #define MENU_ClearInput       1002
 #define MENU_ClearOutput      1003
+#define MENU_RedrawScreen     1004
 
 #define MAINFRAME             1010
 

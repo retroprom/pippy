@@ -383,7 +383,13 @@ static Boolean MainFrameHandleEvent(EventType *e)
 			FrmAlert(ABOUT);
 			handled = true;
 			break;
-		}
+
+    case MENU_RedrawScreen:
+      WinEraseWindow();
+      FrmUpdateForm(MAINFRAME, 0); 
+      handled = true;
+      break;
+    } 
 		break;
 	default:
 		handled = false;

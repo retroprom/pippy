@@ -36,6 +36,7 @@ BEGIN
       BEGIN
         MENUITEM "Clear input" 	            MENU_ClearInput  "I"
         MENUITEM "Clear output"             MENU_ClearOutput "D"
+        MENUITEM "Redraw screen"            MENU_RedrawScreen "R"
       END
     PULLDOWN "Help"
       BEGIN
