@@ -66,7 +66,7 @@ Python 2.0 bytecodes are incompatible with this revision.
      make
 
 5.  Install the generated .prc files (pippy-0.6beta/src/Palm/pylib.prc and
-pippy-0.6beta/src/Palm/Interactive/python.prc) on your Palm (using something
+pippy-0.6beta/src/Palm/Interactive/pippy.prc) on your Palm (using something
 like pilot-xfer) or POSE.
 
 6.  For the time being, to include your own special modules or the standard
@@ -80,7 +80,7 @@ pippy-0.6beta/src/Lib
 		cd pippy-0.6beta/src/Palm/Interactive
 		../Resourcer/resourcer libwrapper.py
 		make
-The resulting python.prc will contain the library modules as Palm resource records.
+The resulting pippy.prc will contain the library modules as Palm resource records.
 
 7.  The module palmappsmodule.c requires the Palm SDK Examples
 distribution (downloadable from

@@ -47,7 +47,7 @@ END
 FORM ID MAINFRAME AT (0 0 160 160)
 MENUID MAINFRAME
 BEGIN
-    TITLE "Python"
+    TITLE "Pippy"
     POPUPTRIGGER "Keywords"  BUILTIN_LIST_TRIGGER AT (42 0 60 13) LEFTANCHOR FONT 0
     POPUPLIST BUILTIN_LIST_TRIGGER BUILTIN_LIST
     LIST "" BUILTIN_LIST AT (20 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
@@ -72,15 +72,15 @@ STRINGTABLE ID BUILTIN_LIST_ITEMS
 
 
 STRINGTABLE ID MODULE_LIST_ITEMS
-"" "errno" "imp" "instrument" "marshal" "palmapps" "palmdm" "palmevent" "palmform" "palmnet" "palmsys" "select" "socket" "sys" "time" "__builtin__" "__main__"
+"" "errno" "imp" "marshal" "palmapps" "palmdm" "palmevent" "palmform" "palmnet" "palmsys" "select" "socket" "sys" "time" "__builtin__" "__main__"
 
-STRING ID OS_VERSION_ERROR    "Python requires at least PalmOS 3.5"
+STRING ID OS_VERSION_ERROR    "Pippy requires at least PalmOS 3.5"
 
 
 ALERT ID ABOUT
 INFORMATION
 BEGIN
-  TITLE  "About Python"
+  TITLE  "About Pippy"
   MESSAGE "Version 0.6beta, Jan. 2001\n"\
           "Jeffery D. Collins\n"\
           "Michael Gorlick\n"\

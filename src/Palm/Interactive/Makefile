@@ -25,18 +25,18 @@ PILRC = pilrc
 OBJRES = m68k-palmos-coff-obj-res
 BUILDPRC = build-prc
 
-ICON_TEXT = "Python"
+ICON_TEXT = "Pippy"
 CREATOR = PyAp
-PRC = python.prc
+PRC = pippy.prc
 
 STAMP=$(shell time_stamp)
-DIR=poppy-$(STAMP)
+DIR=pippy-$(STAMP)
 
 all: $(PRC)
 
 snapshot:   # put this in a script
 	mkdir /tmp/$(DIR)
-	cp python.prc /tmp/$(DIR)
+	cp $(PRC) /tmp/$(DIR)
 	cp ../pylib.prc /tmp/$(DIR)
 	(cd /tmp; tar czvf $(DIR).tgz $(DIR); zip $(DIR).zip -r $(DIR))
 	mv /tmp/$(DIR).{zip,tgz} .

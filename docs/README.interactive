@@ -6,7 +6,7 @@ All rights reserved.
 RUNNING
 
 The distribution includes pre-built .prc files for the interactive
-interpreter.  Simply install python.prc and pylib.prc on the Palm and
+interpreter.  Simply install pippy.prc and pylib.prc on the Palm and
 select the python application.
 
 The interactive interface is a command-line interface based that
