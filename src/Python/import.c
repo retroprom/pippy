@@ -2364,6 +2364,7 @@ static PyMethodDef imp_methods[] = {
 	{"load_module",		imp_load_module,	1, USE_DOC(doc_load_module)},
 	{"new_module",		imp_new_module,		1, USE_DOC(doc_new_module)},
 	/* The rest are obsolete */
+#ifdef CUT_EXCESS_METHODS
 	{"get_frozen_object",	imp_get_frozen_object,	1},
 	{"init_builtin",	imp_init_builtin,	1},
 	{"init_frozen",		imp_init_frozen,	1},
@@ -2378,7 +2379,9 @@ static PyMethodDef imp_methods[] = {
 	{"load_resource",	imp_load_resource,	1},
 #endif
 	{"load_source",		imp_load_source,	1},
+#endif
 	{NULL,			NULL}		/* sentinel */
+
 };
 
 static int

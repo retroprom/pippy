@@ -1406,8 +1406,10 @@ DEF_DOC(sort_doc,
 static PyMethodDef list_methods[] = {
 	{"append",	(PyCFunction)listappend, 1, USE_DOC(append_doc)},
 	{"insert",	(PyCFunction)listinsert, 1, USE_DOC(insert_doc)},
+#ifdef CUT_EXCESS_METHODS
 	{"extend",      (PyCFunction)listextend, 1, USE_DOC(extend_doc)},
 	{"pop",		(PyCFunction)listpop, 1, USE_DOC(pop_doc)},
+#endif
 	{"remove",	(PyCFunction)listremove, 1, USE_DOC(remove_doc)},
 	{"index",	(PyCFunction)listindex, 1, USE_DOC(index_doc)},
 	{"count",	(PyCFunction)listcount, 1, USE_DOC(count_doc)},
@@ -1439,7 +1441,7 @@ PyTypeObject PyList_Type = {
 	0,
 	"list",
 	sizeof(PyListObject),
-	0,
+	sizeof(PyObject*),
 	(destructor)list_dealloc, /*tp_dealloc*/
 	(printfunc)list_print, /*tp_print*/
 	(getattrfunc)list_getattr, /*tp_getattr*/

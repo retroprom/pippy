@@ -1053,9 +1053,11 @@ static PyMethodDef mapp_methods[] = {
 	{"keys",	(PyCFunction)dict_keys},
 	{"items",	(PyCFunction)dict_items},
 	{"values",	(PyCFunction)dict_values},
+#ifdef CUT_EXCESS_METHODS
 	{"update",	(PyCFunction)dict_update},
 	{"clear",	(PyCFunction)dict_clear},
 	{"copy",	(PyCFunction)dict_copy},
+#endif
 	{"get",         (PyCFunction)dict_get,          METH_VARARGS},
 	{NULL,		NULL}		/* sentinel */
 };

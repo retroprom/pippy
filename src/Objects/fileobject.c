@@ -923,6 +923,7 @@ file_writelines(f, args)
 }
 
 static PyMethodDef file_methods[] = {
+#ifdef CUT_EXCESS_METHODS
 	{"readline",	(PyCFunction)file_readline, 1},
 	{"read",	(PyCFunction)file_read, 1},
 	{"write",	(PyCFunction)file_write, 0},
@@ -938,6 +939,7 @@ static PyMethodDef file_methods[] = {
 	{"flush",	(PyCFunction)file_flush, 0},
 	{"close",	(PyCFunction)file_close, 0},
 	{"isatty",	(PyCFunction)file_isatty, 0},
+#endif
 	{NULL,		NULL}		/* sentinel */
 };
 
