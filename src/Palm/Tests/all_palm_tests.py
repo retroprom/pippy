@@ -25,5 +25,5 @@ unload('test_pow')
 # print "test_grammar"
 # import test_grammar
 
-print "done with tests"
+print "all tests passed"
 
