@@ -371,8 +371,6 @@ def main():
         sys.stderr.write('Warning: unknown modules remain: %s\n' %
                          string.join(unknown))
 
-    # Done!
-    print 'Now, copy app.c and *.bin to main, then make to build:', base_target
 
 
 # Print usage message and exit
