@@ -76,6 +76,16 @@ int dbmem_init()
 	case errNone:
 		break;
 	case dmErrAlreadyExists:
+	  dbid = DmFindDatabase (cardNo, name);
+	  if (dbid == 0) {
+	    err = DmGetLastErr();
+	    return -1;
+	  }
+	  if (DmDeleteDatabase(cardNo, dbid)!=errNone)
+	    return -1;
+
+	  return dbmem_init();
+	  break;
 	case memErrNotEnoughSpace:
 	case dmErrInvalidDatabaseName:
 	case memErrCardNotPresent:
@@ -109,29 +119,21 @@ int dbmem_init()
 }
 
 
+
 void *
 dbmem_addentry(void *p, long size)
 {
 	/* Add an entry to the database */
 
-	MemHandle recH;
 	void *recP;
 	Err err;
-	UInt16 index;
+	UInt32 index;
 
-	if (stringdb_ref == NULL)
-		return NULL;
-
-	index = dmMaxRecordIndex; /* append the record to the database */
-
-	recH = DmNewRecord (stringdb_ref, &index, size);
-	
-	if (recH == 0) {
-		err = DmGetLastErr();
+	recP = 	dbmem_createentry(&index, size);
+	if (recP == 0) {
 		return NULL;
 	}
 
-	recP = MemHandleLock(recH);
 	/* check for errors */
 
 	err = DmWrite (recP, 0, p, size);
@@ -213,13 +215,13 @@ dbmem_addPyCodeObject(PyCodeObject *v)
 	/* incref for ownership by res */
 	Py_XINCREF(v->co_code);
 
-	v->co_consts = dbmem_addPyTupleObject(v->co_consts);
+	v->co_consts = dbmem_addPyTupleObject((PyTupleObject*)v->co_consts);
 	Py_XINCREF(v->co_consts);
 
-	v->co_names = dbmem_addPyTupleObject(v->co_names);
+	v->co_names = dbmem_addPyTupleObject((PyTupleObject*)v->co_names);
 	Py_XINCREF(v->co_names);
 
-	v->co_varnames = dbmem_addPyTupleObject(v->co_varnames);
+	v->co_varnames = dbmem_addPyTupleObject((PyTupleObject*)v->co_varnames);
 	Py_XINCREF(v->co_varnames);
 
 	Py_XINCREF(v->co_filename);
@@ -230,7 +232,7 @@ dbmem_addPyCodeObject(PyCodeObject *v)
 		
 		Py_DECREF(v);
 		{
-			char buf[30];
+			char buf[100];
 			sprintf(buf, "('marshalled', %d)", dbmem_size(res));
 			DMESSAGE(buf);
 		}
@@ -267,7 +269,7 @@ dbmem_addPyTupleObject(PyTupleObject *v)
 
 		Py_DECREF(v);
 		{
-			char buf[30];
+			char buf[100];
 			sprintf(buf, "('tupled', %d)", dbmem_size(res));
 			DMESSAGE(buf);
 		}
@@ -277,3 +279,97 @@ dbmem_addPyTupleObject(PyTupleObject *v)
 	return res;
 }
 
+void *
+dbmem_createentry(UInt32 *indexP, long size)
+{
+	/* Add an entry to the database */
+
+	MemHandle recH;
+	UInt16 index;
+	Err err;
+
+	DMESSAGE("dbmem_createentry/start");
+	if (stringdb_ref == NULL)
+		return NULL;
+
+	index = dmMaxRecordIndex; /* append the record to the database */
+	
+	{
+		char buf[100];
+		sprintf(buf, "dbmem_creat: size = %ld", size);
+		DMESSAGE(buf);
+	}
+
+	recH = DmNewRecord (stringdb_ref, &index, size);
+	
+	if (recH == 0) {
+		err = DmGetLastErr();
+		return NULL;
+	}
+	DmRecordInfo (stringdb_ref, index, NULL, indexP, NULL);
+	DMESSAGE("dbmem_createentry/end");
+	return MemHandleLock(recH);
+}
+
+void
+dbmem_deleteentry(UInt32 id, void *recP)
+{
+	/* delete an entry from the database */
+
+	Err err;
+	UInt16 index;
+	DMESSAGE("dbmem_deleteentry/start");
+
+	if (stringdb_ref == NULL)
+		return ;
+	MemPtrUnlock(recP);
+	DmFindRecordByID (stringdb_ref, id, &index);
+	/*	DmRecordRelease(stringdb_ref, index); */
+	err = DmRemoveRecord (stringdb_ref, index);
+	DMESSAGE("dbmem_deleteentry/end");
+	
+}
+
+void
+dbmem_set( void *recP, UInt8 value, UInt32 count)
+{
+	DMESSAGE("dbmem_set/start");
+	{
+		char buf[100];
+		sprintf(buf, "dbmem_set: recP, offset, value, count = %p %ld %c %ld", 
+			recP, 0, value, count);
+		DMESSAGE(buf);
+	}
+	DmSet(recP, 0, count, value);
+	DMESSAGE("dbmem_set/end");
+}
+
+void
+dbmem_write( void *recP, UInt32 offset, void *srcP, UInt32 count)
+{
+	Err err;
+
+	DMESSAGE("dbmem_write/start");
+
+	{
+		char buf[100];
+		sprintf(buf, "recP, offset, srcP, count = %p %ld %p %ld", 
+			recP, offset, srcP, count);
+		DMESSAGE(buf);
+	}
+
+	if ((err = (Err)DmWriteCheck(recP, offset, count))!=errNone) {
+	  switch(err) {
+	  case dmErrNotValidRecord:
+	    DMESSAGE("dmem_write-invalid record");
+	    break;
+	  case dmErrWriteOutOfBounds:
+	    DMESSAGE("dmem_write-out of bounds");
+	  default:
+	    DMESSAGE("dmem_write-error");
+	    break;
+	  }
+	}
+	DmWrite(recP, offset, srcP, count);
+	DMESSAGE("dbmem_write/end");
+}
