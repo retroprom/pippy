@@ -54,7 +54,8 @@ typedef struct {
      PyObject **data;
 } Pdata;
 
-typedef struct {
+typedef struct _Picklerobject Picklerobject;
+struct _Picklerobject {
      PyObject_HEAD
      FILE *fp;
      PyObject *write;
@@ -65,15 +66,17 @@ typedef struct {
      PyObject *inst_pers_func;
      int bin;
      int fast; /* Fast mode doesn't save in memo, don't use if circ ref */
-     int (*write_func)();
+     int (*write_func)(Picklerobject*, char*, int);
      char *write_buf;
      int buf_size;
      PyObject *dispatch_table;
-} Picklerobject;
+};
+
 
 staticforward PyTypeObject Picklertype;
 
-typedef struct {
+typedef struct _Unpicklerobject Unpicklerobject; 
+struct _Unpicklerobject {
      PyObject_HEAD
      FILE *fp;
      PyObject *file;
@@ -88,14 +91,14 @@ typedef struct {
      int *marks;
      int num_marks;
      int marks_size;
-     int (*read_func)();
-     int (*readline_func)();
+     int (*read_func)(Unpicklerobject *, char **, int);
+     int (*readline_func)(Unpicklerobject *, char **);
      int buf_size;
      char *buf;
      PyObject *safe_constructors;
      PyObject *find_class;
-} Unpicklerobject;
- 
+};
+
 staticforward PyTypeObject Unpicklertype;
 
 #include "other/cPickle_c.h"
@@ -915,8 +918,9 @@ save_int(Picklerobject *self, PyObject *args) {
                    if necessary. */
         c_str[0] = INT;
         sprintf(c_str + 1, "%ld\n", l);
-        if ((*self->write_func)(self, c_str, strlen(c_str)) < 0)
-            return -1;
+        if ((*self->write_func)(self, c_str, strlen(c_str)) < 0){
+		return -1;
+	}
     }
     else {
         c_str[1] = (int)( l        & 0xff);
@@ -2073,10 +2077,12 @@ newPicklerobject(PyObject *file, int bin) {
     self->buf_size = 0;
     self->dispatch_table = NULL;
 
-    if (file)
+    if (file){
       Py_INCREF(file);
-    else
+    }
+    else {
       file=Pdata_New();
+    }
 
     self->file = file;
 
@@ -3101,7 +3107,7 @@ load_long_binget(Unpicklerobject *self) {
     long key;
     int rc;
 
-    if ((*self->read_func)(self, &s, 4) < 0) return -1;
+    if ((*self->read_func)(self, (char**)&s, 4) < 0) return -1;
 
     c = (unsigned char)s[0];
     key = (long)c;
@@ -3134,7 +3140,7 @@ load_put(Unpicklerobject *self) {
     int len, l;
     char *s;
 
-    if ((l = (*self->readline_func)(self, &s)) < 0) return -1;
+    if ((l = (*self->readline_func)(self, (char**)&s)) < 0) return -1;
     if (l < 2) return bad_readline();
     UNLESS (len=self->stack->length) return stackUnderflow();
     UNLESS (py_str = PyString_FromStringAndSize(s, l - 1)) return -1;
@@ -3151,7 +3157,7 @@ load_binput(Unpicklerobject *self) {
     unsigned char key, *s;
     int len;
 
-    if ((*self->read_func)(self, &s, 1) < 0) return -1;
+    if ((*self->read_func)(self, (char**)&s, 1) < 0) return -1;
     UNLESS ((len=self->stack->length) > 0) return stackUnderflow();
 
     key = (unsigned char)s[0];
@@ -3171,7 +3177,7 @@ load_long_binput(Unpicklerobject *self) {
     unsigned char c, *s;
     int len;
 
-    if ((*self->read_func)(self, &s, 4) < 0) return -1;
+    if ((*self->read_func)(self, (char**)&s, 4) < 0) return -1;
     UNLESS (len=self->stack->length) return stackUnderflow();
 
     c = (unsigned char)s[0];
