@@ -5,16 +5,12 @@
 #
 
 ./docs				- Documention for the release
-./docs/Implementation_Notes	- Changes
-./docs/INSTALL.AERO		- Original Aerospace INSTALL
-./docs/README.AERO		- Original Aerospace README
 ./docs/DISCLAIMER.AERO		- Original Aerospace disclaimer
 ./docs/README			- New Readme
 ./docs/INSTALL			- New Install
-./docs/CHANGES			- Important changes since the last release
 ./docs/MANIFEST			- This file
 ./docs/LICENSE			- License
-./patches			- Patches required for the build
+./docs/TOOLS			- Instructions for installing the tools
 
 #  The following are part of the standard Python distribution.  These
 #  sources have been modified as part of the port to the Palm.
