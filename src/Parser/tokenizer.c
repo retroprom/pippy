@@ -689,7 +689,7 @@ PyTokenizer_Get(tok, p_start, p_end)
 						c = tok_nextc(tok);
 					} while (isdigit(c));
 #endif /* WITHOUT_FLOAT */
-			        }
+				;}
 #ifndef WITHOUT_FLOAT
 				if (c == 'e' || c == 'E') {
 					/* Exponent part */
