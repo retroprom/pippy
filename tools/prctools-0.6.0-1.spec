@@ -13,7 +13,12 @@ BuildRoot: /usr/tmp/%{name}-build
 This revision of prc-tools was upgraded by Michael Solokov from prc-tools-0.5
 and includes support for multiple segments and GLib shared libraries.
 
+
 %prep
+cd -
+cp inventory $RPM_BUILD_ROOT/..
+cd -
+
 %setup -q
 
 %install
@@ -24,7 +29,10 @@ cp -rp . $RPM_BUILD_ROOT
 %clean
 #rm -rf $RPM_BUILD_ROOT
 
-%files -f /home/jcollins/build/build-rpm/inventory
+# Note:  The path to inventory is $RPM_BUILD_ROOT/.., but using this
+# variable in the path results in a crash.  Apparently, the context above
+# isn't propagated beyond this point.
+%files -f /usr/tmp/prc-tools-build/../inventory
 %defattr(-,root,root)
 
 
