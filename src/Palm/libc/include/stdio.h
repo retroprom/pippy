@@ -40,7 +40,7 @@ extern int puts (unsigned char *string) SEG_LIBC;
 extern int putchar (unsigned int outch) SEG_LIBC;
 
 extern int vsprintf(char *buf, const char *fmt, va_list args) SEG_LIBC;
-extern int sprintf(char * buf, const char *fmt, ...); 
+extern int sprintf(char * buf, const char *fmt, ...) SEG_LIBC;
 extern int printf(const char *fmt, ...);
 
 extern int fprintf(FILE *, const char *fmt, ...);
@@ -49,8 +49,8 @@ extern int vfprintf(FILE *, const char *fmt, va_list args) SEG_LIBC;
 #define fflush(A) (0); /* always assume success */
 
 extern int sscanf(const char *, const char *, ...) SEG_LIBC;
-extern FILE *fopen(const char *, const char *) ; 
-extern int fclose(FILE *stream); /* Python uses fclose as a function pointer - can't #define instead*/
+extern FILE *fopen(const char *, const char *) SEG_LIBC;
+extern int fclose(FILE *stream) SEG_LIBC;/* Python uses fclose as a function pointer - can't #define instead*/
 
 
 extern size_t fwrite(const void *ptr, size_t size, size_t nitems,
