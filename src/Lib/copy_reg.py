@@ -14,8 +14,8 @@ def constructor(object):
 
 # Example: provide pickling support for complex numbers.
 
-def pickle_complex(c):
-    return complex, (c.real, c.imag)
+# def pickle_complex(c):
+#     return complex, (c.real, c.imag)
 
-pickle(type(1j), pickle_complex, complex)
+# pickle(type(1j), pickle_complex, complex)
 

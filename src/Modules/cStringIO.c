@@ -51,7 +51,9 @@
  #
  #   (540) 371-6909
  */
-static char cStringIO_module_documentation[] = 
+
+#include "Python.h"
+DEF_DOC(cStringIO_module_documentation,
 "A simple fast partial StringIO replacement.\n"
 "\n"
 "This module provides a simple useful replacement for\n"
@@ -79,9 +81,8 @@ static char cStringIO_module_documentation[] =
 "go for it. :-)  \n"
 "\n"
 "cStringIO.c,v 1.29 1999/06/15 14:10:27 jim Exp\n"
-;
+	);
 
-#include "Python.h"
 #include "import.h"
 #include "cStringIO.h"
 
@@ -104,9 +105,11 @@ typedef struct {
   PyObject *pbuf;
 } Iobject;
 
-static char O_reset__doc__[] = 
+#include "other/cStringIO_c.h"
+
+DEF_DOC(O_reset__doc__,
 "reset() -- Reset the file position to the beginning"
-;
+);
 
 static PyObject *
 O_reset(Oobject *self, PyObject *args) {
@@ -117,8 +120,8 @@ O_reset(Oobject *self, PyObject *args) {
 }
 
 
-static char O_tell__doc__[] =
-"tell() -- get the current position.";
+DEF_DOC(O_tell__doc__,
+"tell() -- get the current position.");
 
 static PyObject *
 O_tell(Oobject *self, PyObject *args) {
@@ -126,9 +129,9 @@ O_tell(Oobject *self, PyObject *args) {
 }
 
 
-static char O_seek__doc__[] =
+DEF_DOC(O_seek__doc__,
 "seek(position)       -- set the current position\n"
-"seek(position, mode) -- mode 0: absolute; 1: relative; 2: relative to EOF";
+	"seek(position, mode) -- mode 0: absolute; 1: relative; 2: relative to EOF");
 
 static PyObject *
 O_seek(Oobject *self, PyObject *args) {
@@ -163,9 +166,9 @@ O_seek(Oobject *self, PyObject *args) {
   return Py_None;
 }
 
-static char O_read__doc__[] = 
+DEF_DOC(O_read__doc__,
 "read([s]) -- Read s characters, or the rest of the string"
-;
+);
 
 static int
 O_cread(PyObject *self, char **output, int  n) {
@@ -195,9 +198,9 @@ O_read(Oobject *self, PyObject *args) {
 }
 
 
-static char O_readline__doc__[] = 
+DEF_DOC(O_readline__doc__,
 "readline() -- Read one line"
-;
+);
 
 static int
 O_creadline(PyObject *self, char **output) {
@@ -224,10 +227,10 @@ O_readline(Oobject *self, PyObject *args) {
   return PyString_FromStringAndSize(output, n);
 }
 
-static char O_write__doc__[] = 
+DEF_DOC(O_write__doc__,
 "write(s) -- Write a string to the file"
 "\n\nNote (hack:) writing None resets the buffer"
-;
+);
 
 
 static int
@@ -273,12 +276,12 @@ O_write(Oobject *self, PyObject *args) {
   return Py_None;
 }
 
-static char O_getval__doc__[] = 
+DEF_DOC(O_getval__doc__,
    "getvalue([use_pos]) -- Get the string value."
    "\n"
    "If use_pos is specified and is a true value, then the string returned\n"
    "will include only the text up to the current file position.\n"
-;
+);
 
 static PyObject *
 O_getval(Oobject *self, PyObject *args) {
@@ -302,8 +305,8 @@ O_cgetval(PyObject *self) {
 				    ((Oobject*)self)->pos);
 }
 
-static char O_truncate__doc__[] = 
-"truncate(): truncate the file at the current position.";
+DEF_DOC(O_truncate__doc__,
+"truncate(): truncate the file at the current position.");
 
 static PyObject *
 O_truncate(Oobject *self, PyObject *args) {
@@ -313,14 +316,16 @@ O_truncate(Oobject *self, PyObject *args) {
   return Py_None;
 }
 
-static char O_isatty__doc__[] = "isatty(): always returns 0";
+DEF_DOC(O_isatty__doc__,
+"isatty(): always returns 0");
 
 static PyObject *
 O_isatty(Oobject *self, PyObject *args) {
   return PyInt_FromLong(0);
 }
 
-static char O_close__doc__[] = "close(): explicitly release resources held.";
+DEF_DOC(O_close__doc__,
+"close(): explicitly release resources held.");
 
 static PyObject *
 O_close(Oobject *self, PyObject *args) {
@@ -334,7 +339,8 @@ O_close(Oobject *self, PyObject *args) {
   return Py_None;
 }
 
-static char O_flush__doc__[] = "flush(): does nothing.";
+DEF_DOC(O_flush__doc__,
+"flush(): does nothing.");
 
 static PyObject *
 O_flush(Oobject *self, PyObject *args) {
@@ -343,8 +349,8 @@ O_flush(Oobject *self, PyObject *args) {
 }
 
 
-static char O_writelines__doc__[] =
-"writelines(sequence_of_strings): write each string";
+DEF_DOC(O_writelines__doc__,
+"writelines(sequence_of_strings): write each string");
 static PyObject *
 O_writelines(Oobject *self, PyObject *args) {
   PyObject *string_module = 0;
@@ -387,18 +393,18 @@ O_writelines(Oobject *self, PyObject *args) {
 }
 
 static struct PyMethodDef O_methods[] = {
-  {"write",	 (PyCFunction)O_write,      METH_VARARGS, O_write__doc__},
-  {"read",       (PyCFunction)O_read,       METH_VARARGS, O_read__doc__},
-  {"readline",   (PyCFunction)O_readline,   METH_VARARGS, O_readline__doc__},
-  {"reset",      (PyCFunction)O_reset,      METH_VARARGS, O_reset__doc__},
-  {"seek",       (PyCFunction)O_seek,       METH_VARARGS, O_seek__doc__},
-  {"tell",       (PyCFunction)O_tell,       METH_VARARGS, O_tell__doc__},
-  {"getvalue",   (PyCFunction)O_getval,     METH_VARARGS, O_getval__doc__},
-  {"truncate",   (PyCFunction)O_truncate,   METH_VARARGS, O_truncate__doc__},
-  {"isatty",     (PyCFunction)O_isatty,     METH_VARARGS, O_isatty__doc__},
-  {"close",      (PyCFunction)O_close,      METH_VARARGS, O_close__doc__},
-  {"flush",      (PyCFunction)O_flush,      METH_VARARGS, O_flush__doc__},
-  {"writelines", (PyCFunction)O_writelines, METH_VARARGS, O_writelines__doc__},
+  {"write",	 (PyCFunction)O_write,      METH_VARARGS, USE_DOC(O_write__doc__)},
+  {"read",       (PyCFunction)O_read,       METH_VARARGS, USE_DOC(O_read__doc__)},
+  {"readline",   (PyCFunction)O_readline,   METH_VARARGS, USE_DOC(O_readline__doc__)},
+  {"reset",      (PyCFunction)O_reset,      METH_VARARGS, USE_DOC(O_reset__doc__)},
+  {"seek",       (PyCFunction)O_seek,       METH_VARARGS, USE_DOC(O_seek__doc__)},
+  {"tell",       (PyCFunction)O_tell,       METH_VARARGS, USE_DOC(O_tell__doc__)},
+  {"getvalue",   (PyCFunction)O_getval,     METH_VARARGS, USE_DOC(O_getval__doc__)},
+  {"truncate",   (PyCFunction)O_truncate,   METH_VARARGS, USE_DOC(O_truncate__doc__)},
+  {"isatty",     (PyCFunction)O_isatty,     METH_VARARGS, USE_DOC(O_isatty__doc__)},
+  {"close",      (PyCFunction)O_close,      METH_VARARGS, USE_DOC(O_close__doc__)},
+  {"flush",      (PyCFunction)O_flush,      METH_VARARGS, USE_DOC(O_flush__doc__)},
+  {"writelines", (PyCFunction)O_writelines, METH_VARARGS, USE_DOC(O_writelines__doc__)},
   {NULL,	 NULL}		/* sentinel */
 };
 
@@ -432,9 +438,9 @@ O_setattr(Oobject *self, char *name, PyObject *value) {
 	return 0;
 }
 
-static char Otype__doc__[] = 
+DEF_DOC(Otype__doc__,
 "Simple type for output to strings."
-;
+);
 
 static PyTypeObject Otype = {
   PyObject_HEAD_INIT(NULL)
@@ -458,7 +464,7 @@ static PyTypeObject Otype = {
   
   /* Space for future expansion */
   0L,0L,0L,0L,
-  Otype__doc__ 		/* Documentation string */
+  USE_DOC(Otype__doc__) 		/* Documentation string */
 };
 
 static PyObject *
@@ -520,16 +526,16 @@ I_seek(Oobject *self, PyObject *args) {
 }
 
 static struct PyMethodDef I_methods[] = {
-  {"read",	(PyCFunction)O_read,     METH_VARARGS, O_read__doc__},
-  {"readline",	(PyCFunction)O_readline, METH_VARARGS, O_readline__doc__},
-  {"reset",	(PyCFunction)O_reset,	 METH_VARARGS, O_reset__doc__},
-  {"seek",      (PyCFunction)I_seek,     METH_VARARGS, O_seek__doc__},  
-  {"tell",      (PyCFunction)O_tell,     METH_VARARGS, O_tell__doc__},
-  {"getvalue",  (PyCFunction)O_getval,   METH_VARARGS, O_getval__doc__},
-  {"truncate",  (PyCFunction)O_truncate, METH_VARARGS, O_truncate__doc__},
-  {"isatty",    (PyCFunction)O_isatty,   METH_VARARGS, O_isatty__doc__},
-  {"close",     (PyCFunction)I_close,    METH_VARARGS, O_close__doc__},
-  {"flush",     (PyCFunction)O_flush,    METH_VARARGS, O_flush__doc__},
+  {"read",	(PyCFunction)O_read,     METH_VARARGS, USE_DOC(O_read__doc__)},
+  {"readline",	(PyCFunction)O_readline, METH_VARARGS, USE_DOC(O_readline__doc__)},
+  {"reset",	(PyCFunction)O_reset,	 METH_VARARGS, USE_DOC(O_reset__doc__)},
+  {"seek",      (PyCFunction)I_seek,     METH_VARARGS, USE_DOC(O_seek__doc__)},  
+  {"tell",      (PyCFunction)O_tell,     METH_VARARGS, USE_DOC(O_tell__doc__)},
+  {"getvalue",  (PyCFunction)O_getval,   METH_VARARGS, USE_DOC(O_getval__doc__)},
+  {"truncate",  (PyCFunction)O_truncate, METH_VARARGS, USE_DOC(O_truncate__doc__)},
+  {"isatty",    (PyCFunction)O_isatty,   METH_VARARGS, USE_DOC(O_isatty__doc__)},
+  {"close",     (PyCFunction)I_close,    METH_VARARGS, USE_DOC(O_close__doc__)},
+  {"flush",     (PyCFunction)O_flush,    METH_VARARGS, USE_DOC(O_flush__doc__)},
   {NULL,	NULL}
 };
 
@@ -544,9 +550,9 @@ I_getattr(Iobject *self, char *name) {
   return Py_FindMethod(I_methods, (PyObject *)self, name);
 }
 
-static char Itype__doc__[] = 
+DEF_DOC(Itype__doc__,
 "Simple type for treating strings as input file streams"
-;
+);
 
 static PyTypeObject Itype = {
   PyObject_HEAD_INIT(NULL)
@@ -570,7 +576,7 @@ static PyTypeObject Itype = {
   
   /* Space for future expansion */
   0L,0L,0L,0L,
-  Itype__doc__ 		/* Documentation string */
+  USE_DOC(Itype__doc__) 		/* Documentation string */
 };
 
 static PyObject *
@@ -595,9 +601,9 @@ newIobject(PyObject *s) {
 /* -------------------------------------------------------- */
 
 
-static char IO_StringIO__doc__[] =
+DEF_DOC(IO_StringIO__doc__,
 "StringIO([s]) -- Return a StringIO-like stream for reading or writing"
-;
+);
 
 static PyObject *
 IO_StringIO(PyObject *self, PyObject *args) {
@@ -611,7 +617,7 @@ IO_StringIO(PyObject *self, PyObject *args) {
 /* List of methods defined in the module */
 
 static struct PyMethodDef IO_methods[] = {
-  {"StringIO",	(PyCFunction)IO_StringIO,	1,	IO_StringIO__doc__},
+  {"StringIO",	(PyCFunction)IO_StringIO,	1,	USE_DOC(IO_StringIO__doc__)},
   {NULL,		NULL}		/* sentinel */
 };
 
@@ -639,7 +645,7 @@ initcStringIO() {
 
   /* Create the module and add the functions */
   m = Py_InitModule4("cStringIO", IO_methods,
-		     cStringIO_module_documentation,
+		     USE_DOC(cStringIO_module_documentation),
 		     (PyObject*)NULL,PYTHON_API_VERSION);
 
   /* Add some symbolic constants to the module */

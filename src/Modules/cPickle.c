@@ -46,13 +46,66 @@
  #   (540) 371-6909
  */
 
-static char cPickle_module_documentation[] = 
+#include "Python.h"
+
+typedef struct {
+     PyObject_HEAD
+     int length, size;
+     PyObject **data;
+} Pdata;
+
+typedef struct {
+     PyObject_HEAD
+     FILE *fp;
+     PyObject *write;
+     PyObject *file;
+     PyObject *memo;
+     PyObject *arg;
+     PyObject *pers_func;
+     PyObject *inst_pers_func;
+     int bin;
+     int fast; /* Fast mode doesn't save in memo, don't use if circ ref */
+     int (*write_func)();
+     char *write_buf;
+     int buf_size;
+     PyObject *dispatch_table;
+} Picklerobject;
+
+staticforward PyTypeObject Picklertype;
+
+typedef struct {
+     PyObject_HEAD
+     FILE *fp;
+     PyObject *file;
+     PyObject *readline;
+     PyObject *read;
+     PyObject *memo;
+     PyObject *arg;
+     Pdata *stack;
+     PyObject *mark;
+     PyObject *pers_func;
+     PyObject *last_string;
+     int *marks;
+     int num_marks;
+     int marks_size;
+     int (*read_func)();
+     int (*readline_func)();
+     int buf_size;
+     char *buf;
+     PyObject *safe_constructors;
+     PyObject *find_class;
+} Unpicklerobject;
+ 
+staticforward PyTypeObject Unpicklertype;
+
+#include "other/cPickle_c.h"
+
+DEF_DOC(cPickle_module_documentation, 
 "C implementation and optimization of the Python pickle module\n"
 "\n"
 "cPickle.c,v 1.71 1999/07/11 13:30:34 jim Exp\n"
-;
+);
 
-#include "Python.h"
 #include "cStringIO.h"
 #include "mymath.h"
 
@@ -132,8 +185,8 @@ static PyObject *__class___str, *__getinitargs___str, *__dict___str,
   *read_str, *readline_str, *__main___str, *__basicnew___str,
   *copy_reg_str, *dispatch_table_str, *safe_constructors_str, *empty_str;
 
-static int save();
-static int put2();
+/* static int save(); */
+/* static int put2(); */
 
 #ifndef PyList_SET_ITEM
 #define PyList_SET_ITEM(op, i, v) (((PyListObject *)(op))->ob_item[i] = (v))
@@ -151,14 +204,6 @@ static int put2();
 #define PyString_GET_SIZE(op)    (((PyStringObject *)(op))->ob_size)
 #endif
 
-/*************************************************************************
- Internal Data type for pickle data.                                     */
-
-typedef struct {
-     PyObject_HEAD
-     int length, size;
-     PyObject **data;
-} Pdata;
 
 static void 
 Pdata_dealloc(Pdata *self) {
@@ -308,51 +353,8 @@ Pdata_popList(Pdata *self, int start) {
     }                                               \
   }
 
-typedef struct {
-     PyObject_HEAD
-     FILE *fp;
-     PyObject *write;
-     PyObject *file;
-     PyObject *memo;
-     PyObject *arg;
-     PyObject *pers_func;
-     PyObject *inst_pers_func;
-     int bin;
-     int fast; /* Fast mode doesn't save in memo, don't use if circ ref */
-     int (*write_func)();
-     char *write_buf;
-     int buf_size;
-     PyObject *dispatch_table;
-} Picklerobject;
 
-staticforward PyTypeObject Picklertype;
-
-typedef struct {
-     PyObject_HEAD
-     FILE *fp;
-     PyObject *file;
-     PyObject *readline;
-     PyObject *read;
-     PyObject *memo;
-     PyObject *arg;
-     Pdata *stack;
-     PyObject *mark;
-     PyObject *pers_func;
-     PyObject *last_string;
-     int *marks;
-     int num_marks;
-     int marks_size;
-     int (*read_func)();
-     int (*readline_func)();
-     int buf_size;
-     char *buf;
-     PyObject *safe_constructors;
-     PyObject *find_class;
-} Unpicklerobject;
- 
-staticforward PyTypeObject Unpicklertype;
-
-int 
+static int 
 cPickle_PyMapping_HasKey(PyObject *o, PyObject *key) {
     PyObject *v;
 
@@ -481,8 +483,8 @@ write_other(Picklerobject *self, char *s, int  n) {
             junk = PyObject_CallObject(self->write, self->arg);
             FREE_ARG_TUP(self);
         }
-        if (junk) Py_DECREF(junk);
-        else return -1;
+        if (junk){ Py_DECREF(junk);}
+        else {return -1;}
       }
     else 
       PDATA_PUSH(self->file, py_str, -1);
@@ -758,8 +760,8 @@ put2(Picklerobject *self, PyObject *ob) {
             c_str[0] = LONG_BINPUT;
             c_str[1] = (int)(p & 0xff);
             c_str[2] = (int)((p >> 8)  & 0xff);
-            c_str[3] = (int)((p >> 16) & 0xff);
-            c_str[4] = (int)((p >> 24) & 0xff);
+            c_str[3] = (int)((((long)p) >> 16) & 0xff);
+            c_str[4] = (int)((((long)p) >> 24) & 0xff);
             len = 5;
         }
         else {
@@ -976,7 +978,7 @@ finally:
     return res;
 }
 
-
+#ifndef WITHOUT_FLOAT
 static int
 save_float(Picklerobject *self, PyObject *args) {
     double x = PyFloat_AS_DOUBLE((PyFloatObject *)args);
@@ -1081,6 +1083,14 @@ save_float(Picklerobject *self, PyObject *args) {
 
     return 0;
 }
+#else
+static int
+save_float(Picklerobject *self, PyObject *args) {
+	PyErr_SetString(PyExc_MissingFeatureError,
+			"Float objects are not provided in this python build");
+	return -1;
+}
+#endif
 
 
 static int
@@ -1672,12 +1682,16 @@ save(Picklerobject *self, PyObject *args, int  pers_save) {
             break;
 
         case 'f':
+#ifndef WITHOUT_FLOAT
             if (type == &PyFloat_Type) {
                 res = save_float(self, args);
                 goto finally;
             }
+#else
+	    res = save_float(self,args);
+	    goto finally;
+#endif
             break;
-
         case 't':
             if (type == &PyTuple_Type && PyTuple_Size(args)==0) {
                 if (self->bin) res = save_empty_tuple(self, args);
@@ -2029,13 +2043,13 @@ Pickler_dump(Picklerobject *self, PyObject *args) {
 
 static struct PyMethodDef Pickler_methods[] = {
   {"dump",          (PyCFunction)Pickler_dump,  1,
-   "dump(object) --"
-   "Write an object in pickle format to the object's pickle stream\n"
+   USE_DOC("dump(object) --"
+	   "Write an object in pickle format to the object's pickle stream\n")
   },
   {"clear_memo",  (PyCFunction)Pickle_clear_memo,  1,
-   "clear_memo() -- Clear the picklers memo"},
+   USE_DOC("clear_memo() -- Clear the picklers memo")},
   {"getvalue",  (PyCFunction)Pickle_getvalue,  1,
-   "getvalue() -- Finish picking a list-based pickle"},
+   USE_DOC("getvalue() -- Finish picking a list-based pickle")},
   {NULL,                NULL}           /* sentinel */
 };
 
@@ -2211,7 +2225,7 @@ Pickler_getattr(Picklerobject *self, char *name) {
 }
 
 
-int 
+static int 
 Pickler_setattr(Picklerobject *self, char *name, PyObject *value) {
 
     if (! value) {
@@ -2260,9 +2274,8 @@ Pickler_setattr(Picklerobject *self, char *name, PyObject *value) {
 }
 
 
-static char Picklertype__doc__[] =
-"Objects that know how to pickle objects\n"
-;
+DEF_DOC(Picklertype__doc__, "Objects that know how to pickle objects\n");
+
 
 static PyTypeObject Picklertype = {
     PyObject_HEAD_INIT(NULL)
@@ -2286,7 +2299,7 @@ static PyTypeObject Picklertype = {
 
     /* Space for future expansion */
     0L,0L,0L,0L,
-    Picklertype__doc__ /* Documentation string */
+    USE_DOC(Picklertype__doc__) /* Documentation string */
 };
 
 static PyObject *
@@ -2476,7 +2489,8 @@ finally:
     return res;
 }
 
- 
+
+#ifndef WITHOUT_FLOAT
 static int
 load_float(Unpicklerobject *self) {
     PyObject *py_float = 0;
@@ -2574,6 +2588,22 @@ load_binfloat(Unpicklerobject *self) {
     PDATA_PUSH(self->stack, py_float, -1);
     return 0;
 }
+
+#else 
+static int
+load_float(Unpicklerobject *self) {
+	PyErr_SetString(PyExc_MissingFeatureError,
+			"Float objects are not provided in this python build");
+	return -1;
+}
+static int
+load_binfloat(Unpicklerobject *self) {
+	PyErr_SetString(PyExc_MissingFeatureError,
+			"Float objects are not provided in this python build");
+	return -1;
+}
+	
+#endif /* WITHOUT_FLOAT */
 
 static int
 load_string(Unpicklerobject *self) {
@@ -3870,15 +3900,15 @@ Unpickler_noload(Unpicklerobject *self, PyObject *args) {
 
 static struct PyMethodDef Unpickler_methods[] = {
   {"load",         (PyCFunction)Unpickler_load,   1,
-   "load() -- Load a pickle"
+   USE_DOC("load() -- Load a pickle")
   },
   {"noload",         (PyCFunction)Unpickler_noload,   1,
-   "noload() -- not load a pickle, but go through most of the motions\n"
+   USE_DOC("noload() -- not load a pickle, but go through most of the motions\n"
    "\n"
    "This function can be used to read past a pickle without instantiating\n"
    "any objects or importing any modules.  It can also be used to find all\n"
    "persistent references without instantiating any objects or importing\n"
-   "any modules.\n"
+	   "any modules.\n")
   },
   {NULL,              NULL}           /* sentinel */
 };
@@ -4176,8 +4206,7 @@ finally:
 }
 
 
-static char Unpicklertype__doc__[] = 
-"Objects that know how to unpickle";
+DEF_DOC(Unpicklertype__doc__, "Objects that know how to unpickle");
 
 static PyTypeObject Unpicklertype = {
     PyObject_HEAD_INIT(NULL)
@@ -4201,39 +4230,39 @@ static PyTypeObject Unpicklertype = {
 
     /* Space for future expansion */
     0L,0L,0L,0L,
-    Unpicklertype__doc__ /* Documentation string */
+    USE_DOC(Unpicklertype__doc__) /* Documentation string */
 };
 
 static struct PyMethodDef cPickle_methods[] = {
   {"dump",         (PyCFunction)cpm_dump,         1,
-   "dump(object, file, [binary]) --"
+   USE_DOC("dump(object, file, [binary]) --"
    "Write an object in pickle format to the given file\n"
    "\n"
    "If the optional argument, binary, is provided and is true, then the\n"
    "pickle will be written in binary format, which is more space and\n"
-   "computationally efficient. \n"
+	   "computationally efficient. \n")
   },
   {"dumps",        (PyCFunction)cpm_dumps,        1,
-   "dumps(object, [binary]) --"
+   USE_DOC("dumps(object, [binary]) --"
    "Return a string containing an object in pickle format\n"
    "\n"
    "If the optional argument, binary, is provided and is true, then the\n"
    "pickle will be written in binary format, which is more space and\n"
-   "computationally efficient. \n"
+	   "computationally efficient. \n")
   },
   {"load",         (PyCFunction)cpm_load,         1,
-   "load(file) -- Load a pickle from the given file"},
+   USE_DOC("load(file) -- Load a pickle from the given file")},
   {"loads",        (PyCFunction)cpm_loads,        1,
-   "loads(string) -- Load a pickle from the given string"},
+   USE_DOC("loads(string) -- Load a pickle from the given string")},
   {"Pickler",      (PyCFunction)get_Pickler,      1,
-   "Pickler(file, [binary]) -- Create a pickler\n"
+   USE_DOC("Pickler(file, [binary]) -- Create a pickler\n"
    "\n"
    "If the optional argument, binary, is provided and is true, then\n"
    "pickles will be written in binary format, which is more space and\n"
-   "computationally efficient. \n"
+	   "computationally efficient. \n")
   },
   {"Unpickler",    (PyCFunction)get_Unpickler,    1,
-   "Unpickler(file) -- Create an unpickler"},
+   USE_DOC("Unpickler(file) -- Create an unpickler")},
   { NULL, NULL }
 };
 
@@ -4366,6 +4395,7 @@ init_stuff(PyObject *module, PyObject *module_dict) {
 #ifndef DL_EXPORT	/* declarations for DLL import/export */
 #define DL_EXPORT(RTYPE) RTYPE
 #endif
+
 DL_EXPORT(void)
 initcPickle() {
     PyObject *m, *d, *v;
@@ -4379,7 +4409,7 @@ initcPickle() {
 
     /* Create the module and add the functions */
     m = Py_InitModule4("cPickle", cPickle_methods,
-                     cPickle_module_documentation,
+                     USE_DOC(cPickle_module_documentation),
                      (PyObject*)NULL,PYTHON_API_VERSION);
 
     /* Add some symbolic constants to the module */
