@@ -28,8 +28,6 @@ Notes:
 - There's a simple test set (see end of this file).
 """
 
-import string
-
 class StringIO:
 	def __init__(self, buf = ''):
 		self.buf = buf
@@ -50,7 +48,7 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + string.joinfields(self.buflist, '')
+			self.buf = self.buf + ''.joinfields(self.buflist)
 			self.buflist = []
 		if mode == 1:
 			pos = pos + self.pos
@@ -65,7 +63,7 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + string.joinfields(self.buflist, '')
+			self.buf = self.buf + ''.joinfields(self.buflist)
 			self.buflist = []
 		if n < 0:
 			newpos = self.len
@@ -78,9 +76,9 @@ class StringIO:
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 		if self.buflist:
-			self.buf = self.buf + string.joinfields(self.buflist, '')
+			self.buf = self.buf + ''.joinfields(self.buflist)
 			self.buflist = []
-		i = string.find(self.buf, '\n', self.pos)
+		i = self.buf.find('\n', self.pos)
 		if i < 0:
 			newpos = self.len
 		else:
@@ -108,7 +106,7 @@ class StringIO:
 		newpos = self.pos + len(s)
 		if self.pos < self.len:
 			if self.buflist:
-				self.buf = self.buf + string.joinfields(self.buflist, '')
+				self.buf = self.buf + ''.joinfields(self.buflist)
 				self.buflist = []
 			self.buflist = [self.buf[:self.pos], s, self.buf[newpos:]]
 			self.buf = ''
@@ -117,58 +115,14 @@ class StringIO:
 			self.len = newpos
 		self.pos = newpos
 	def writelines(self, list):
-		self.write(string.joinfields(list, ''))
+		self.write(''.joinfields(list))
 	def flush(self):
 		if self.closed:
 			raise ValueError, "I/O operation on closed file"
 	def getvalue(self):
 		if self.buflist:
-			self.buf = self.buf + string.joinfields(self.buflist, '')
+			self.buf = self.buf + ''.joinfields(self.buflist)
 			self.buflist = []
 		return self.buf
 
 
-# A little test suite
-
-def test():
-	import sys
-	if sys.argv[1:]:
-		file = sys.argv[1]
-	else:
-		file = '/etc/passwd'
-	lines = open(file, 'r').readlines()
-	text = open(file, 'r').read()
-	f = StringIO()
-	for line in lines[:-2]:
-		f.write(line)
-	f.writelines(lines[-2:])
-	if f.getvalue() != text:
-		raise RuntimeError, 'write failed'
-	length = f.tell()
-	print 'File length =', length
-	f.seek(len(lines[0]))
-	f.write(lines[1])
-	f.seek(0)
-	print 'First line =', `f.readline()`
-	here = f.tell()
-	line = f.readline()
-	print 'Second line =', `line`
-	f.seek(-len(line), 1)
-	line2 = f.read(len(line))
-	if line != line2:
-		raise RuntimeError, 'bad result after seek back'
-	f.seek(len(line2), 1)
-	list = f.readlines()
-	line = list[-1]
-	f.seek(f.tell() - len(line))
-	line2 = f.read()
-	if line != line2:
-		raise RuntimeError, 'bad result after seek back from EOF'
-	print 'Read', len(list), 'more lines'
-	print 'File length =', f.tell()
-	if f.tell() != length:
-		raise RuntimeError, 'bad length'
-	f.close()
-
-if __name__ == '__main__':
-	test()
