@@ -10,8 +10,8 @@ SEGMENT_LIST = pseg0 pseg1 pseg2 pseg2A pseg2B pseg3 pseg4 pseg6 pseg8 pseg9 pse
 
 ###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libsocket.a
 ###SOCKETLIB= /usr/local/palm/m68k-palmos-coff/lib/libNetSocket.a
-###SOCKETLIB= ../NetSocket.o
-SOCKETLIB= -lNetSocket
+SOCKETLIB= ../NetSocket.o
+###SOCKETLIB= -lNetSocket
 
 OBJS = $(PYTHONLIB)
 
