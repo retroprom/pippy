@@ -139,8 +139,9 @@ The current Break button implemenation responds to any touch of the
 screen, not just the button.  This can be easily fixed, but just haven't
 had the time ;(
 
-The supplied libNetSocket.a supplied with the SDK has given me problems
-in the past.  Download NetSocket.c from the Palm, recompile and link.
+The supplied libNetSocket.a supplied with the SDK has given me
+problems in the past.  Download NetSocket.c from the Palm (found in
+the SDK for Windows Platforms), recompile and link.
 
 MAILING LISTS
 http://www.endtech.com/PalmPython/mailing_lists
