@@ -354,9 +354,13 @@ class ModuleFinder:
     def replace_paths_in_code(self, co):
         new_filename = original_filename = os.path.normpath(co.co_filename)
         for f,r in self.replace_paths:
-            if original_filename.startswith(f):
-                new_filename = r+original_filename[len(f):]
+            headless = _behead(f, original_filename)
+            if headless != original_filename:
+                new_filename = os.path.join(r, headless)
                 break
+#            if original_filename.startswith(f):
+#                new_filename = r+original_filename[len(f):]
+#                break
 
         if self.debug and original_filename not in self.processed_paths:
             if new_filename!=original_filename:
@@ -376,6 +380,17 @@ class ModuleFinder:
                          co.co_flags, co.co_code, tuple(consts), co.co_names, 
                          co.co_varnames, new_filename, co.co_name, 
                          co.co_firstlineno, co.co_lnotab)
+
+def _behead(head, path):
+    """Remove the head prefix from the path"""
+    h = os.path.normpath(head)
+    path = os.path.normpath(path)
+    if os.path.commonprefix((h, path),1) <> h or len(h) == 0:
+        return path
+    if h[-1] <> os.sep:
+        h = h + os.sep
+    return path[len(h):]
+    
 
 def test():
     # Parse command line
