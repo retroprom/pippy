@@ -1,0 +1,69 @@
+
+What's New in Pippy 0.7?
+========================
+
+Optimized printing to the screen
+
+Added more tests from the test suite
+
+Added patch to resourcer that allows path renaming in the .pyc files (submitted
+by Lawrence Hudson <lhudson@geminidataloggers.com>)
+
+Added palmemumodule.c for accessing the Host* API on POSE
+
+Ported cPickle and cStringIO
+
+Made Pippy compatible with the CodeWarrior development environment
+
+Reduced gratuitous type checking with strings
+
+Replaced memory manager for improved malloc/free efficiency
+
+Moved larger dictionary internals to the DM
+
+Moved interned strings to the DM
+
+Moved code objects and some internals to DM
+
+Rewrote various import routines that were consuming too much time.
+
+Eliminated various stack variables, making them dynamic instead.
+
+Refactored the socket module to allow the exportation of the socket API.
+
+Added two new functions to the time module:
+
+	1.  ticks()	- exposes the PalmOS function TimGetTicks()
+	2.  tickstotime(ticks[, unit_flag=TIME_IN_MSEC]) - converts the ticks to
+	time, where unit_flag indicates the unit of measure and is one of:
+		TIME_IN_USEC - time in microseconds
+		TIME_IN_MSEC - time in milliseconds
+		TIME_IN_SEC - time in seconds
+
+INTERFACE MODIFICATION.  Changed the interface to time.sleep(arg), where arg
+is an integer value containing the time in milliseconds.
+
+Added some debugging/instrumenting code:
+
+	Added the method sys.getallocations(), used for debugging purposes.
+	Added some capability for logging memory allocations to the host from POSE.
+	Added capability to count allocations and deallocations.  Provided a function
+	for accessing these values.
+	Added typesize().
+
+Fixed memory leak in stringobject.c
+
+Reduced CO_MAXBLOCKS from 20 down to 5.  This saves a considerable amount of
+memory in the frame object.
+
+Added experimental Memo Database importer.  To test:
+	1.  Add the category "Python" to the Memo application
+	2.  The title (eg, first line) in each Memo should contain a commented
+	module name (eg, # mymodule.py)
+	3.  Subsequent lines contain the actual Python source code
+	4.  Install the importer by entering the following on the command line:
+		import memoimp; memoimp.install()
+	5.  You're ready to import from the Memo application
+	6.  To restore the original importer, type
+		memoimp.uninstall()
+

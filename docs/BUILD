@@ -126,8 +126,7 @@ the standard python library modules, you must perform the following:
     
     Now perform the following commands from the shell prompt:
     
-        ../Resourcer/resourcer wrapper.py
-        make
+        make final
 
     The resulting pippy.prc will contain the library modules as Palm
     resource records.
@@ -186,7 +185,6 @@ LINKS AND CONTACT INFORMATION
 AUTHORS
 
     Jeffery D. Collins <jcollins@endeavors.com>
-    Michael Gorlick <mgorlick@endeavors.com>
     Endeavors Technology, Inc.
     19700 Fairchild Rd, Suite 200
     Irvine, CA  92612
