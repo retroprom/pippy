@@ -884,7 +884,11 @@ find_module(realname, path, buf, buflen, p_fp)
 	static struct filedescr fd_frozen = {"", "", PY_FROZEN};
 	static struct filedescr fd_builtin = {"", "", C_BUILTIN};
 	static struct filedescr fd_package = {"", "", PKG_DIRECTORY};
-	char name[MAXPATHLEN+1];
+	char *name;
+
+#define RETURN_AFTER_CLEANUP(value) {free(name); return value;}	
+
+	name = (char *)malloc(MAXPATHLEN+1);
 
 	strcpy(name, realname);
 
@@ -895,7 +899,7 @@ find_module(realname, path, buf, buflen, p_fp)
 		if (PyString_Size(path) + 1 + strlen(name) >= (size_t)buflen) {
 			PyErr_SetString(PyExc_ImportError,
 					"full frozen module name too long");
-			return NULL;
+			RETURN_AFTER_CLEANUP( NULL);
 		}
 		strcpy(buf, PyString_AsString(path));
 		strcat(buf, ".");
@@ -906,18 +910,18 @@ find_module(realname, path, buf, buflen, p_fp)
 	if (path == NULL) {
 		if (is_builtin(name)) {
 			strcpy(buf, name);
-			return &fd_builtin;
+			RETURN_AFTER_CLEANUP( &fd_builtin);
 		}
 		if ((f = find_frozen(name)) != NULL) {
 			strcpy(buf, name);
-			return &fd_frozen;
+			RETURN_AFTER_CLEANUP( &fd_frozen);
 		}
 
 #ifdef MS_COREDLL
 		fp = PyWin_FindRegisteredModule(name, &fdp, buf, buflen);
 		if (fp != NULL) {
 			*p_fp = fp;
-			return fdp;
+			RETURN_AFTER_CLEANUP( fdp);
 		}
 #endif
 		path = PySys_GetObject("path");
@@ -925,7 +929,7 @@ find_module(realname, path, buf, buflen, p_fp)
 	if (path == NULL || !PyList_Check(path)) {
 		PyErr_SetString(PyExc_ImportError,
 				"sys.path must be a list of directory names");
-		return NULL;
+		RETURN_AFTER_CLEANUP( NULL);
 	}
 	npath = PyList_Size(path);
 	namelen = strlen(name);
@@ -954,13 +958,13 @@ find_module(realname, path, buf, buflen, p_fp)
 			static struct filedescr resfiledescr =
 				{"", "", PY_RESOURCE};
 			
-			return &resfiledescr;
+			RETURN_AFTER_CLEANUP( &resfiledescr);
 		}
 		if (PyMac_FindCodeResourceModule((PyStringObject *)v, name, buf)) {
 			static struct filedescr resfiledescr =
 				{"", "", PY_CODERESOURCE};
 			
-			return &resfiledescr;
+			RETURN_AFTER_CLEANUP( &resfiledescr);
 		}
 #endif
 		if (len > 0 && buf[len-1] != SEP
@@ -993,9 +997,9 @@ find_module(realname, path, buf, buflen, p_fp)
 #ifdef CHECK_IMPORT_CASE
 					if (!check_case(buf, len, namelen,
 							name))
-						return NULL;
+						RETURN_AFTER_CLEANUP( NULL);
 #endif
-					return &fd_package;
+					RETURN_AFTER_CLEANUP( &fd_package);
 				}
 			}
 		}
@@ -1022,17 +1026,17 @@ find_module(realname, path, buf, buflen, p_fp)
 	if (fp == NULL) {
 		PyErr_Format(PyExc_ImportError,
 			     "No module named %.200s", name);
-		return NULL;
+		RETURN_AFTER_CLEANUP( NULL);
 	}
 #ifdef CHECK_IMPORT_CASE
 	if (!check_case(buf, len, namelen, name)) {
 		fclose(fp);
-		return NULL;
+		RETURN_AFTER_CLEANUP( NULL);
 	}
 #endif
 
 	*p_fp = fp;
-	return fdp;
+	RETURN_AFTER_CLEANUP( fdp);
 }
 
 #ifdef CHECK_IMPORT_CASE
@@ -2044,19 +2048,24 @@ call_find_module(name, path)
 	extern int fclose Py_PROTO((FILE *));
 	PyObject *fob, *ret;
 	struct filedescr *fdp;
-	char pathname[MAXPATHLEN+1];
+	char *pathname
 	FILE *fp = NULL;
+
+	pathname = (char *)malloc(MAXPATHLEN+1);
 
 	pathname[0] = '\0';
 	if (path == Py_None)
 		path = NULL;
 	fdp = find_module(name, path, pathname, MAXPATHLEN+1, &fp);
-	if (fdp == NULL)
-		return NULL;
+	if (fdp == NULL) {
+	  free(pathname);
+	  return NULL;
+	}
 	if (fp != NULL) {
 		fob = PyFile_FromFile(fp, pathname, fdp->mode, fclose);
 		if (fob == NULL) {
 			fclose(fp);
+			free(pathname);
 			return NULL;
 		}
 	}
@@ -2067,6 +2076,7 @@ call_find_module(name, path)
 	ret = Py_BuildValue("Os(ssi)",
 		      fob, pathname, fdp->suffix, fdp->mode, fdp->type);
 	Py_DECREF(fob);
+	free(pathname);
 	return ret;
 }
 
