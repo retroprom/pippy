@@ -82,4 +82,4 @@ clean:
 	(cd libc; make clean)
 	(cd resources; make clean)
 	rm -f the_*
-	rm *.bin
+	rm -f *.bin
