@@ -1,23 +1,38 @@
-#!/usr/bin/env python
+#!/usr/bin/env python1.5
 
-# only recent revisions (>1.5.2) contain the filecmp module
-# check for it
+# Only the supplied Python-1.5.2+ (pre-unicode tag in the Python CVS
+# repository).
 
 import sys
 
-# test for Python standard library correctness
-
-
-if not ( 0x10502 <= (sys.hexversion >> 8) <= 0x10600 ):
-	print """
+error_string = """
 ERROR:
 	Invalid Python version
-	Use either Python 1.5.2 or 1.6
+	Python 1.5.2+ required
+	(see pre-unicode tag in CVS repository)
 """
+def exit():
+	print error_string
 	sys.exit()
-	
 
+# first, check for string methods
+try:
+	"ab".split()
+except AttributeError:
+	exit()
+
+# check the revision string
+
+if sys.version[:6] != '1.5.2+':
+	exit()
+
+# be sure that unicode is not present
 import exceptions
+
+if hasattr(exceptions, 'UnicodeError'):
+	exit()
+
+# be sure that the PYTHONPATH points to our modified library
 try:
 	exceptions.MissingFeatureError
 except AttributeError:
