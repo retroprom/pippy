@@ -62,7 +62,7 @@ functions should be applied to nil objects.
    concerned about memory footprint, simply comment the #define out
    here (and rebuild everything!). */
 /* #define CACHE_HASH */  /* pippy - now set in config.h */
-#ifdef CACHE_HASH
+#if defined( CACHE_HASH) && !defined(PALMDM_INTERN_STRINGS)
 #define INTERN_STRINGS
 #endif
 
