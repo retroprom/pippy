@@ -1,40 +1,53 @@
 
-This distribution contains the source of the Python port to the PalmOS.  
-It is a continuation of the work Pioneered at the Aerospace corporation:)
+NOTE
+
+This distribution contains source to the port of Python to the PalmOS
+necessary for modifying the application. If you are only interested in
+running Python on the Palm, please download the .prc files at
+http://www.endeavors.org/XXX.
+
+INTRODUCTION
+
+Welcome to the port of Python-1.5.2+ to the PalmOS.  This project is a
+continuation of work http://www.isr.uci.edu/projects/sensos/python
+previously released as a joint project between The Aerospace
+Corporation and University of California, Irvine.  Python runs on the
+PalmOS (version 3.5 and higher) and passes a subset of the standard
+Python regression test suite without failures or errors.
+
+Our primary focus in this code is tighter integration with the PalmOS
+and a simple interactive interface.  Several extension modules have
+been ported or developed from scratch specifically for the Palm.  The
+new modules are fairly primitive and satisfy our initial needs.  A
+list of these is provided below.  You are invited to join the effort
+to improve the integration of Python with the PalmOS.
 
 
 COPYRIGHT/LICENSE (see LICENSE)
 
-REQUIREMENTS
 
-A device running PalmOS 3.5 (XXX check this), such as the PalmIIIxe.
-We did all of our testing using POSE on the desktop and the PalmIIIxe
-device.  The test suite completes fine on both platforms.  We
-performed some early tests on PalmOS 3.0 devices.  See KNOWN PROBLEMS
-below.
+SYSTEM REQUIREMENTS
 
+Palm Device
 
-INSTALLING/RUNNING THE PALM APPLICATION
+XXX was tested on POSE (PalmOS Emulator) and on a PalmIIIxe (running
+PalmOS 3.5 or greater with 8M of RAM).  It has run on a PalmIII with 2M
+or RAM, but a bug (see KNOWN PROBLEMS below) currently prevents this.
 
-The distribution includes pre-built .prc files for the interactive
-interpreter.  Simply install python.prc and pylib.prc on the Palm
-and select the python application.
+Development Platform
 
-The interactive interface is a command-line interface based that
-implemented in LispMe (http://www.lispme.de/).  It is very limited,
-but provides a means for entering python commands and viewing the
-results.  If you wish to contribute to improving this interface,
-see the TODO list below.
+Any platform for which the gnu toolchain has been ported.  I have used
+Solaris and Windows 95, but currently use Linux (Redhat-6.2).
 
 
 BUILDING
 
-If you wish to modify the Python VM, the interactive interpreter
-interface or add an extension module, you must first install the tools
-and unpack the distribution.  Following these steps for proper
-installation:
+The following instructions are specific to Unix/Linux.
 
-1.  See TOOLS for instructions to install the development tools.
+1.  See the file TOOLS for instructions to install the development
+tools.  You must use the toolset found in TOOLS.  Other development
+toolsets, such as prc-tools-2.0 and CodeWarrior will not work for this
+port.
 
 2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
 Python-2.0 bytecodes are incompatible with this revision.
@@ -46,54 +59,59 @@ Python-2.0 bytecodes are incompatible with this revision.
     cd Interactive
     make
 
-5.  The .prc files (pylib.prc and python.prc) are ready for installing
-on the system.
+5.  Install the generated .prc files (XXX/src/Palm/pylib.prc and
+XXX/src/Palm/Interactive/python.prc) on your Palm (using something
+like pilot-xfer) or POSE.
 
-6.  For the time being, to include library modules in your interpreter,
-you must perform the following:
-	a)  create a file (libwrapper.py, say) in Interactive that contains import
+6.  For the time being, to include your own special modules or the standard
+python library modules, you must perform the following:
+	a)  create a file (wrapper.py, say) in Interactive that contains import
 	statements for the modules you wish to include
-	b)  prepend the environment variable PYTHONPATH with Lib of this distribution
-	c)  ../Resourcer/resourcer libwrapper.py
-	d)  make
+	b)  prepend the environment variable PYTHONPATH with XXX/src/Lib of this distribution
+	c)  In in a shell, type the following commands:
+		cd XXX/src/Palm/Interactive 
+		../Resourcer/resourcer libwrapper.py
+		make
 The resulting python.prc will contain the library modules as Palm resource records.
 
-7.  The module palmappsmodule.c requires the Palm SDK Examples (downloadable from
-http://www.palmos.com/dev/tech/tools/).  See Setup for setting up the path to
-the headers in Examples.
+7.  The module palmappsmodule.c requires the Palm SDK Examples
+distribution (downloadable from
+http://www.palmos.com/dev/tech/tools/).  Set the variable
+PALM_EXAMPLES in XXX/src/Palm/Modules/Setup to path of the headers in
+Examples.
 
 
-CHANGES
+WHAT'S NEW
 
-The following modules have been ported to the Palm.
+The following modules have been ported to the Palm:
 
-palm_socketmodule.c
-palm_errnomodule.c
+	palm_socketmodule.c
+	palm_errnomodule.c
+	palm_timemodule.c 
+	palm_selectmodule.c: 
 
-palm_timemodule.c:
 The internal representation of time on the PalmOS is an unsigned long.
 So, time.time() has been modified to return a (signed) integer.
 
-palm_selectmodule.c: 
 Since we have eliminated floating point objects in the interest of
 reducing code footprint, the time specifier for select has been
 changed to a tuple of the following form: (time_seconds,
-time_micro_seconds).  So, the call now has the following signature:
-select(rlist, wlist, xlist[, (timeout_sec, timeout_usec)]) -> (rlist, wlist, xlist)
+time_micro_seconds).  So, the new signature is:
+
+select(rlist, wlist, xlist[, (timeout_sec, timeout_usec)])
 
 
-The following modules are PalmOS specific.  Most of these represent
-the beginning of a more thorough implementation.  Documentation is
-forthcoming.
-./src/Modules/palmnetmodule.c	- Controls the palm network connection
-./src/Modules/palmeventmodule.c	- Exports events to the Palm
-./src/Modules/palmsysmodule.c	- Provides access to Palm system functions
-./src/Modules/palmdmmodule.c	- Database interface
-./src/Modules/palmappsmodule.c	- Standard Palm applications
-./src/Modules/palmformmodule.c	- Palm forms
+The following modules are PalmOS specific:
 
-Added a break button, which when pressed, raises a KeyboardInterrupt
-exception.
+	palmnetmodule.c		- Controls the palm network connection
+	palmeventmodule.c	- Exports events to the Palm
+	palmsysmodule.c		- Provides access to Palm system functions
+	palmdmmodule.c		- Database interface
+	palmappsmodule.c	- Standard Palm applications
+	palmformmodule.c	- Palm forms
+
+A break button has been added, which when pressed raises a
+KeyboardInterrupt exception.
 
 
 TODO
@@ -127,8 +145,8 @@ The following features have been removed from this port of Python:
 float, complex objects
 file IO (stdio, stderr simulated)
 documentation strings
-parser, compiler - in non-interactive environments, the parser and compiler
-		   can be easily eliminated to reduce code footprint
+parser, compiler	- in non-interactive environments, the parser and compiler
+			can be easily eliminated with a configuration switch
 most python library modules
 most extension modules
 
@@ -144,27 +162,31 @@ get raise MemoryError.  It is possible, though, that there isn't
 enough dynamic memory left to clean up Python when that happens,
 requiring a soft reset.
 
-The port currently only runs on PalmOS 3.5 and greater.  There is a
+This release currently only runs on PalmOS 3.5 and greater.  There is a
 GUI problem with PalmOS 3.0 that we are working looking into.
 
 The current Break button implemenation responds to any touch of the
 screen, not just the button.  This can be easily fixed, but just haven't
-had the time ;(
+had the time.
 
-MAILING LISTS
-http://www.endtech.com/PalmPython/mailing_lists
+FEEDBACK
+XXX@endtech.com
 
 DEVELOPMENT HOME
-http://www.endtech.com/PalmPython
+http://www.endeavors.org/XXX
 
 BUG REPORTS
-http://www.endtech.com/PalmPython/bugs
+XXX-bugs@endtech.com
 
 CVS REPOSITORY
-http://www.endtech.com/PalmPython/cvs
+????http://www.endeavors.org/XXX/cvs
 
 
 AUTHORS
 
 Jeffery D. Collins (jcollins@endtech.com)
 Michael Gorlick (mgorlick@endtech.com)
+
+Endeavors Technology, Inc.
+19700 Fairchild Rd, Suite 200
+Irvine, CA  92612
