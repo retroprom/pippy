@@ -81,7 +81,7 @@ def _copy_atomic(x):
 d[types.NoneType] = _copy_atomic
 d[types.IntType] = _copy_atomic
 d[types.LongType] = _copy_atomic
-d[types.FloatType] = _copy_atomic
+# d[types.FloatType] = _copy_atomic
 d[types.StringType] = _copy_atomic
 try:
 	d[types.CodeType] = _copy_atomic
@@ -157,7 +157,7 @@ def _deepcopy_atomic(x, memo):
 d[types.NoneType] = _deepcopy_atomic
 d[types.IntType] = _deepcopy_atomic
 d[types.LongType] = _deepcopy_atomic
-d[types.FloatType] = _deepcopy_atomic
+# d[types.FloatType] = _deepcopy_atomic
 d[types.StringType] = _deepcopy_atomic
 d[types.CodeType] = _deepcopy_atomic
 d[types.TypeType] = _deepcopy_atomic
@@ -248,7 +248,8 @@ class _EmptyClass:
     pass
 
 def _test():
-	l = [None, 1, 2L, 3.14, 'xyzzy', (1, 2L), [3.14, 'abc'],
+	was_float = 3
+	l = [None, 1, 2L, was_float, 'xyzzy', (1, 2L), [was_float, 'abc'],
 	     {'abc': 'ABC'}, (), [], {}]
 	l1 = copy(l)
 	print l1==l
