@@ -68,16 +68,16 @@ static UInt16
 pushToBuffer(MemHandle textH, Char *s)
 {
 	Char *textP, *str=s;
-	UInt16 res, lenstr;
+	UInt16 res, lenstr, textLen;
 	
-	if (StrLen(str) > gMaxChars)
-		str += StrLen(str) - gMaxChars + 1;
-		
-	lenstr = StrLen(str);
+	if ((lenstr=StrLen(str)) > gMaxChars) {
+	  str += lenstr - gMaxChars + 1;
+	  lenstr = StrLen(str);
+	}
 
 	textP = MemHandleLock(textH);
 
-	if (StrLen(textP) + lenstr >= gMaxChars) {
+	if ((textLen = StrLen(textP)) + lenstr >= gMaxChars) {
 		Char *p;
 		UInt16 factor = max(gMaxChars/4, lenstr), len;
 			
@@ -88,11 +88,12 @@ pushToBuffer(MemHandle textH, Char *s)
 		/* Move the text up */
 		MemMove(textP, p, len);
 		MemSet(textP + len, factor, '\0');
+		textLen = StrLen(textP);
 	}
 
 	/* Add the new text */
 	StrCat(textP, str);
-	res = StrLen(textP);
+	res = textLen + lenstr;
 	MemPtrUnlock(textP);
 	
 	return res;
