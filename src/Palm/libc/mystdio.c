@@ -35,13 +35,11 @@ int putchar (unsigned int x) {
 
 	return 0;
 }
-
+static char buf[500];
 int printf(const char *fmt, ...)
 {
 	va_list args;
 	int i;
-	char *buf;
-	buf = (char *)malloc(500);
 
 	va_start(args, fmt);
 	i=vsprintf(buf,fmt,args);
@@ -49,7 +47,7 @@ int printf(const char *fmt, ...)
 
 	flush_buf();
 	ioPutS(buf);
-	free(buf);
+
 	return i;
 }
 
@@ -57,8 +55,6 @@ int fprintf(FILE* f, const char *fmt, ...)
 {
 	va_list args;
 	int i;
-	char *buf;
-	buf = (char *)malloc(500);
 
 	va_start(args, fmt);
 	i=vsprintf(buf,fmt,args);
@@ -66,20 +62,18 @@ int fprintf(FILE* f, const char *fmt, ...)
 	
 	flush_buf();
 	ioPutS(buf);
-	free(buf);
+
 	return i;
 }
 
 int vfprintf(FILE *stream, const char *fmt, va_list ap)
 {
 	int i;
-	char *buf;
-	buf = (char *)malloc(500);
 
 	i=vsprintf(buf,fmt,ap);
 
 	flush_buf();
 	ioPutS(buf);
-	free(buf);
+
 	return i;
 }
