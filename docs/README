@@ -1,10 +1,15 @@
+This is Pippy-0.6beta.
+
+Copyright (c) 2001 Endeavors Technology, Inc.
+All rights reserved.
+
 
 NOTE
 
-This distribution contains source to the port of Python to the PalmOS
-necessary for modifying the application. If you are only interested in
-running Python on the Palm, please download the .prc files at
-http://www.endeavors.org/XXX.
+This distribution contains source to the port of Python
+(http://www.python.org) to the PalmOS necessary for modifying the
+application. If you are only interested in running Python on the Palm,
+please download the .prc files at http://www.endeavors.org/Pippy.
 
 INTRODUCTION
 
@@ -30,7 +35,7 @@ SYSTEM REQUIREMENTS
 
 Palm Device
 
-XXX was tested on POSE (PalmOS Emulator) and on a PalmIIIxe (running
+Pippy was tested on POSE (PalmOS Emulator) and on a PalmIIIxe (running
 PalmOS 3.5 or greater with 8M of RAM).  It has run on a PalmIII with 2M
 or RAM, but a bug (see KNOWN PROBLEMS below) currently prevents this.
 
@@ -52,24 +57,25 @@ port.
 2.  Be sure that there is a copy of Python1.5.2 - Python1.6 on the system.
 Python-2.0 bytecodes are incompatible with this revision.
 
-3.  Unpack the XXX.tar.gz distribution
+3.  Unpack Pippy-0.6beta.tar.gz distribution
 
-4.  cd XXX/src/Palm
+4.  cd Pippy-0.6beta/src/Palm
     make
     cd Interactive
     make
 
-5.  Install the generated .prc files (XXX/src/Palm/pylib.prc and
-XXX/src/Palm/Interactive/python.prc) on your Palm (using something
+5.  Install the generated .prc files (Pippy-0.6beta/src/Palm/pylib.prc and
+Pippy-0.6beta/src/Palm/Interactive/python.prc) on your Palm (using something
 like pilot-xfer) or POSE.
 
 6.  For the time being, to include your own special modules or the standard
 python library modules, you must perform the following:
 	a)  create a file (wrapper.py, say) in Interactive that contains import
 	statements for the modules you wish to include
-	b)  prepend the environment variable PYTHONPATH with XXX/src/Lib of this distribution
+	b)  prepend the environment variable PYTHONPATH with Pippy-0.6beta/src/Lib
+	    of this distribution
 	c)  In in a shell, type the following commands:
-		cd XXX/src/Palm/Interactive 
+		cd Pippy-0.6beta/src/Palm/Interactive 
 		../Resourcer/resourcer libwrapper.py
 		make
 The resulting python.prc will contain the library modules as Palm resource records.
@@ -77,8 +83,8 @@ The resulting python.prc will contain the library modules as Palm resource recor
 7.  The module palmappsmodule.c requires the Palm SDK Examples
 distribution (downloadable from
 http://www.palmos.com/dev/tech/tools/).  Set the variable
-PALM_EXAMPLES in XXX/src/Palm/Modules/Setup to path of the headers in
-Examples.
+PALM_EXAMPLES in Pippy-0.6beta/src/Palm/Modules/Setup to path of the
+headers in Examples.
 
 
 WHAT'S NEW
@@ -170,16 +176,16 @@ screen, not just the button.  This can be easily fixed, but just haven't
 had the time.
 
 FEEDBACK
-XXX@endtech.com
+pippy@endtech.com
 
 DEVELOPMENT HOME
-http://www.endeavors.org/XXX
+http://www.endeavors.org/Pippy
 
 BUG REPORTS
-XXX-bugs@endtech.com
+Pippy-bugs@endtech.com
 
 CVS REPOSITORY
-????http://www.endeavors.org/XXX/cvs
+????http://www.endeavors.org/Pippy/cvs
 
 
 AUTHORS
