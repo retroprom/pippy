@@ -5,25 +5,12 @@
 /* Jeffery D. Collins                                                 */
 /* Endeavors Technology, Inc.                                         */
 /*                                                                    */
-/* Portions (c) FBI Fred Bayer Informatics                            */
-/*                                                                    */
-/* Distributed under the GNU General Public License;                  */
-/* see the README file. This code comes with NO WARRANTY.             */
-/*                                                                    */
-/* Modification history                                               */
-/*                                                                    */
-/* When?      What?                                              Who? */
-/* -------------------------------------------------------------------*/
-/*                                                                    */
 /**********************************************************************/
 
 #include "PythonGUI.h"
 
-VERSION ID 1 "1.0"
+VERSION ID 1 "0.6beta"
 
-//********************************************************************/
-// ICONS                                                             */
-//********************************************************************/
 ICONFAMILY      "bitmaps/python1.bmp" "" ""
                 "bitmaps/python8.bmp" TRANSPARENTINDEX 0
 
@@ -32,7 +19,7 @@ ICONFAMILY      "bitmaps/python1.bmp" "" ""
 // MENUS                                                             */
 // Edit menu is handled by PalmOS by assigning it special IDs        */
 //********************************************************************/
-MENU IDD_MainFrame
+MENU MAINFRAME
 BEGIN
     PULLDOWN "Edit"
       BEGIN
@@ -45,59 +32,56 @@ BEGIN
         MENUITEM "Keyboard"                 10006          "K"
         MENUITEM "Graffiti"                 10007          "G"
         MENUITEM SEPARATOR
-        MENUITEM "Clear output  "           IDM_EditClrOut "D"
-        MENUITEM "Clear input"              IDM_EditClrIn  "I"
+        MENUITEM "Clear output  "           MENU_ClearOutput "D"
+        MENUITEM "Clear input"              MENU_ClearInput  "I"
       END
     PULLDOWN "Help"
       BEGIN
-        MENUITEM "About"                    IDM_HelpAbout  "A"
+        MENUITEM "About"                    MENU_HelpAbout  "A"
       END
 END
 
 //********************************************************************/
 // FORMS                                                             */
 //********************************************************************/
-FORM ID IDD_MainFrame AT (0 0 160 160)
-MENUID IDD_MainFrame
+FORM ID MAINFRAME AT (0 0 160 160)
+MENUID MAINFRAME
 BEGIN
     TITLE "Python"
-    POPUPTRIGGER "Keywords"  IDC_PT_SYMS AT (42 0 60 13) LEFTANCHOR FONT 0
-    POPUPLIST IDC_PT_SYMS IDC_PL_SYMS
-    LIST "" IDC_PL_SYMS AT (20 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
+    POPUPTRIGGER "Keywords"  BUILTIN_LIST_TRIGGER AT (42 0 60 13) LEFTANCHOR FONT 0
+    POPUPLIST BUILTIN_LIST_TRIGGER BUILTIN_LIST
+    LIST "" BUILTIN_LIST AT (20 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
 
-    POPUPTRIGGER "Modules"  IDC_PT_MODS AT (104 0 60 13) LEFTANCHOR FONT 0
-    POPUPLIST IDC_PT_MODS IDC_PL_MODS
-    LIST "" IDC_PL_MODS AT (84 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
+    POPUPTRIGGER "Modules"  MODULE_LIST_TRIGGER AT (104 0 60 13) LEFTANCHOR FONT 0
+    POPUPLIST MODULE_LIST_TRIGGER MODULE_LIST
+    LIST "" MODULE_LIST AT (84 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
 
-    FIELD IDC_EF_OUTPUT       0  17 153 90 FONT 0 LEFTALIGN MULTIPLELINES
+    FIELD OUTPUT_FIELD       0  17 153 90 FONT 0 LEFTALIGN MULTIPLELINES
                                            MAXCHARS OUTPUT_SIZE NONEDITABLE
-    SCROLLBAR IDC_SB_OUTPUT 153  17   7 90 MAX 0 PAGESIZE 8
-    FIELD IDC_EF_INPUT        0 110 160 35 FONT 0 LEFTALIGN MULTIPLELINES
+    SCROLLBAR OUTPUT_SCROLLBAR 153  17   7 90 MAX 0 PAGESIZE 8
+    FIELD INPUT_FIELD        0 110 160 35 FONT 0 LEFTALIGN MULTIPLELINES
                                            UNDERLINED MAXCHARS INPUT_SIZE
-    BUTTON "Import"   ID IDC_PB_IMPORT     AT (  1 147   32 AUTO) NONUSABLE
-    BUTTON "Memo" ID IDC_PB_MEMO   AT ( 36 147   28 AUTO) NONUSABLE
-    BUTTON "Log" ID IDC_PB_LOG   AT ( 67 147   22 AUTO)   NONUSABLE
-    BUTTON "Eval"   ID IDC_PB_EVAL     AT (119 147   22 AUTO) 
-    BUTTON "Break"  ID IDC_PB_BREAK    AT ( 60 147 AUTO AUTO) NONUSABLE
+    BUTTON "Eval"   ID EVAL_BUTTON     AT (119 147   22 AUTO) 
+    BUTTON "Break"  ID BREAK_BUTTON    AT ( 60 147 AUTO AUTO) NONUSABLE
     GRAFFITISTATEINDICATOR AT (146 147)
 END
 
 
-STRINGTABLE ID IDC_ST_SYMS
+STRINGTABLE ID BUILTIN_LIST_ITEMS
 "" "import" "print" "def" "class" "raise" "__import__" "abs" "apply" "buffer" "callable" "chr" "cmp" "coerce" "compile" "complex" "delattr" "dir" "divmod" "eval" "execfile" "filter" "float" "getattr" "globals" "hasattr" "hash" "hex" "id" "input" "intern" "int" "isinstance" "issubclass" "len" "list" "locals" "long" "map" "max" "min" "oct" "open" "ord" "pow" "range" "raw_input" "reduce" "reload" "repr" "round" "setattr" "slice" "str" "tuple" "type" "vars"
 
 
-STRINGTABLE ID IDC_ST_MODS
+STRINGTABLE ID MODULE_LIST_ITEMS
 "" "errno" "imp" "instrument" "marshal" "palmapps" "palmdm" "palmevent" "palmform" "palmnet" "palmsys" "select" "socket" "sys" "time" "__builtin__" "__main__"
 
-STRING ID ERR_O4_OS_VERSION    "Python requires at least PalmOS 3.5"
+STRING ID OS_VERSION_ERROR    "Python requires at least PalmOS 3.5"
 
 
-ALERT ID IDA_ABOUT
+ALERT ID ABOUT
 INFORMATION
 BEGIN
   TITLE  "About Python"
-  MESSAGE "V1.0 Nov. 2000\n"\
+  MESSAGE "Version 0.6beta, Jan. 2001\n"\
           "Jeffery D. Collins\n"\
           "Michael Gorlick\n"\
           "\251 Endeavors Technology, Inc.\n"

@@ -5,9 +5,6 @@
 /* Jeffery D. Collins                                                 */
 /* (c) Endeavors Technology, Inc.                                     */
 /*                                                                    */
-/* Distributed under the GNU General Public License;                  */
-/* see the README file. This code comes with NO WARRANTY.             */
-/*                                                                    */
 /**********************************************************************/
 
 #include "io.h"
@@ -314,18 +311,4 @@ Boolean ioHandleEvent(EventPtr event)
 
 	RESTORE_A4;
 	return handled;
-}
-
-Err
-ioFree(void)
-{
-	if (gTextH) 
-		MemHandleFree(gTextH);
-
-	gTextH = NULL;
-	gFormID = 0;
-	gFieldID = 0;
-	gScrollerID = 0;
-
-	return 0;	
 }

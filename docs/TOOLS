@@ -1,18 +1,22 @@
 This document describes how to install the tools necessary for compiling Python
-for the Palm.
+for the Palm. 
 
 INSTALLATION
 
-Either:
+We used Redhat-6.2 for our development, but the toolset will generally
+work for W95 and higher.  So,
 
-Obtain (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
+either:
+
+Obtain the tools (from ftp://ivan.Harhan.ORG/fs2/pub/embedded/palmos
 prc-tools.0.6.0beta.tar.gz and prc-tools.0.6.0beta-fixes) and install.
 
-Or:
+or (for Linux only):
 
 Download the file prc-tools-0.6.0-1.i386.rpm.  This file contains
 prc-tools.0.6.0beta, the fixes and pilrc-2.6 and installs in
-<prefix>=/usr/local/palm.  
+<prefix>=/usr/local/palm.  It has been tested using Redhat-6.2,
+but may work with other releases.
 
 Then:
 
@@ -25,6 +29,7 @@ to the directory "Core" is <prefix>/com/sdk/include/Core.
 *  Copy libPalmOSGlue.a and libNetSocket.a into <prefix>/m68k-palmos-coff/lib.
 See KNOWN PROBLEMS below for libNetSocket.a caveat.
 
+Your toolset is ready for building Python on the Palm.
 
 KNOWN PROBLEMS
 
@@ -41,3 +46,7 @@ prc-tools-0.5, for a variety of reasons.  It provides GLib shared libraries with
 multiple-segment support, seamless access to globals within each segment and
 function pointer support.  None of the other development toolsets currently
 provide all of these features.
+
+CONTACTS
+
+For problems, email XXX@endtech.com.

@@ -4,7 +4,6 @@
 
 
 static char db_name[] = "Python Modules-PyMd";
-static char prc_name[] = "Python Test";
 static int resource_base = 0x03e8;
 static int resource_incr = 10;
 

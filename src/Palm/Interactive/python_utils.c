@@ -8,23 +8,10 @@ int initialize_FrozenModules();
 int cleanup_FrozenModules();
 extern struct _frozen _PyImport_FrozenModules[];
 
-static char buf[80];
-static UInt16 freeMem, junk;
-#define DUMP_FREE_BYTES(msg) { int i; for (i=0; i<80; i++) buf[i]=0; \
- 	MemHeapFreeBytes(0, &freeMem, &junk);\
-	sprintf(buf, msg);\
-	sprintf(buf+StrLen(buf), ": %ld\n", freeMem);\
-	printSerial(buf);\
-}
-#undef DUMP_FREE_BYTES
-#define DUMP_FREE_BYTES
-
 void python_init() {
 
 	int verbose = 1;
 	int res;
-
-	DUMP_FREE_BYTES("Size before loading libs");
 
 	DMESSAGE("starting python_init");
 
@@ -55,9 +42,6 @@ void python_init() {
 	ErrFatalDisplayIf( !res,
 			   "Problem during frozen module cleanup");
 
-	DUMP_FREE_BYTES("Size just after Py_Initialize");
-		
-	
 	if (verbose)
 		fprintf(stderr, "Python %s\n%s\n",
 			Py_GetVersion(), Py_GetCopyright());

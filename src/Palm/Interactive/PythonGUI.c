@@ -10,11 +10,6 @@
 /* Distributed under the GNU General Public License;                  */
 /* see the README file. This code comes with NO WARRANTY.             */
 /*                                                                    */
-/* Modification history                                               */
-/*                                                                    */
-/* When?      What?                                              Who? */
-/* -------------------------------------------------------------------*/
-/*                                                                    */
 /**********************************************************************/
 
 
@@ -40,12 +35,6 @@ int run_SimpleString(char *command);
 void python_init();
 void python_finalize();
 
-static Boolean   launchedExternally = true;
-
-/* globals - move to an appropriate include file */
-Boolean palmIII;
-char  charEllipsis;
-char  charNumSpace;
 char  *stackLimit;
 UInt16 startPanel;
 
@@ -75,7 +64,6 @@ python_loop_handler()
 
 	int not_done, interrupted;
 	EventType e;
-	Err err;
 
 	SET_A4_FROM_A5;
 	interrupted = 0;
@@ -147,8 +135,8 @@ static void fillBltinList(void)
 
 	if (bltins) 
 		return;
-	list = (ListPtr)ptrFromObjID(IDC_PL_SYMS);
-	if ((bltins = listFrom_tSTL(IDC_ST_SYMS, &num)))
+	list = (ListPtr)ptrFromObjID(BUILTIN_LIST);
+	if ((bltins = listFrom_tSTL(BUILTIN_LIST_ITEMS, &num)))
 		LstSetListChoices(list, bltins, num);
 	else
 		LstSetListChoices(list, emergency,1);
@@ -165,8 +153,8 @@ static void fillModuleList(void)
 
 	if (module_list) 
 		return;
-	list = (ListPtr)ptrFromObjID(IDC_PL_MODS);
-	if ((module_list = listFrom_tSTL(IDC_ST_MODS, &num)))
+	list = (ListPtr)ptrFromObjID(MODULE_LIST);
+	if ((module_list = listFrom_tSTL(MODULE_LIST_ITEMS, &num)))
 		LstSetListChoices(list, module_list, num);
 	else
 		LstSetListChoices(list, emergency,1);
@@ -196,33 +184,20 @@ static Boolean StartApp()
 	/* Check for PalmOS2                                                */
 	/*------------------------------------------------------------------*/
 	error = FtrGet(sysFtrCreator, sysFtrNumROMVersion, &ver);
-	if (error || ver < 0x03000000)
+	if (error || ver < 0x03500000)
 	{
-		FrmAlert(ERR_O4_OS_VERSION);
+		FrmAlert(OS_VERSION_ERROR);
 		return false;
 	}
 	
 	/*------------------------------------------------------------------*/
 	/* Version-specific settings                                        */
 	/*------------------------------------------------------------------*/
-	palmIII      = ver >= 0x03000000;
-	charEllipsis = ver >= 0x03100000 ? 0x18 : 0x85;
-	charNumSpace = ver >= 0x03100000 ? 0x19 : 0x80;
 
-	startPanel = IDD_MainFrame;
+	startPanel = MAINFRAME;
 
 	/* initialize stdout */
-	{
-		UInt16 t1 = IDD_MainFrame;
-		UInt16 t2 = IDC_EF_OUTPUT;
-		UInt16 t3 = IDC_SB_OUTPUT;
-		UInt16 t4 =  OUTPUT_SIZE;
-	}
-	ioInit(IDD_MainFrame, IDC_EF_OUTPUT, IDC_SB_OUTPUT, OUTPUT_SIZE);
-
-	/* load shared library */
-	/* initialize Python interpreter */
-
+	ioInit(MAINFRAME, OUTPUT_FIELD, OUTPUT_SCROLLBAR, OUTPUT_SIZE);
 
 	return true;
 }
@@ -235,9 +210,6 @@ static void StopApp(void)
 
 	GLibClose(GLib_PyLb_libref);
 	GLib_PyLb_libref = NULL;
-	/* finalize Python interpreter */
-	/* unload shared library */
-
 }
 
 static Boolean MainFrameHandleEvent(EventType *e)
@@ -257,10 +229,10 @@ static Boolean MainFrameHandleEvent(EventType *e)
 	case frmOpenEvent:
 	{
 		MemHandle oldHandle;
-		startPanel = IDD_MainFrame;
+		startPanel = MAINFRAME;
 		mainForm   = FrmGetActiveForm();
-		inField    = ptrFromObjID(IDC_EF_INPUT);
-		outField   = ptrFromObjID(IDC_EF_OUTPUT);
+		inField    = ptrFromObjID(INPUT_FIELD);
+		outField   = ptrFromObjID(OUTPUT_FIELD);
 		
 		/*--------------------------------------------------------------*/
 		/* Init handle for input field                                  */
@@ -271,22 +243,13 @@ static Boolean MainFrameHandleEvent(EventType *e)
 			MemHandleFree(oldHandle);
 		
 		/*--------------------------------------------------------------*/
-		/* Init handle for output field                                 */
-		/*--------------------------------------------------------------*/
-/* 		oldHandle = FldGetTextHandle(outField); */
-/* 		FldSetTextHandle(outField, outHandle); */
-/* 		if (oldHandle) */
-/* 			MemHandleFree(oldHandle); */
-
-		/*--------------------------------------------------------------*/
 		/* Init other controls                                          */
 		/*--------------------------------------------------------------*/
-/* 		CtlSetLabel(ptrFromObjID(IDC_ST_SESSION), "label"); */
 		if (running)
 			disableButtons();
 		enableCtls(true);
 		
-		FrmSetFocus(mainForm, FrmGetObjectIndex(mainForm, IDC_EF_INPUT));
+		FrmSetFocus(mainForm, FrmGetObjectIndex(mainForm, INPUT_FIELD));
 
 		handled = true;
 		break;
@@ -301,7 +264,7 @@ static Boolean MainFrameHandleEvent(EventType *e)
 		printf("in MainFrameHandleEvent\n");
 		switch (e->data.ctlSelect.controlID)
 		{
-		case IDC_PB_BREAK:
+		case BREAK_BUTTON:
 			/*----------------------------------------------------------*/
 			/* Break excution                                           */
 			/*----------------------------------------------------------*/
@@ -310,17 +273,17 @@ static Boolean MainFrameHandleEvent(EventType *e)
 				FormPtr frm;
 				frm = FrmGetActiveForm();
 				FrmSetFocus(frm,
-				       FrmGetObjectIndex(frm, IDC_EF_INPUT));
+				       FrmGetObjectIndex(frm, INPUT_FIELD));
 			}
 			handled = true;
 			break;
-		case IDC_PT_SYMS:
+		case BUILTIN_LIST_TRIGGER:
 			fillBltinList();
 			break;
-		case IDC_PT_MODS:
+		case MODULE_LIST_TRIGGER:
 			fillModuleList();
 			break;
-		case IDC_PB_EVAL:
+		case EVAL_BUTTON:
 			/*----------------------------------------------------------*/
 			/* Evaluate entered expression:                             */
 			/*   Parse and compile and set state to running             */
@@ -353,7 +316,7 @@ static Boolean MainFrameHandleEvent(EventType *e)
 			
 			{
 				FormPtr frm = FrmGetActiveForm();
-				UInt16 index = FrmGetObjectIndex(frm, IDC_EF_INPUT);
+				UInt16 index = FrmGetObjectIndex(frm, INPUT_FIELD);
 				FieldPtr fldP = FrmGetObjectPtr(frm, index);
 				       
 				FldFreeMemory(fldP);
@@ -384,7 +347,7 @@ static Boolean MainFrameHandleEvent(EventType *e)
 	case menuEvent:
 		switch (e->data.menu.itemID)
 		{
-		case IDM_EditClrIn:
+		case MENU_ClearInput:
 			/*----------------------------------------------------------*/
 			/* Clear input field                                        */
 			/*----------------------------------------------------------*/
@@ -392,16 +355,14 @@ static Boolean MainFrameHandleEvent(EventType *e)
 			handled = true;
 			break;
 			
-		case IDM_EditClrOut:
+		case MENU_ClearOutput:
 			/*----------------------------------------------------------*/
 			/* Clear output field                                       */
 			/*----------------------------------------------------------*/
 			ioClear();
-/* 			FldDelete(outField, 0, FldGetTextLength(outField)); */
-/* 			handled = true; */
 			break;
-		case IDM_HelpAbout:
-			FrmAlert(IDA_ABOUT);
+		case MENU_HelpAbout:
+			FrmAlert(ABOUT);
 			handled = true;
 			break;
 		}
@@ -429,7 +390,7 @@ static Boolean appHandleEvent(EventType* e)
 		
 		switch(formId)
 		{
-		case IDD_MainFrame:
+		case MAINFRAME:
 			FrmSetEventHandler(form, MainFrameHandleEvent);
 			break;
 		default:
@@ -466,7 +427,6 @@ UInt32 PilotMain(UInt16 cmd, MemPtr cmdPBP, UInt16 launchFlags)
 	{
 	case sysAppLaunchCmdNormalLaunch:
 		cmdPBP = NULL;
-		launchedExternally = false;
 		if (!StartApp())
 			return 0;
 

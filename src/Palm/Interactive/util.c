@@ -1,18 +1,14 @@
 /**********************************************************************/
 /*                                                                    */
-/* util.c:  LISPME utility functions needed everywhere                */
+/* PythonGUI.h: Resource definitions for Python                       */
 /*                                                                    */
-/* LispMe System (c) FBI Fred Bayer Informatics                       */
+/* Jeffery D. Collins                                                 */
+/* Endeavors Technology, Inc.                                         */
+/*                                                                    */
+/* Portions (c) FBI Fred Bayer Informatics                            */
 /*                                                                    */
 /* Distributed under the GNU General Public License;                  */
 /* see the README file. This code comes with NO WARRANTY.             */
-/*                                                                    */
-/* Modification history                                               */
-/*                                                                    */
-/* When?      What?                                              Who? */
-/* -------------------------------------------------------------------*/
-/* 10.01.1999 New                                                FBI  */
-/* 01.04.2000 Prepared for GCC 2.0 and SDK 3.5                   FBI  */
 /*                                                                    */
 /**********************************************************************/
 
@@ -37,9 +33,6 @@ void* ptrFromObjID(UInt16 obj)
            FrmGetObjectIndex(FrmGetActiveForm(),obj));
 }
 
-static Boolean grabbed = false;
-
-
 /**********************************************************************/
 /* Disable/enable command buttons during execution                    */
 /**********************************************************************/
@@ -60,20 +53,14 @@ void disable(UInt16 id)
 /**********************************************************************/
 void disableButtons(void)
 {
-/* 	disable(IDC_PB_IMPORT); */
-/* 	disable(IDC_PB_MEMO); */
-/* 	disable(IDC_PB_LOG); */
-	disable(IDC_PB_EVAL);
-	enable(IDC_PB_BREAK);
+	disable(EVAL_BUTTON);
+	enable(BREAK_BUTTON);
 }
 
 void enableButtons(void)
 {
-	disable(IDC_PB_BREAK);
-/* 	enable(IDC_PB_IMPORT); */
-/* 	enable(IDC_PB_MEMO); */
-/* 	enable(IDC_PB_LOG); */
-	enable(IDC_PB_EVAL);
+	disable(BREAK_BUTTON);
+	enable(EVAL_BUTTON);
 }
 
 
@@ -86,13 +73,13 @@ void enableCtls(Boolean enable)
   FldSetUsable(inField, enable);
   CtlSetUsable((ControlPtr)
     FrmGetObjectPtr(mainForm,
-                    FrmGetObjectIndex(mainForm,IDC_PT_SYMS)),
+                    FrmGetObjectIndex(mainForm,BUILTIN_LIST_TRIGGER)),
     enable);
   if (enable)
   {
     FrmEraseForm(mainForm);
     updateScrollBar();
-    FrmUpdateForm(IDD_MainFrame, frmRedrawUpdateCode);
+    FrmUpdateForm(MAINFRAME, frmRedrawUpdateCode);
   }
   else
   {
@@ -107,8 +94,8 @@ void enableCtls(Boolean enable)
 /**********************************************************************/
 void updateScrollBar(void)
 {
-  FieldPtr     field = ptrFromObjID(IDC_EF_OUTPUT);
-  ScrollBarPtr sbar  = ptrFromObjID(IDC_SB_OUTPUT);
+  FieldPtr     field = ptrFromObjID(OUTPUT_FIELD);
+  ScrollBarPtr sbar  = ptrFromObjID(OUTPUT_SCROLLBAR);
   UInt16       scrollPos;
   UInt16       textHeight;
   UInt16       fieldHeight;
