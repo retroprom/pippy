@@ -96,7 +96,7 @@ struct _inittab *PyImport_Inittab = _PyImport_Inittab;
 
 /* these tables define the module suffixes that Python recognizes */
 struct filedescr * _PyImport_Filetab = NULL;
-static const struct filedescr _PyImport_StandardFiletab[] = {
+static struct filedescr _PyImport_StandardFiletab[] = {
 	{".py", "r", PY_SOURCE},
 	{".pyc", "rb", PY_COMPILED},
 	{0, 0}
@@ -217,14 +217,14 @@ PyImport_GetModuleDict()
 
 
 /* List of names to clear in sys */
-const static char* sys_deletes[] = {
+static char* sys_deletes[] = {
 	"path", "argv", "ps1", "ps2", "exitfunc",
 	"exc_type", "exc_value", "exc_traceback",
 	"last_type", "last_value", "last_traceback",
 	NULL
 };
 
-const static char* sys_files[] = {
+static char* sys_files[] = {
 	"stdin", "__stdin__",
 	"stdout", "__stdout__",
 	"stderr", "__stderr__",
