@@ -49,6 +49,8 @@ PERFORMANCE OF THIS SOFTWARE.
 #include <unistd.h>
 #endif
 
+#include "other/import_c.h"
+
 /* We expect that stat exists on most systems.
    It's confirmed on Unix, Mac and Windows.
    If you don't have it, add #define DONT_HAVE_STAT to your config.h. */
@@ -765,12 +767,6 @@ load_source_module(name, pathname, fp)
 	return m;
 }
 #endif /* WITHOUT_COMPILER */
-
-/* Forward */
-static PyObject *load_module Py_PROTO((char *, FILE *, char *, int)) SEG_IMPORT_C;
-static struct filedescr *find_module Py_PROTO((char *, PyObject *,
-					       char *, int, FILE **)) SEG_IMPORT_C;
-static struct _frozen *find_frozen Py_PROTO((char *name)) SEG_IMPORT_C;
 
 /* Load a package and return its module object WITH INCREMENTED
    REFERENCE COUNT */
@@ -2429,7 +2425,6 @@ setint(d, name, value)
 	return err;
 }
 
-void initimp() SEG_IMPORT_C;
 void
 initimp()
 {
