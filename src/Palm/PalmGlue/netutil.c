@@ -10,6 +10,7 @@ extern Int32 AppNetTimeout; /* defined in Netsocket.c */
 static int
 netutil_millisecondsPerTick()
 {
+	/*  (1000 ms/s) / (n ticks/s) = (1000/n) ms/tick */
 	return 1000 / SysTicksPerSecond();
 }
 
