@@ -31,9 +31,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Keyboard"                 10006          "K"
         MENUITEM "Graffiti"                 10007          "G"
-        MENUITEM SEPARATOR
-        MENUITEM "Clear output  "           MENU_ClearOutput "D"
-        MENUITEM "Clear input"              MENU_ClearInput  "I"
+      END
+    PULLDOWN "View"
+      BEGIN
+        MENUITEM "Clear input" 	            MENU_ClearInput  "I"
+        MENUITEM "Clear output"             MENU_ClearOutput "D"
       END
     PULLDOWN "Help"
       BEGIN
@@ -50,11 +52,11 @@ BEGIN
     TITLE "Pippy"
     POPUPTRIGGER "Keywords"  BUILTIN_LIST_TRIGGER AT (42 0 60 13) LEFTANCHOR FONT 0
     POPUPLIST BUILTIN_LIST_TRIGGER BUILTIN_LIST
-    LIST "" BUILTIN_LIST AT (20 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
+    LIST "" "" "" "" "" "" "" "" "" "" "" "" BUILTIN_LIST AT (20 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
 
     POPUPTRIGGER "Modules"  MODULE_LIST_TRIGGER AT (104 0 60 13) LEFTANCHOR FONT 0
     POPUPLIST MODULE_LIST_TRIGGER MODULE_LIST
-    LIST "" MODULE_LIST AT (84 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
+    LIST "" "" "" "" "" "" "" "" "" "" "" MODULE_LIST AT (84 10 80 AUTO) NONUSABLE VISIBLEITEMS 12 FONT 0
 
     FIELD OUTPUT_FIELD       0  17 153 90 FONT 0 LEFTALIGN MULTIPLELINES
                                            MAXCHARS OUTPUT_SIZE NONEDITABLE
@@ -94,3 +96,4 @@ BEGIN
           "\251 Endeavors Technology, Inc.\n"
   BUTTONS "OK"
 END
+
