@@ -113,8 +113,10 @@ typedef struct {
 
 	DateType date_today, date_boy;
 	UInt32 days_today, days_boy;
-	DateTimeType boy = {0,0,0,1,1,p->year,4};
+	DateTimeType boy = {0,0,0,1,1,0,4};
 	UInt32 tt_today, tt_boy;
+
+	boy.year = p->year;
 	
 	tt_today = TimDateTimeToSeconds (p);
 	DateSecondsToDate(tt_today, &date_today);
