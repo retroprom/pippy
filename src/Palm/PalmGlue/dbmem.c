@@ -231,11 +231,11 @@ dbmem_addPyCodeObject(PyCodeObject *v)
 	if ( (res = dbmem_addPyObject((PyObject *)v)) != NULL) {
 		
 		Py_DECREF(v);
-		{
-			char buf[100];
-			sprintf(buf, "('marshalled', %d)", dbmem_size(res));
-			DMESSAGE(buf);
-		}
+/* 		{ */
+/* 			char buf[100]; */
+/* 			sprintf(buf, "('marshalled', %d)", dbmem_size(res)); */
+/* 			DMESSAGE(buf); */
+/* 		} */
 		
 	}
 
@@ -268,11 +268,11 @@ dbmem_addPyTupleObject(PyTupleObject *v)
 		}
 
 		Py_DECREF(v);
-		{
-			char buf[100];
-			sprintf(buf, "('tupled', %d)", dbmem_size(res));
-			DMESSAGE(buf);
-		}
+/* 		{ */
+/* 			char buf[100]; */
+/* 			sprintf(buf, "('tupled', %d)", dbmem_size(res)); */
+/* 			DMESSAGE(buf); */
+/* 		} */
 		
 	}
 
@@ -294,11 +294,11 @@ dbmem_createentry(UInt32 *indexP, long size)
 
 	index = dmMaxRecordIndex; /* append the record to the database */
 	
-	{
-		char buf[100];
-		sprintf(buf, "dbmem_creat: size = %ld", size);
-		DMESSAGE(buf);
-	}
+/* 	{ */
+/* 		char buf[100]; */
+/* 		sprintf(buf, "dbmem_creat: size = %ld", size); */
+/* 		DMESSAGE(buf); */
+/* 	} */
 
 	recH = DmNewRecord (stringdb_ref, &index, size);
 	
@@ -334,12 +334,12 @@ void
 dbmem_set( void *recP, UInt8 value, UInt32 count)
 {
 	DMESSAGE("dbmem_set/start");
-	{
-		char buf[100];
-		sprintf(buf, "dbmem_set: recP, offset, value, count = %p %ld %c %ld", 
-			recP, 0, value, count);
-		DMESSAGE(buf);
-	}
+/* 	{ */
+/* 		char buf[100]; */
+/* 		sprintf(buf, "dbmem_set: recP, offset, value, count = %p %ld %c %ld",  */
+/* 			recP, 0, value, count); */
+/* 		DMESSAGE(buf); */
+/* 	} */
 	DmSet(recP, 0, count, value);
 	DMESSAGE("dbmem_set/end");
 }
@@ -351,12 +351,12 @@ dbmem_write( void *recP, UInt32 offset, void *srcP, UInt32 count)
 
 	DMESSAGE("dbmem_write/start");
 
-	{
-		char buf[100];
-		sprintf(buf, "recP, offset, srcP, count = %p %ld %p %ld", 
-			recP, offset, srcP, count);
-		DMESSAGE(buf);
-	}
+/* 	{ */
+/* 		char buf[100]; */
+/* 		sprintf(buf, "recP, offset, srcP, count = %p %ld %p %ld",  */
+/* 			recP, offset, srcP, count); */
+/* 		DMESSAGE(buf); */
+/* 	} */
 
 	if ((err = (Err)DmWriteCheck(recP, offset, count))!=errNone) {
 	  switch(err) {
