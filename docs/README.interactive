@@ -7,26 +7,104 @@ Copyright (c) 2001 Endeavors Technology, Inc.
 All rights reserved.
 
 
-RUNNING
+	Warning:  Backup your Palm device before installing Pippy!
 
-Warning:  Backup your Palm device before installing Pippy!
+NOTE:
 
-The distribution includes pre-built .prc files for the interactive
+This distribution includes the pre-built .prc files for the interactive
 interpreter.  Simply install pippy.prc and pylib.prc on the Palm and
-select the Pippy application.
+select the Pippy application as described below.
 
 The interactive interface is a command-line interface based on the
 LispMe interface (<http://www.lispme.de/>).  It is very limited,
 but provides a means for entering python commands and viewing the
 results.  If you wish to contribute to improving this interface, see
-<http://www.endeavors.org/pippy/contribute.html>
+<http://www.endeavors.com/pippy/contribute.html>
 
 
-FEEDBACK
-<pippy@endeavors.com>
+INSTALLING THE .prc FILES
 
-DEVELOPMENT HOME
-<http://www.endeavors.org/pippy>
+1. Download the Pippy application distribution from
+   <http://www.endeavors.com/pippy/> (pippy_0_6beta.XXX
+   where XXX is the format you desire - tar.gz, .zip, .sit or .hqx).
 
-BUG REPORTS
-<pippy-bugs@endeavors.com>
+2. Unpack the distribution.  You should now have the following files:
+
+		pippy_0_6beta/
+		pippy_0_6beta/pylib.prc
+		pippy_0_6beta/pippy.prc
+		pippy_0_6beta/README.interactive
+		pippy_0_6beta/LICENSE
+
+3. Depending on your platform there are several tools that allow you to
+   install the *.prc files onto your Palm hand held device.
+   
+   A.  Warning:  Backup your Palm device before installing Pippy!
+   
+   B. Put your Palm in the Hot Sync Cradle
+   
+   C.  Follow the instructions for installing new software provided with
+       the corresponding application on your system.
+       
+   Linux:
+        You can use pilot-xfer (part of the pilot-link or plink tools;
+        see <http://www.rpmfind.net/>).   For example, assuming you are
+        in the directory pippy_0_6beta/:
+        
+        make sure that /dev/palm is linked to the proper serial port
+        on which your palm cradle is connected.
+        
+        pilot-xfer -p /dev/palm -i *.prc
+        
+    Mac:
+        You can use the Palm Desktop application or
+        use Palm Buddy (<http://perso.wanadoo.fr/fpillet/>)
+        
+    Windows:
+        You can use the Palm Desktop application.
+        
+
+
+RUNNING Pippy
+
+    1.  Assuming you have successfully installed Pippy you should
+    see the Pippy application Icon on your screen.  See a sample
+    screen shot on the Pippy web site:  
+    <http://www.endeavors.com/pippy/screen_shots.html>
+    
+    2. Select the Pippy application as would any other Palm application.
+       You should now see the Pippy interactive interface.
+       
+    Congratulations and have fun.
+    
+
+LINKS AND CONTACT INFORMATION
+
+    Pippy Development Home
+    <http://www.endeavors.com/pippy>
+
+    Feedback & General Comments
+    <pippy@endeavors.com>
+
+MAILING LISTS
+    Developer Issues
+    <pippy-dev@endeavors.com>
+    Bug Reports 
+    <pippy-bugs@endeavors.com>
+    Announcements
+    <pippy-announce@endeavors.com>
+
+    CVS REPOSITORY
+    <http://www.endeavors.com/pippy/cvs>
+
+    Palm Developers Site
+    <http://www.palmos.com/dev/>
+
+
+AUTHORS
+
+    Jeffery D. Collins <jcollins@endeavors.com>
+    Michael Gorlick <mgorlick@endeavors.com>
+    Endeavors Technology, Inc.
+    19700 Fairchild Rd, Suite 200
+    Irvine, CA  92612
