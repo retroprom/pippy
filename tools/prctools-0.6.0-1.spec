@@ -25,7 +25,7 @@ cp -rp . $RPM_BUILD_ROOT
 #rm -rf $RPM_BUILD_ROOT
 
 %files -f /home/jcollins/build/build-rpm/inventory
-##%defattr(-,root,root)
+%defattr(-,root,root)
 
 
 
