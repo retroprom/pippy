@@ -8,7 +8,7 @@ LIBRARY= libpython$(VERSION).a
 
 LIBC_SEGMENT_DEFS = DEFS='-DUSE_SEGMENTS -DHAVE_CONFIG -DSEG_NAME=pseglibc -DQ_SEG_NAME=\"pseglibc\"'
 
-all:  the_libc the_python the_glue the_glib
+all:  the_libc the_python the_glue the_resources the_glib
 
 
 # the following builds python using segments
@@ -24,8 +24,11 @@ the_python: the_libc
 the_glue: the_python
 	(cd PalmGlue; make $(LIBC_SEGMENT_DEFS) LIBRARY=../$(LIBRARY) add2lib; cd ..)
 	touch the_glue
+the_resources: the_glue
+	(cd resources; make; cd ..)
+	touch the_resources
 
-the_glib: the_glue
+the_glib: the_resources
 	make -f Makefile.glib
 	touch the_glib
 
@@ -44,5 +47,6 @@ clean:
 	make -f Makefile.glib clean
 	(cd PalmGlue; make clean)
 	(cd libc; make clean)
+	(cd resources; make clean)
 	rm -f the_*
 
