@@ -12,8 +12,6 @@ desired frozen Python modules and run the Makefile in the "frozen"
 subdirectory.  After this, building using CodeWarrior should run
 successfully.
 
-
-
 Frozen Module Configuration 
 
 Additional frozen modules can be included in pippy.prc by adding them
