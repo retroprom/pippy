@@ -51,7 +51,7 @@ dist: all
 	mkdir $(PIPPY_DIR)/prc
 	cp pylib.prc Interactive/pippy.prc $(PIPPY_DIR)/prc
 	cp ../../docs/README.interactive $(PIPPY_DIR)/prc
-	(cd /tmp; cvs -q -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) Pippy)
+	(cd /tmp; cvs -q -d:pserver:anonymous@endeavors.org:/cvsroot export -D tomorrow -d $(PIPPY_NAME) pippy)
 	(cd /tmp; tar czf $(PIPPY_NAME).tar.gz $(PIPPY_NAME))
 	(cd $(PIPPY_DIR); zip -r $(PIPPY_NAME).zip prc)
 	mv $(PIPPY_DIR)/$(PIPPY_NAME).zip .
