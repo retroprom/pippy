@@ -49,6 +49,9 @@ extern int vfprintf(FILE *, const char *fmt, va_list args) SEG_LIBC;
 #define fflush(A) (0); /* always assume success */
 
 extern int sscanf(const char *, const char *, ...) SEG_LIBC;
+extern int xsscanf(const char *, const char *, ...) SEG_LIBC;
+/* extern int xsscanf(char *, char *, int) SEG_LIBC; */
+
 extern FILE *fopen(const char *, const char *) SEG_LIBC;
 extern int fclose(FILE *stream) SEG_LIBC;/* Python uses fclose as a function pointer - can't #define instead*/
 
