@@ -27,7 +27,9 @@ typedef	NetFDSetType	fd_set;
 #define	bcopy(b1,b2,len)MemMove(b2,b1,len)
 
 #define _STDLIB
+#ifndef CODEWARRIOR
 #define __stdarg_h  /* causes unix_stdarg.h be effectively ignored */
+#endif
 #define __stdio_h  /* causes unix_stdio.h to be ignored */
 #include <sys_socket.h>
 
