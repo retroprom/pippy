@@ -109,7 +109,7 @@ palmform palmformmodule.c
 PALM_EXAMPLES= /home/jcollins/PALM/Examples
 
 # Comment the following if you don't have the PalmOS Example sources
-#palmapps palmappsmodule.c -I$(PALM_EXAMPLES)/Memo/Src -I$(PALM_EXAMPLES)/Datebook/Src -I$(PALM_EXAMPLES)/ToDo/Src -I$(PALM_EXAMPLES)/Address/Src
+palmapps palmappsmodule.c -I$(PALM_EXAMPLES)/Memo/Src -I$(PALM_EXAMPLES)/Datebook/Src -I$(PALM_EXAMPLES)/ToDo/Src -I$(PALM_EXAMPLES)/Address/Src
 
 
 
