@@ -51,7 +51,7 @@ dist: all
 	mkdir $(PIPPY_DIR)/prc
 	cp pylib.prc Interactive/python.prc $(PIPPY_DIR)/prc
 	cd /tmp
-	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_DIR) PalmPython
+	cvs -d:pserver:jcollins@endeavors.org:/cvsroot co -d $(PIPPY_NAME) PalmPython
 	tar czvf $(PIPPY_NAME).tar.gz $(PIPPY_NAME)
 
 clean:
