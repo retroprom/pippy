@@ -428,6 +428,7 @@ string_item(a, i)
 		characters[c] = (PyStringObject *) v;
 		((PyStringObject *)v)->ob_sval[0] = c;
 	}
+	Py_INCREF(v);
 #else 
 	v = PyString_FromStringAndSize((char *)NULL, 1);
 	if (v == NULL)
@@ -435,7 +436,6 @@ string_item(a, i)
 	((PyStringObject *)v)->ob_sval[0] = c;
 #endif /* !DONT_SHARE_SHORT_STRINGS */
 
-	Py_INCREF(v);
 	return v;
 }
 
@@ -1571,7 +1571,9 @@ string_methods[] = {
 	/* counterparts of the obsolete stropmodule functions */
 	{"capitalize", (PyCFunction)string_capitalize, 1, USE_DOC(capitalize__doc__)},
 	{"count",      (PyCFunction)string_count,      1, USE_DOC(count__doc__)},
+#ifdef CUT_EXCESS_METHODS
 	{"endswith",   (PyCFunction)string_endswith,   1, USE_DOC(endswith__doc__)},
+#endif
 	{"find",       (PyCFunction)string_find,       1, USE_DOC(find__doc__)},
 	{"index",      (PyCFunction)string_index,      1, USE_DOC(index__doc__)},
 	{"join",       (PyCFunction)string_join,       1, USE_DOC(join__doc__)},
@@ -1583,11 +1585,15 @@ string_methods[] = {
 	{"rindex",      (PyCFunction)string_rindex,      1, USE_DOC(rindex__doc__)},
 	{"rstrip",      (PyCFunction)string_rstrip,      1, USE_DOC(rstrip__doc__)},
 	{"split",       (PyCFunction)string_split,       1, USE_DOC(split__doc__)},
+#ifdef CUT_EXCESS_METHODS
 	{"startswith",  (PyCFunction)string_startswith,  1, USE_DOC(startswith__doc__)},
+#endif
 	{"strip",       (PyCFunction)string_strip,       1, USE_DOC(strip__doc__)},
+#ifdef CUT_EXCESS_METHODS
 	{"swapcase",    (PyCFunction)string_swapcase,    1, USE_DOC(swapcase__doc__)},
 	{"translate",   (PyCFunction)string_translate,   1, USE_DOC(translate__doc__)},
 	{"upper",       (PyCFunction)string_upper,       1, USE_DOC(upper__doc__)},
+#endif
 	/* TBD */
 /* 	{"ljust"        (PyCFunction)string_ljust,       1, ljust__doc__}, */
 /* 	{"rjust"        (PyCFunction)string_rjust,       1, rjust__doc__}, */
