@@ -1,4 +1,4 @@
-import utest
+import easytest
 from modulefinder import _behead
 
 
