@@ -6,6 +6,7 @@ if not hasattr(sys,'path'):
     sys.path = []
 
 import_manager = None
+save_path = None
 
 class MemoDBImporter(imputil.Importer):
     def __init__(self, name='MemoDB', category = 'Python'):
@@ -47,9 +48,11 @@ class MemoDBImporter(imputil.Importer):
         buf = rec.getbuffer()
 
         # need to modify compile to allow
-        code = compile(buf[:-1], "MemoDB: module_name", "exec")
-        rec.release()
-        db.close()
+        try:
+            code = compile(buf[:-1], "MemoDB: module_name", "exec")
+        finally:
+            rec.release()
+            db.close()
         return code
     def get_code(self, parent, modname, fqname):
         if parent:  # assume no parent initially
@@ -88,16 +91,17 @@ def _get_module_name(buf):
     return s[i:fin]
 
 def install():
-    global import_manager
+    global import_manager, save_path
     if not import_manager:
         import_manager = imputil.ImportManager()
         import_manager.install()
+        save_path = sys.path[:]
         sys.path.append(imputil.BuiltinImporter())
         sys.path.append(MemoDBImporter())
 
 def uninstall():
-    global import_manager
+    global import_manager, save_path
     if import_manager:
         import_manager.uninstall()
         import_manager = None
-        
+        sys.path = save_path
