@@ -56,7 +56,7 @@ PIPPY_SRC=$(PIPPY_NAME)-src
 PIPPY_SRC_DIR=/tmp/$(PIPPY_SRC)
 PIPPY_BIN=pippy_$(PIPPY_WIN_VERSION)
 PIPPY_BIN_DIR=/tmp/$(PIPPY_BIN)
-PIPPY_CVSROOT=:pserver:anonymous@endeavors.org:/cvsroot
+PIPPY_CVSROOT=<set me>
 
 dist: all dist_src dist_bin
 

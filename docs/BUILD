@@ -28,7 +28,7 @@ BUILDING AND INSTALLING Pippy
 The following instructions are specific to Unix/Linux.
 
 1.  Download the Pippy source distribution: pippy-0.7-src.tar.gz
-    <http://www.endeavors.org/pippy/>
+    <pippy.sourceforge.net>
 
 2.A Unpack the pippy-0.7-src.tar.gz distribution into your working
     build directory.  For example,
@@ -161,29 +161,8 @@ See the README and TOOLS files.
 LINKS AND CONTACT INFORMATION
 
     Pippy Development Home
-    <http://www.endeavors.com/pippy/>
-
-    Feedback & General Comments
-    <pippy@endeavors.com>
-
-    MAILING LISTS
-        Developer Issues
-        <pippy-dev@endeavors.org>
-        Bug Reports
-        <pippy-bugs@endeavors.org>
-        Announcements
-        <pippy-announce@endeavors.org>
-
-    CVS REPOSITORY
-    <http://www.endeavors.com/pippy/download.html>
-
-    Palm Developers Site
-    <http://www.palmos.com/dev/>
-
+    <http://pippy.sourceforge.net>
 
 AUTHORS
+    Jeffery D. Collins <tokeneater@sourceforge.net>
 
-    Jeffery D. Collins <jcollins@endeavors.com>
-    Endeavors Technology, Inc.
-    19700 Fairchild Rd, Suite 200
-    Irvine, CA  92612

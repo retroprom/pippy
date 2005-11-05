@@ -16,8 +16,8 @@ NOTE
 This distribution contains the source code for Pippy, the port of
 Python (<http://www.python.org/>) to the PalmOS (<http://www.palm.com/>).
 If you are only interested in running Pippy on a Palm hand held device,
-you may download the pre-built PRC files (Pippy-0.7.tar.gz) from:
-<http://www.endeavors.com/pippy/>.
+you may download the pre-built PRC files (Pippy-0.7.tar.gz) from
+http://pippy.sourceforge.net.
 
 
     WARNING: Backup your Palm device before installing Pippy!
@@ -148,29 +148,8 @@ haven't had the time.
 LINKS AND CONTACT INFORMATION
 
     Pippy Development Home
-    <http://www.endeavors.com/pippy/>
-
-    Feedback & General Comments
-    <pippy@endeavors.com>
-
-    MAILING LISTS
-        Developer Issues
-        <pippy-dev@endeavors.org>
-        Bug Reports
-        <pippy-bugs@endeavors.org>
-        Announcements
-        <pippy-announce@endeavors.org>
-
-    CVS REPOSITORY
-    <http://www.endeavors.com/pippy/download.html>
-
-    Palm Developers Site
-    <http://www.palmos.com/dev/>
-
+    <http://pippy.sourceforge.net>
 
 AUTHORS
 
-    Jeffery D. Collins <jcollins@endeavors.com>
-    Endeavors Technology, Inc.
-    19700 Fairchild Rd, Suite 200
-    Irvine, CA  92612
+    Jeffery D. Collins <tokeneater@sourceforge.net>
